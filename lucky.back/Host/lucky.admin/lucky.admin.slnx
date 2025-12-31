@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Common/" />
+  <Folder Name="/Document/" />
+  <Folder Name="/Host/">
+    <Project Path="lucky.admin/lucky.admin.csproj" />
+  </Folder>
+  <Folder Name="/Models/">
+    <Project Path="../../Models/Lucky.BaseModel/Lucky.BaseModel.csproj" />
+    <Project Path="../../Models/Lucky.SysModel/Lucky.SysModel.csproj" />
+  </Folder>
+  <Folder Name="/Services/" />
+</Solution>
