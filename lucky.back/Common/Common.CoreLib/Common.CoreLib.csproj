@@ -7,9 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Enum\" />
-    <Folder Include="Model\" />
-    <Folder Include="Dto\" />
+    <Folder Include="Cache\" />
+    <Folder Include="Util\" />
   </ItemGroup>
 
 </Project>

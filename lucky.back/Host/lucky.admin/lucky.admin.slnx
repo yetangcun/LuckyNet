@@ -1,5 +1,16 @@
 <Solution>
-  <Folder Name="/Common/" />
+  <Folder Name="/Common/">
+    <Project Path="../../Common/Common.CoreLib/Common.CoreLib.csproj" Id="87be57c8-c7c2-4912-9844-8d0b10de3d9c" />
+  </Folder>
+  <Folder Name="/Common/Data/">
+    <Project Path="../../Common/Data/Data.Dapper/Data.Dapper.csproj" Id="fee2a172-42b0-48ad-a511-ddc734deb3cf" />
+    <Project Path="../../Common/Data/Data.SqlSugar/Data.SqlSugar.csproj" Id="bacce419-789d-4cb9-afe9-272520692925" />
+  </Folder>
+  <Folder Name="/Common/Protocol/">
+    <Project Path="../../Common/Protocol/Prtcl.Grpc/Prtcl.Grpc.csproj" Id="f8563c23-8e7a-40ca-a274-d28a082980b8" />
+    <Project Path="../../Common/Protocol/Prtcl.Mqtt/Prtcl.Mqtt.csproj" Id="19687d2b-757d-4561-ae54-253b71e7049d" />
+    <Project Path="../../Common/Protocol/Prtcl.Tcudp/Prtcl.Tcudp.csproj" Id="f6ab20ad-9673-4137-ab1d-1f1d0289674d" />
+  </Folder>
   <Folder Name="/Document/" />
   <Folder Name="/Host/">
     <Project Path="lucky.admin/lucky.admin.csproj" />
