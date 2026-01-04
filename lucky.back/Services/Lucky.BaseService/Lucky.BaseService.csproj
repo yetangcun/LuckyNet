@@ -4,20 +4,10 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Cache\" />
-    <Folder Include="Model\Common\" />
-    <Folder Include="Util\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common.CoreLib\Common.CoreLib.csproj" />
     <ProjectReference Include="..\..\Models\Lucky.BaseModel\Lucky.BaseModel.csproj" />
   </ItemGroup>
 

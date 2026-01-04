@@ -4,11 +4,11 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Dto\" />
+    <ProjectReference Include="..\..\Models\Lucky.SysModel\Lucky.SysModel.csproj" />
+    <ProjectReference Include="..\Lucky.BaseService\Lucky.BaseService.csproj" />
   </ItemGroup>
 
 </Project>
