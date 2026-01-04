@@ -51,8 +51,7 @@ namespace Common.CoreLib.Extension.Common
 
                 // 给Swagger接口添加注释说明
                 var xmls = (cfg.GetSection("CommonCfg:ApiArrXmls").Value?.Split(',')) ?? [];
-                string[] xmlFileArrs = xmls; // { "Plat.NetServer.xml", "Plat.General.Model.xml", "Models.SysModel.xml" };
-                foreach (var xmlFile in xmlFileArrs)
+                foreach (var xmlFile in xmls)
                 {
                     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                     if (File.Exists(xmlPath))

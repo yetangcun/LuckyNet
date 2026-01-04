@@ -4,6 +4,7 @@
   </Folder>
   <Folder Name="/Common/Data/">
     <Project Path="../../Common/Data/Data.Dapper/Data.Dapper.csproj" Id="fee2a172-42b0-48ad-a511-ddc734deb3cf" />
+    <Project Path="../../Common/Data/Data.EFCore/Data.EFCore.csproj" Id="f8378b77-9eb8-4419-a60e-9c64a6c44655" />
     <Project Path="../../Common/Data/Data.SqlSugar/Data.SqlSugar.csproj" Id="bacce419-789d-4cb9-afe9-272520692925" />
   </Folder>
   <Folder Name="/Common/Protocol/">

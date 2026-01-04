@@ -1,6 +1,6 @@
 ﻿namespace Prtcl.Mqtt
 {
-    public class Class1
+    public class MqttModule
     {
 
     }

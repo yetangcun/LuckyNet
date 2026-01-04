@@ -1,6 +1,6 @@
 ﻿namespace Prtcl.Tcudp
 {
-    public class Class1
+    public class TcudpModule
     {
 
     }

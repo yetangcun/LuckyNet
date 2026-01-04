@@ -1,6 +1,6 @@
 ﻿namespace Prtcl.Grpc
 {
-    public class Class1
+    public class GrpcModule
     {
 
     }
