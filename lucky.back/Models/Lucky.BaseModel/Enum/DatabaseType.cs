@@ -33,6 +33,16 @@
         /// <summary>
         /// ClickHouse
         /// </summary>
-        ClickHouse = 5
+        ClickHouse = 5,
+
+        /// <summary>
+        /// Oracle
+        /// </summary>
+        Oracle = 6,
+
+        /// <summary>
+        /// 达梦
+        /// </summary>
+        Dameng = 7,
     }
 }

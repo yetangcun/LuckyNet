@@ -1,6 +1,6 @@
 ﻿namespace Data.Dapper
 {
-    public class Class1
+    public class DapperModule
     {
 
     }
