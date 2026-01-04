@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using ProtoBuf;
 
-namespace Plat.General.Core.Extension.Util
+namespace Common.CoreLib.Util
 {
     /// <summary>
     /// Protobuf工具类
@@ -49,7 +49,7 @@ namespace Plat.General.Core.Extension.Util
         /// <summary>
         /// 字节转对象
         /// </summary>
-        public T ToObj<T>(byte[] buffBytes)
+        public T? ToObj<T>(byte[] buffBytes)
         {
             if (buffBytes == null || buffBytes.Length == 0)
                 return default;

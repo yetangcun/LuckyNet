@@ -1,8 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-
-namespace Common.CoreLib.Model.Option
+﻿namespace Common.CoreLib.Model.Option
 {
     /// <summary>
     /// JWT 配置

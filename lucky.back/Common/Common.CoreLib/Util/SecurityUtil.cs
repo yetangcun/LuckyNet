@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
-namespace Alot2.Admin.Infrastructure.Helper
+namespace Common.CoreLib.Helper
 {
     /// <summary>
     /// 安全工具类
@@ -15,7 +15,12 @@ namespace Alot2.Admin.Infrastructure.Helper
     {
         #region AES加密解密
 
-        // 加密方法
+        /// <summary>
+        /// 加密方法
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="ky"></param>
+        /// <param name="iv"></param>
         public static string Encrypt(string source, string ky, string iv)
         {
             using (Aes aesAlg = Aes.Create())
@@ -39,7 +44,12 @@ namespace Alot2.Admin.Infrastructure.Helper
             }
         }
 
-        // 解密方法
+        /// <summary>
+        /// 解密方法
+        /// </summary>
+        /// <param name="pwdTxt"></param>
+        /// <param name="ky"></param>
+        /// <param name="iv"></param>
         public static string Decrypt(string pwdTxt, string ky, string iv)
         {
             using (Aes aesAlg = Aes.Create())

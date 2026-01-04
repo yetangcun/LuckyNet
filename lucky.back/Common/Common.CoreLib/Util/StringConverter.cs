@@ -12,7 +12,13 @@ namespace Common.CoreLib.Util
     /// </summary>
     public class StringConverter : JsonConverter<string>
     {
-        public override string Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        /// <summary>
+        /// 读取非字符串类型
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="typeToConvert"></param>
+        /// <param name="options"></param>
+        public override string? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             if (reader.TokenType == JsonTokenType.String)
             {
@@ -27,6 +33,9 @@ namespace Common.CoreLib.Util
             throw new JsonException();
         }
 
+        /// <summary>
+        /// 写入字符串
+        /// </summary>
         public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
         {
             writer.WriteStringValue(value);

@@ -24,4 +24,7 @@
     <Project Path="../../Services/Lucky.BaseService/Lucky.BaseService.csproj" Id="20b473f9-1764-411f-968f-7d3b927980d4" />
     <Project Path="../../Services/Lucky.SysService/Lucky.SysService.csproj" Id="ef438188-765e-40d9-be8c-d4163236b77d" />
   </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
 </Solution>

@@ -1,0 +1,31 @@
+﻿syntax = "proto3";
+
+import "protos/source/any.proto";
+import "protos/source/empty.proto";
+
+package GrpcTransCore.Services;
+
+service GrpcTransCoreService {
+	rpc GrpcGeneralCall(TransReq) returns (TransRes);// 有入参有返回
+	rpc GrpcGeneralCallWithoutResponse(TransReq) returns (google.protobuf.Empty);// 有入参无返回
+	rpc GrpcGeneralCallWithoutReqparam(google.protobuf.Empty) returns (TransRes);// 无入参有返回
+	rpc GrpcClientWayStream(stream TransReq) returns (TransRes);// 客户端流式rpc
+	rpc GrpcServerWayStream(TransReq) returns (stream TransRes);// 服务端流式rpc
+	rpc GrpcTwoWayStream(stream TransReq) returns (stream TransRes);// 双向流式rpc
+}
+
+message TransReq{
+	int64 sid=1; // 单次请求的唯一标识
+	int32 opt=2; // 操作类型
+	string data=3; // 数据 json
+	string cid=4; // 客户端id
+	google.protobuf.Any exts=5; // 扩展
+}
+
+message TransRes {
+	int64 sid=1; // 某次请求的唯一标识
+	int32 opt=2; // 操作类型
+	string data=3; // 数据 json
+	string code=4; // 状态码
+	google.protobuf.Any exts = 5; // 扩展参数
+}

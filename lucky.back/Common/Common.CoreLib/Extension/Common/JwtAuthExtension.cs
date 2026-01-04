@@ -44,8 +44,7 @@ namespace Common.CoreLib.Extension.Common
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_keyText))
             };
 
-            _getTokenHdl = new JwtSecurityTokenHandler();
-            //_checkTokenHdler = new JwtSecurityTokenHandler();
+            _getTokenHdl = new JwtSecurityTokenHandler(); // _checkTokenHdler = new JwtSecurityTokenHandler();
             _zoneInfo = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id);
         }
 
