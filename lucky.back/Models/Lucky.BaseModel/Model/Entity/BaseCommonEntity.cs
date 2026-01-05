@@ -13,18 +13,16 @@ namespace Lucky.BaseModel.Model.Entity
         /// Guid
         /// </summary>
         [Key]
-        // [Comment("主键Id")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public required T Id { get; set; }
 
         /// <summary>
-        /// 删除标识
+        /// 是否删除
         /// 0 未删
         /// 1 已删
         /// </summary>
         [Required]
-        //[Comment("删除标识")]
-        public bool DelMarker { get; set; } = false;
+        public bool IsDel { get; set; } = false;
     }
 
     /// <summary>
@@ -83,13 +81,12 @@ namespace Lucky.BaseModel.Model.Entity
         /// <summary>
         /// 修改时间
         /// </summary>
-        public DateTime? ModifyTime { get; set; }
+        public DateTime? UpdateTime { get; set; }
 
         /// <summary>
         /// 修改人Id
         /// </summary>
-        [MaxLength(20)]
-        public long? ModifyUid { get; set; }
+        public long? UpdateUid { get; set; }
 
         /// <summary>
         /// 删除时间

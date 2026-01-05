@@ -20,6 +20,7 @@ namespace Lucky.BaseService
             services.Configure<JwtOptions>(cfg.GetSection("JwtOptions")); // 添加Jwt配置
             services.Configure<UdpOption>(cfg.GetSection("UdpOption")); // 添加Udp配置
             services.Configure<MqttOption>(cfg.GetSection("MqttOption")); // 添加Mqtt配置
+            services.Configure<DbOption>(cfg.GetSection("DbOption"));
             services.AddSingleton<JwtAuthExtension>(); // 添加Jwt认证
         }
     }

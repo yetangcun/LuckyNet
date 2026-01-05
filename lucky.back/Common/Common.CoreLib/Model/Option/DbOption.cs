@@ -3,9 +3,9 @@
 namespace Common.CoreLib.Model.Option
 {
     /// <summary>
-    /// Efcore配置
+    /// 数据库配置
     /// </summary>
-    public class EfcoreOption : DbDefaultOption
+    public class DbOption : DbDefaultOption
     {
         /// <summary>
         /// 是否迁移
@@ -22,7 +22,7 @@ namespace Common.CoreLib.Model.Option
         /// <summary>
         /// 是否只读
         /// </summary>
-        public bool IsReadOnly { get; set; } = false;
+        public bool? IsReadOnly { get; set; } = false;
 
         /// <summary>
         /// 企业编号
@@ -37,22 +37,22 @@ namespace Common.CoreLib.Model.Option
         /// <summary>
         /// 数据库类型
         /// </summary>
-        public DatabaseType DatabaseType { get; set; }
+        public DatabaseType DbType { get; set; }
 
         /// <summary>
         /// 主库连接串
         /// </summary>
-        public required string MasterConnectionString { get; set; }
+        public required string MasterConnString { get; set; }
 
         /// <summary>
         /// 从库连接串
         /// </summary>
-        public string? SlaveConnectionString { get; set; }
+        public string? SlaveConnString { get; set; }
 
         /// <summary>
         /// 默认超时时间|秒
         /// </summary>
-        public int DefaultTimeOut { get; set; } = 20;
+        public int TimeOuts { get; set; } = 20;
     }
 
     /// <summary>

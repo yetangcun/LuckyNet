@@ -1,5 +1,7 @@
 ﻿using Common.CoreLib.Model.Option;
 using Data.EFCore.Cxt;
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -8,10 +10,10 @@ namespace Data.EFCore.Rpsty
     /// <summary>
     /// 通用仓储实现
     /// </summary>
-    public class CommonRpsty<TCxt, TOpt> : ICommonRpsty where TCxt : CommonCxt where TOpt : EfcoreOption
+    public class CommonRpsty<TCxt, TOpt> : ICommonRpsty where TCxt : CommonCxt where TOpt : DbOption
     {
         private readonly TOpt _opt;
-        private readonly TCxt _dbCxt;
+        protected readonly TCxt _dbCxt;
         private readonly ILogger _logger;
 
         /// <summary>
@@ -35,6 +37,19 @@ namespace Data.EFCore.Rpsty
         {
             _opt.IsReadOnly = isReadOnly;
         }
+
+        #region 分页查询
+
+        public async Task<(int, List<T>)> GetPageListAsync<T>(Expression<Func<T, bool>> where, int pageIndex, int pageSize) where T : class
+        {
+            var query = _dbCxt.Set<T>().Where(where);
+            var skips = (pageIndex - 1) * pageSize;
+            var counts = await query.CountAsync();
+            var datas = await query.Where(where).Skip(skips).Take(pageSize).ToListAsync();
+            return (counts, datas);
+        }
+
+        #endregion
 
         /// <summary>
         /// 同步事务

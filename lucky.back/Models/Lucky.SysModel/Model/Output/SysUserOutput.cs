@@ -1,14 +1,24 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-
-namespace Lucky.SysModel.Model.Output
+﻿namespace Lucky.SysModel.Model.Output
 {
     /// <summary>
     /// 系统用户输出
     /// </summary>
     public class SysUserOutput
     {
+        /// <summary>
+        /// 用户ID
+        /// </summary>
+        public long Uid { get; set; }
+
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public string? Account { get; set; }
+
+        /// <summary>
+        /// 姓名
+        /// </summary>
+        public string? Name { get; set; }
     }
 
     /// <summary>

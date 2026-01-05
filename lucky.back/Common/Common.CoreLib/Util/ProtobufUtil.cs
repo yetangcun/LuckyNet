@@ -21,7 +21,7 @@ namespace Common.CoreLib.Util
 
         /// <summary>
         /// 对象转字节
-        /// 此对象必须是被ProtoBuf.ProtoContract特性修饰的类
+        /// 此对象T必须是被ProtoBuf.ProtoContract特性修饰的类
         /// 也就是在定义的类上加上属性标识：[ProtoContract]
         /// [ProtoContract]
         /// </summary>

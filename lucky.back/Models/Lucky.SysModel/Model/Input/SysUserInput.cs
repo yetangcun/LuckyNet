@@ -1,14 +1,26 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
+﻿using Lucky.BaseModel.Model;
 
 namespace Lucky.SysModel.Model.Input
 {
     /// <summary>
     /// 用户查询入参
     /// </summary>
-    public class SysUserQueryInput
+    public class SysUserQueryInput : PageInfo
     {
+        /// <summary>
+        /// 搜索文本
+        /// </summary>
+        public string? Txt { get; set; }
+
+        /// <summary>
+        /// 组织ID
+        /// </summary>
+        public int? OrgId { get; set; }
+
+        /// <summary>
+        /// 状态
+        /// </summary>
+        public int? Status { get; set; }
     }
 
     /// <summary>

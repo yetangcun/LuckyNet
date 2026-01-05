@@ -3,7 +3,7 @@
     /// <summary>
     /// 分页请求入参基类
     /// </summary>
-    public class PageReq<T>
+    public class PageInfo
     {
         /// <summary>
         /// 页面查询数
@@ -20,8 +20,14 @@
         } = 1;
 
         /// <summary>
-        /// 参数对象
+        /// 排序字段
         /// </summary>
-        public T? ReqParam { get; set; }
+        public string? Sort { get; set; } = "id";
+
+        /// <summary>
+        /// 排序方式
+        /// </summary>
+        public string? SortType { get; set; } = "desc";
+
     }
 }

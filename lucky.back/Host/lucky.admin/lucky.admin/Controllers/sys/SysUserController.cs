@@ -39,13 +39,13 @@ namespace lucky.admin.Controllers.sys
             return ResModel<SysLoginOutput>.Success(res);
         }
 
-
         /// <summary>
         /// 用户管理
         /// </summary>
         [HttpGet("list")]
         public async Task<ResModel<List<SysUserOutput>>> GetList([FromQuery] SysUserQueryInput req)
         {
+            var res = await _sysUserService.GetList(req);
             return ResModel<List<SysUserOutput>>.Success(new List<SysUserOutput>());
         }
         #endregion

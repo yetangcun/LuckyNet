@@ -1,6 +1,9 @@
-﻿using Lucky.SysService.Service;
-using Microsoft.AspNetCore.Builder;
+﻿using Lucky.SysService.Cxt;
+using Lucky.SysService.Rpsty;
+using Lucky.SysService.Rpsty.IRpsty;
+using Lucky.SysService.Service;
 using Lucky.SysService.Service.IService;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,7 +20,9 @@ namespace Lucky.SysService
         /// <param name="services"></param>
         /// <param name="cfg"></param>
         public static void SysModuleLoad(this IServiceCollection services, IConfiguration cfg)
-        { 
+        {
+            services.AddScoped<ISysCxt, SysCxt>();
+            services.AddScoped<ISysRpsty, SysRpsty>();
             services.AddScoped<ISysUserService, SysUserService>();
         }
 
