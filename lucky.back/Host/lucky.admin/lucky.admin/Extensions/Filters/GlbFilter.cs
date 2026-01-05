@@ -1,9 +1,9 @@
 ﻿using Lucky.BaseModel.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Common.CoreLib.Extension.Common;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
 
 namespace lucky.admin.Extensions.Filters
 {
@@ -24,7 +24,7 @@ namespace lucky.admin.Extensions.Filters
         }
 
 
-        private readonly string[] _whites = { "LgHdlAsync" };  // 不需要过滤的路径
+        private readonly string[] _whites = { "loginHdl" };  // 不需要过滤的路径
 
         /// <summary>
         /// 过滤器
@@ -33,7 +33,11 @@ namespace lucky.admin.Extensions.Filters
         /// <param name="next"></param>
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (_whites.Any(path => context.HttpContext.Request.Path.Value?.IndexOf(path) == -1))
+            if (_whites.Any(path => context.HttpContext.Request.Path.Value.IndexOf(path) != -1)) // 白名单
+            {
+                await next();
+            }
+            else // 需要过滤
             {
                 if (!context.HttpContext.Request.Headers.Authorization.Any())
                 {
@@ -43,29 +47,28 @@ namespace lucky.admin.Extensions.Filters
                 }
 
                 var token = context.HttpContext.Request.Headers.Authorization[0];
-                if (!string.IsNullOrEmpty(token))
+                //if (string.IsNullOrEmpty(token))
+                //{
+                //    context.HttpContext.Response.StatusCode = 401;
+                //    context.Result = new JsonResult(ResModel<string>.Failed("UnAuthorize", "未授权", 401));
+                //    return;
+                //}
+                token = token.Substring(7);
+                var results = await _jwt.CheckToken(token);
+                if (!results.Item4)
                 {
-                    token = token.Substring(7);
-                    var results = await _jwt.CheckToken(token);
-                    if (!results.Item4)
-                    {
-                        context.Result = new JsonResult(ResModel<string>.Failed("UnAuthorize", "未授权", 401));
-                        return;
-                    }
-
-                    context.HttpContext.Items.Add("usrkey", results.Item3); // 当前用户id
-                    if (results.Item1 > DateTime.Now && results.Item1.Subtract(DateTime.Now).TotalMinutes < 9) // 距离当前token失效小于10分钟,则刷新token
-                    {
-                        var tokens = _jwt.GetToken(results.Item2, results.Item3); // context.HttpContext.Response.Headers.Add("fresh_token", tokens.Item1);
-                        context.HttpContext.Response.Headers.Append("fresh_token", tokens.Item1);
-                    }
-                }
-                else
-                {
-                    context.HttpContext.Response.StatusCode = 401;
                     context.Result = new JsonResult(ResModel<string>.Failed("UnAuthorize", "未授权", 401));
                     return;
                 }
+
+                context.HttpContext.Items.Add("uky", results.Item3); // 当前用户id
+                if (results.Item1 > DateTime.Now && results.Item1.Subtract(DateTime.Now).TotalMinutes < 9) // 距离当前token失效小于10分钟,则刷新token
+                {
+                    var tken = _jwt.GetToken(results.Item2, results.Item3); // context.HttpContext.Response.Headers.Add("fresh_token", tokens.Item1);
+                    context.HttpContext.Response.Headers.Append("fresh_token", tken);
+                }
+
+                await next();
             }
         }
     }

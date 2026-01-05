@@ -51,7 +51,7 @@ namespace Common.CoreLib.Extension.Common
         /// <summary>
         /// 生成token
         /// </summary>
-        public (string, string?) GetToken(string? userName, string? userId)
+        public string GetToken(string? userName, string? userId)
         {
             #region 有效载荷
 
@@ -71,7 +71,7 @@ namespace Common.CoreLib.Extension.Common
                 signingCredentials: _signingCredentials);
             // var tokenHandler = new JwtSecurityTokenHandler();
             var acceToken = _getTokenHdl.WriteToken(token);
-            return (acceToken, null);
+            return acceToken;
         }
 
         private DateTime startTime;  // 常量

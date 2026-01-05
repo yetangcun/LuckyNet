@@ -44,8 +44,17 @@ namespace Common.CoreLib.Extension.Common
                 opt.AddSecurityRequirement(doc => new OpenApiSecurityRequirement
                 {
                     {
-                        new OpenApiSecuritySchemeReference("oauth2", doc),
-                        ["readAccess", "writeAccess"]
+                        new OpenApiSecuritySchemeReference("jwtCheck", doc)  // apiKey oauth2
+                        {
+                            Reference = new OpenApiReferenceWithDescription()
+                            {
+                                Id = "Bearer",
+                                HostDocument = doc,
+                                Type = ReferenceType.SecurityScheme
+                            },
+                            Description = "Bearer {token}"
+                        },
+                        new List<string>() //["readAccess", "writeAccess"]
                     }
                 });
 

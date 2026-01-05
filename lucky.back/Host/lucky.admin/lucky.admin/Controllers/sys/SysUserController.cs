@@ -1,6 +1,8 @@
-﻿using Lucky.BaseModel.Model;
+﻿using Common.CoreLib.Extension.Common;
+using Lucky.BaseModel.Model;
 using Lucky.SysModel.Model.Input;
 using Lucky.SysModel.Model.Output;
+using Lucky.SysService.Service.IService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +13,33 @@ namespace lucky.admin.Controllers.sys
     /// </summary>
     public class SysUserController : SysBaseController
     {
+        private readonly ISysUserService _sysUserService;
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="sysUserService"></param>
+        public SysUserController(ISysUserService sysUserService)
+        {
+            _sysUserService = sysUserService;
+        }
+
         #region  用户管理
+        /// <summary>
+        /// 登录
+        /// </summary>
+        [HttpPost("loginHdl")]
+        public async Task<ResModel<SysLoginOutput>> Post(
+            [FromBody] SysUserLoginInput req,
+            [FromServices] JwtAuthExtension jwt)
+        {
+            var res = new SysLoginOutput();
+            var token = jwt.GetToken(req.Account, "999999");
+            res.Tkn = token;
+            return ResModel<SysLoginOutput>.Success(res);
+        }
+
+
         /// <summary>
         /// 用户管理
         /// </summary>

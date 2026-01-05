@@ -15,4 +15,8 @@
     <ProjectReference Include="..\..\..\Services\Lucky.SysService\Lucky.SysService.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Logs\" />
+  </ItemGroup>
+
 </Project>

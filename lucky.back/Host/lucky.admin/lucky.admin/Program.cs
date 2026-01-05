@@ -6,11 +6,12 @@ using System.Text.Encodings.Web;
 using Common.CoreLib.Extension.Common;
 using lucky.admin.Extensions.Filters;
 using Microsoft.AspNetCore.HttpOverrides;
+using Lucky.SysService;
 
-var builder = WebApplication.CreateBuilder(args);
+var bld = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers(c =>
+bld.Services.AddControllers(c =>
 {
     c.Filters.Add<GlbFilter>();
     c.RespectBrowserAcceptHeader = true;
@@ -33,17 +34,18 @@ builder.Services.AddControllers(c =>
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 // builder.Services.AddOpenApi();
-builder.Services.BaseInitLoad(builder.Configuration);
-builder.Services.AddSwaggerExt(builder.Configuration); // 添加swagger配置
+bld.Services.BaseInitLoad(bld.Configuration);
+bld.Services.AddSwaggerExt(bld.Configuration); // 添加swagger配置
+bld.Services.SysModuleLoad(bld.Configuration);
 
-builder.Host.UseSerilog((context, logger) => // 采用serilog日志
+bld.Host.UseSerilog((context, logger) => // 采用serilog日志
 {
     logger.ReadFrom.Configuration(context.Configuration);
     logger.Enrich.FromLogContext();
 });
 
 // 配置信任代理
-builder.Services.Configure<ForwardedHeadersOptions>(options =>
+bld.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     // options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
     options.ForwardedHeaders = ForwardedHeaders.All;
@@ -64,8 +66,8 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 });
 
 var allowedCors = "AllowedCors";
-var allowedOrigins = builder.Configuration.GetSection("CommonCfg:AllowedOrigins").Value?.Split(',') ?? [];
-builder.Services.AddCors(opt =>
+var allowedOrigins = bld.Configuration.GetSection("CommonCfg:AllowedOrigins").Value?.Split(',') ?? [];
+bld.Services.AddCors(opt =>
 {
     opt.AddPolicy(allowedCors, policy =>
     {
@@ -77,7 +79,7 @@ builder.Services.AddCors(opt =>
     });
 });
 
-var app = builder.Build();
+var app = bld.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
