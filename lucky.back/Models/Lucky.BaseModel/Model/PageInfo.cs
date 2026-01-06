@@ -38,6 +38,7 @@
 
         /// <summary>
         /// 跳过数量
+        /// 此字段不用传，后台会自动计算
         /// </summary>
         public int Skips => (PageIndex - 1) * PageSize;
     }

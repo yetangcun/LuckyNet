@@ -22,5 +22,15 @@ namespace Data.EFCore.Rpsty
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         Task<(int, List<T>)> GetPageListAsync<T>(Expression<Func<T, bool>> where, PageInfo page) where T : class;
+
+        /// <summary>
+        /// 获取分页列表
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <typeparam name="TResult">结果类型</typeparam>
+        /// <param name="where">查询条件</param>
+        /// <param name="selector">选择器</param>
+        /// <param name="page">分页参数</param>
+        Task<(int, List<TResult>)> GetPagesAsync<T, TResult>(Expression<Func<T, bool>>? where, Expression<Func<T, TResult>> selector, PageInfo page) where T : class;
     }
 }

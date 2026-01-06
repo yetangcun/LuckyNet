@@ -24,15 +24,14 @@ namespace Common.CoreLib.Model.Option
         /// </summary>
         public bool? IsReadOnly { get; set; } = false;
 
-        /// <summary>
-        /// 企业编号
-        /// </summary>
-        public string? EnterpriseCode { get; set; }
-
-        /// <summary>
-        /// 业务编码
-        /// </summary>
-        public string? BusinessCode { get; set; }
+        ///// <summary>
+        ///// 企业编号
+        ///// </summary>
+        //public string? EnterpriseCode { get; set; }
+        ///// <summary>
+        ///// 业务编码
+        ///// </summary>
+        //public string? BusinessCode { get; set; }
 
         /// <summary>
         /// 数据库类型

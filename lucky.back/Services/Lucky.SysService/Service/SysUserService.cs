@@ -1,10 +1,11 @@
-﻿using Common.CoreLib.Extension.Common;
-using LinqKit;
+﻿using LinqKit;
 using Lucky.BaseModel.Model;
 using Lucky.SysModel.Entity;
+using System.Linq.Expressions;
 using Lucky.SysModel.Model.Input;
 using Lucky.SysModel.Model.Output;
 using Lucky.SysService.Rpsty.IRpsty;
+using Common.CoreLib.Extension.Common;
 using Lucky.SysService.Service.IService;
 
 namespace Lucky.SysService.Service
@@ -27,9 +28,9 @@ namespace Lucky.SysService.Service
 
         public async Task<(int, List<SysUserOutput>)> GetList(SysUserQueryInput req)
         {
-            var where = PredicateBuilder.New<SysUser>(true); // 初始化为 true
+            var where = PredicateBuilder.New<SysUser>(x => !x.IsDel); // 初始化为 true
             if (!string.IsNullOrWhiteSpace(req.Txt))
-                where = where.And(x => x.Account.Contains(req.Txt) || x.RealName.NullCheck(req.Txt));
+                where = where.And(x => x.Account.Contains(req.Txt) || (!string.IsNullOrWhiteSpace(x.RealName) && x.RealName.Contains(req.Txt)));
 
             if (req.Status.HasValue)
                 where = where.And(x => x.Status == req.Status);
@@ -42,15 +43,16 @@ namespace Lucky.SysService.Service
                 SortType = req.SortType
             };
 
-            var res = await _sysRpsty.GetPageListAsync(where.DefaultExpression, pgInfo);
-            var list = res.Item2.Select(x => new SysUserOutput
-            {
-                Uid = x.Id,
-                Account = x.Account,
-                Name = x.RealName,
-            }).ToList();
+            //Expression<Func<SysUser, SysUserOutput>> expr = x => new SysUserOutput()  // 1、这是最直接、最可控、最高效的方式
+            //{
+            //    Uid = x.Id,
+            //    Account = x.Account,
+            //    Name = x.RealName
+            //};
+            var expr = SimpleMappingExtensions.AutoMap<SysUser, SysUserOutput>();  // 2、这是最简便的方式
+            var res = await _sysRpsty.GetPagesAsync(where, expr, pgInfo);
 
-            return (res.Item1, list);
+            return (res.Item1, res.Item2);
         }
     }
 }

@@ -8,7 +8,7 @@
         /// <summary>
         /// 用户ID
         /// </summary>
-        public long Uid { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// 用户名
@@ -18,7 +18,7 @@
         /// <summary>
         /// 姓名
         /// </summary>
-        public string? Name { get; set; }
+        public string? RealName { get; set; }
     }
 
     /// <summary>

@@ -1,9 +1,9 @@
 ﻿using Common.CoreLib.Model.Option;
 using Data.EFCore.Rpsty;
 using Lucky.SysService.Cxt;
-using Lucky.SysService.Rpsty.IRpsty;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Lucky.SysService.Rpsty.IRpsty;
 
 namespace Lucky.SysService.Rpsty
 {
@@ -15,6 +15,6 @@ namespace Lucky.SysService.Rpsty
         /// <param name="cxt"></param>
         /// <param name="opts"></param>
         /// <param name="logger"></param>
-        public SysRpsty(ISysCxt cxt, IOptions<SysDbOption> opt, ILogger<SysRpsty> logger) : base(cxt, opt, logger) { }
+        public SysRpsty(ISysCxt cxt, IOptionsSnapshot<SysDbOption> opt, ILogger<SysRpsty> logger) : base(cxt, opt.Value, logger) { }
     }
 }

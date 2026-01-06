@@ -1,10 +1,10 @@
 ﻿using Common.CoreLib.Model.Option;
 using Data.EFCore.Cxt;
+using LinqKit;
+using LinqKit.Core;
 using Lucky.BaseModel.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -25,11 +25,11 @@ namespace Data.EFCore.Rpsty
         /// <param name="cxt"></param>
         /// <param name="opts"></param>
         /// <param name="logger"></param>
-        public CommonRpsty(ICommonCxt cxt, IOptions<TOpt> opts, ILogger logger)
+        public CommonRpsty(ICommonCxt cxt, TOpt opt, ILogger logger)
         {
-            _opt = opts.Value;  
+            _opt = opt;  
             _logger = logger;
-            _dbCxt = cxt.GetDbCxt<TCxt, TOpt>(opts.Value);
+            _dbCxt = cxt.GetDbCxt<TCxt, TOpt>(opt);
         }
 
         /// <summary>
@@ -54,13 +54,13 @@ namespace Data.EFCore.Rpsty
             if (!string.IsNullOrEmpty(page.Sort))
             {
                 IOrderedQueryable<T>? ordered = null;
-                var arrs = page.Sort.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                var arrs = page.Sort.Split(',', StringSplitOptions.RemoveEmptyEntries); // 获取排序字段, 去掉空格
                 var lens = arrs.Length;
                 if (!string.IsNullOrWhiteSpace(page.SortType) && page.SortType.Equals("asc", StringComparison.OrdinalIgnoreCase))
                 {
                     for (var i = 0; i < lens; i++)
                     {
-                        var itm = arrs[i];
+                        var itm = arrs[i].Trim();
                         var prop = typeof(T).GetProperty(itm, BindingFlags.Public | BindingFlags.IgnoreCase);  // ✅ 新增：验证字段是否存在
                         if (prop == null)
                             continue;
@@ -100,6 +100,74 @@ namespace Data.EFCore.Rpsty
             var nums = await query.CountAsync(); // 获取总记录数
             var datas = await query                // 获取分页数据
                 .AsNoTracking()
+                .Skip(page.Skips)
+                .Take(page.PageSize)
+                .ToListAsync();
+
+            return (nums, datas);
+        }
+
+        public async Task<(int, List<TResult>)> GetPagesAsync<T, TResult>(Expression<Func<T, bool>>? where, 
+            Expression<Func<T, TResult>> selector, 
+            PageInfo page) where T : class
+        {
+            _opt.IsReadOnly = true;
+            var query = _dbCxt.Set<T>().AsQueryable();
+            if (where != null)
+                query = query.Where(where);
+
+            #region 排序
+
+            //if (!string.IsNullOrEmpty(page.Sort))
+            //{
+            //    IOrderedQueryable<T>? ordered = null;
+            //    var arrs = page.Sort.Split(',', StringSplitOptions.RemoveEmptyEntries); // 获取排序字段, 去掉空格
+            //    var lens = arrs.Length;
+            //    if (!string.IsNullOrWhiteSpace(page.SortType) && page.SortType.Equals("asc", StringComparison.OrdinalIgnoreCase))
+            //    {
+            //        for (var i = 0; i < lens; i++)
+            //        {
+            //            var itm = arrs[i].Trim();
+            //            var prop = typeof(T).GetProperty(itm, BindingFlags.Public | BindingFlags.IgnoreCase);  // ✅ 新增：验证字段是否存在
+            //            if (prop == null)
+            //                continue;
+
+            //            if (i == 0)
+            //                ordered = query.OrderBy(x => EF.Property<object>(x, itm));
+            //            else
+            //                ordered = ordered!.ThenBy(x => EF.Property<object>(x, itm));
+            //        }
+            //    }
+            //    else
+            //    {
+            //        for (var i = 0; i < lens; i++)
+            //        {
+            //            var itm = arrs[i];
+            //            var prop = typeof(T).GetProperty(itm, BindingFlags.Public | BindingFlags.IgnoreCase);  // ✅ 新增：验证字段是否存在
+            //            if (prop == null)
+            //                continue;
+
+            //            if (i == 0)
+            //                ordered = query.OrderByDescending(x => EF.Property<object>(x, itm));
+            //            else
+            //                ordered = ordered!.ThenByDescending(x => EF.Property<object>(x, itm));
+            //        }
+            //    }
+
+            //    if (ordered != null)
+            //        query = ordered;
+            //}
+            //else if (typeof(T).GetProperty("CreateTime") != null)
+            //    query = query.OrderByDescending(x => EF.Property<object>(x, "CreateTime"));
+            //else if (typeof(T).GetProperty("Id") != null)
+            //    query = query.OrderBy(x => EF.Property<object>(x, "Id"));
+
+            #endregion
+
+            var nums = await query.CountAsync(); // 获取总记录数
+            var datas = await query                // 获取分页数据
+                .AsNoTracking()
+                .Select(selector)
                 .Skip(page.Skips)
                 .Take(page.PageSize)
                 .ToListAsync();

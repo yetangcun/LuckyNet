@@ -1,4 +1,5 @@
-﻿using Lucky.SysService.Cxt;
+﻿using Common.CoreLib.Model.Option;
+using Lucky.SysService.Cxt;
 using Lucky.SysService.Rpsty;
 using Lucky.SysService.Rpsty.IRpsty;
 using Lucky.SysService.Service;
@@ -21,6 +22,8 @@ namespace Lucky.SysService
         /// <param name="cfg"></param>
         public static void SysModuleLoad(this IServiceCollection services, IConfiguration cfg)
         {
+            services.Configure<SysDbOption>(cfg.GetSection("DbOption"));  // 添加数据库配置
+
             services.AddScoped<ISysCxt, SysCxt>();
             services.AddScoped<ISysRpsty, SysRpsty>();
             services.AddScoped<ISysUserService, SysUserService>();
