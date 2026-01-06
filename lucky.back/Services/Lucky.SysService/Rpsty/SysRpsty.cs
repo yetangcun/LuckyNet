@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace Lucky.SysService.Rpsty
 {
-    public class SysRpsty : CommonRpsty<SysCxt, DbOption>, ISysRpsty
+    public class SysRpsty : CommonRpsty<SysCxt, SysDbOption>, ISysRpsty
     {
         /// <summary>
         /// 构造函数
@@ -15,6 +15,6 @@ namespace Lucky.SysService.Rpsty
         /// <param name="cxt"></param>
         /// <param name="opts"></param>
         /// <param name="logger"></param>
-        public SysRpsty(ISysCxt cxt, IOptions<DbOption> opt, ILogger<SysRpsty> logger) : base(cxt, opt, logger) { }
+        public SysRpsty(ISysCxt cxt, IOptions<SysDbOption> opt, ILogger<SysRpsty> logger) : base(cxt, opt, logger) { }
     }
 }

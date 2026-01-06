@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Lucky.BaseModel.Model;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace Data.EFCore.Rpsty
 {
@@ -23,6 +21,6 @@ namespace Data.EFCore.Rpsty
         /// <param name="where"></param>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
-        Task<(int, List<T>)> GetPageListAsync<T>(Expression<Func<T, bool>> where, int pageIndex, int pageSize) where T : class;
+        Task<(int, List<T>)> GetPageListAsync<T>(Expression<Func<T, bool>> where, PageInfo page) where T : class;
     }
 }

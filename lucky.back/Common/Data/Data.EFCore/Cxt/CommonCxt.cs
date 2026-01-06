@@ -1,5 +1,5 @@
-﻿using Common.CoreLib.Model.Option;
-using Lucky.BaseModel.Enum;
+﻿using Lucky.BaseModel.Enum;
+using Common.CoreLib.Model.Option;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.EFCore.Cxt
@@ -9,14 +9,14 @@ namespace Data.EFCore.Cxt
     /// </summary>
     public class CommonCxt : DbContext, ICommonCxt
     {
-        private DbOption? _opt;
+        private DbDefaultOption? _opt;
 
         /// <summary>
         ///  获取数据库上下文
         /// </summary>
         /// <typeparam name="TCxt"></typeparam>
         /// <typeparam name="TOpt"></typeparam>
-        public TCxt GetDbCxt<TCxt, TOpt>(TOpt opt) where TCxt : CommonCxt where TOpt : DbOption
+        public TCxt GetDbCxt<TCxt, TOpt>(TOpt opt) where TCxt : CommonCxt where TOpt : DbDefaultOption
         {
             _opt = opt;
             return (TCxt)this;
@@ -38,7 +38,7 @@ namespace Data.EFCore.Cxt
         protected override void OnConfiguring(DbContextOptionsBuilder optBlder)
         {
             // base.OnConfiguring(optionsBuilder);
-            var connString = _opt.IsReadOnly.Value ? _opt.SlaveConnString : _opt.MasterConnString;
+            var connString = _opt!.IsReadOnly!.Value ? _opt.SlaveConnString : _opt.MasterConnString;
             switch (_opt.DbType)
             {
                 case DatabaseType.Mysql:

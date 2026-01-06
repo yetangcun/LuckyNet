@@ -3,9 +3,9 @@
 namespace Common.CoreLib.Model.Option
 {
     /// <summary>
-    /// 数据库配置
+    /// 系统管理模块数据库配置
     /// </summary>
-    public class DbOption : DbDefaultOption
+    public class SysDbOption : DbDefaultOption
     {
         /// <summary>
         /// 是否迁移

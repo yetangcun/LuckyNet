@@ -11,6 +11,6 @@ namespace Data.EFCore.Cxt
         /// 获取上下文
         /// </summary>
         /// <returns></returns>
-        TCxt GetDbCxt<TCxt, TOpt>(TOpt option) where TCxt : CommonCxt where TOpt : DbOption;
+        TCxt GetDbCxt<TCxt, TOpt>(TOpt option) where TCxt : CommonCxt where TOpt : DbDefaultOption;
     }
 }

@@ -5,29 +5,35 @@
     /// </summary>
     public class PageInfo
     {
-        /// <summary>
-        /// 页面查询数
-        /// </summary>
-        public int PageSize { get; set; } = 20;
+        private int _pageIndex = 1;
+        private int _pageSize = 20;
 
         /// <summary>
-        /// 当前页码
+        /// 页码
         /// </summary>
         public int PageIndex
         {
-            get;
-            set;
-        } = 1;
+            get => _pageIndex;
+            set => _pageIndex = Math.Max(1, value);
+        }
+
+        /// <summary>
+        /// 每页数量
+        /// </summary>
+        public int PageSize
+        {
+            get => _pageSize;
+            set => _pageSize = Math.Max(1, value);
+        }
 
         /// <summary>
         /// 排序字段
         /// </summary>
-        public string? Sort { get; set; } = "id";
+        public string? Sort { get; set; } = "Id";
 
         /// <summary>
         /// 排序方式
         /// </summary>
         public string? SortType { get; set; } = "desc";
-
     }
 }

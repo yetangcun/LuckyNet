@@ -1,16 +1,18 @@
 ﻿using Common.CoreLib.Model.Option;
 using Data.EFCore.Cxt;
-using System.Linq.Expressions;
+using Lucky.BaseModel.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Data.EFCore.Rpsty
 {
     /// <summary>
     /// 通用仓储实现
     /// </summary>
-    public class CommonRpsty<TCxt, TOpt> : ICommonRpsty where TCxt : CommonCxt where TOpt : DbOption
+    public class CommonRpsty<TCxt, TOpt> : ICommonRpsty where TCxt : CommonCxt where TOpt : DbDefaultOption
     {
         private readonly TOpt _opt;
         protected readonly TCxt _dbCxt;
@@ -40,12 +42,69 @@ namespace Data.EFCore.Rpsty
 
         #region 分页查询
 
-        public async Task<(int, List<T>)> GetPageListAsync<T>(Expression<Func<T, bool>> where, int pageIndex, int pageSize) where T : class
+        public async Task<(int, List<T>)> GetPageListAsync<T>(Expression<Func<T, bool>>? where, PageInfo page) where T : class
         {
-            var query = _dbCxt.Set<T>().Where(where);
-            var skips = (pageIndex - 1) * pageSize;
+            var query = _dbCxt.Set<T>().AsQueryable();
+            if (where != null)
+                query = query.Where(where);
+
+            #region 排序
+
+            if (!string.IsNullOrEmpty(page.Sort))
+            {
+                IOrderedQueryable<T>? ordered = null;
+                var arrs = page.Sort.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                var lens = arrs.Length;
+                if (!string.IsNullOrWhiteSpace(page.SortType) && page.SortType.Equals("asc", StringComparison.OrdinalIgnoreCase))
+                {
+                    for (var i = 0; i < lens; i++)
+                    {
+                        var itm = arrs[i];
+                        var prop = typeof(T).GetProperty(itm, BindingFlags.Public | BindingFlags.IgnoreCase);  // ✅ 新增：验证字段是否存在
+                        if (prop == null)
+                            continue;
+
+                        if (i == 0)
+                            ordered = query.OrderBy(x => EF.Property<object>(x, itm));
+                        else
+                            ordered = ordered!.ThenBy(x => EF.Property<object>(x, itm));
+                    }
+                }
+                else
+                {
+                    for (var i = 0; i < lens; i++)
+                    {
+                        var itm = arrs[i];
+                        var prop = typeof(T).GetProperty(itm, BindingFlags.Public | BindingFlags.IgnoreCase);  // ✅ 新增：验证字段是否存在
+                        if (prop == null)
+                            continue;
+
+                        if (i == 0)
+                            ordered = query.OrderByDescending(x => EF.Property<object>(x, itm));
+                        else
+                            ordered = ordered!.ThenByDescending(x => EF.Property<object>(x, itm));
+                    }
+                }
+
+                if (ordered != null)
+                    query = ordered;
+            }
+            else if (typeof(T).GetProperty("CreateTime") != null)
+                query = query.OrderByDescending(x => EF.Property<object>(x, "CreateTime"));
+            else if (typeof(T).GetProperty("Id") != null)
+                query = query.OrderBy(x => EF.Property<object>(x, "Id"));
+
+            #endregion
+
+            // 并行执行
+            var skips = (page.PageIndex - 1) * page.PageSize;
             var counts = await query.CountAsync();
-            var datas = await query.Where(where).Skip(skips).Take(pageSize).ToListAsync();
+            var datas = await query
+                .AsNoTracking()
+                .Skip(skips)
+                .Take(page.PageSize)
+                .ToListAsync();
+
             return (counts, datas);
         }
 

@@ -46,7 +46,7 @@ namespace lucky.admin.Controllers.sys
         public async Task<ResModel<List<SysUserOutput>>> GetList([FromQuery] SysUserQueryInput req)
         {
             var res = await _sysUserService.GetList(req);
-            return ResModel<List<SysUserOutput>>.Success(new List<SysUserOutput>());
+            return ResModel<List<SysUserOutput>>.Success(res.Item2);
         }
         #endregion
 

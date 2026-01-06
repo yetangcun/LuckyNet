@@ -1,5 +1,6 @@
 ﻿using Common.CoreLib.Extension.Common;
 using LinqKit;
+using Lucky.BaseModel.Model;
 using Lucky.SysModel.Entity;
 using Lucky.SysModel.Model.Input;
 using Lucky.SysModel.Model.Output;
@@ -33,7 +34,15 @@ namespace Lucky.SysService.Service
             if (req.Status.HasValue)
                 where = where.And(x => x.Status == req.Status);
 
-            var res = await _sysRpsty.GetPageListAsync(where.DefaultExpression, req.PageIndex, req.PageSize);
+            var pgInfo = new PageInfo()
+            {
+                PageIndex = req.PageIndex,
+                PageSize = req.PageSize,
+                Sort = req.Sort,
+                SortType = req.SortType
+            };
+
+            var res = await _sysRpsty.GetPageListAsync(where.DefaultExpression, pgInfo);
             var list = res.Item2.Select(x => new SysUserOutput
             {
                 Uid = x.Id,
