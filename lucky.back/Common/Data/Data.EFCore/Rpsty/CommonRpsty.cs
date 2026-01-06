@@ -4,6 +4,7 @@ using Lucky.BaseModel.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -96,16 +97,14 @@ namespace Data.EFCore.Rpsty
 
             #endregion
 
-            // 并行执行
-            var skips = (page.PageIndex - 1) * page.PageSize;
-            var counts = await query.CountAsync();
-            var datas = await query
+            var nums = await query.CountAsync(); // 获取总记录数
+            var datas = await query                // 获取分页数据
                 .AsNoTracking()
-                .Skip(skips)
+                .Skip(page.Skips)
                 .Take(page.PageSize)
                 .ToListAsync();
 
-            return (counts, datas);
+            return (nums, datas);
         }
 
         #endregion
