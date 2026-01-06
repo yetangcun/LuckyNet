@@ -43,6 +43,12 @@ namespace Data.EFCore.Rpsty
 
         #region 分页查询
 
+        /// <summary>
+        /// 获取分页数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="where"></param>
+        /// <param name="page"></param>
         public async Task<(int, List<T>)> GetPageListAsync<T>(Expression<Func<T, bool>>? where, PageInfo page) where T : class
         {
             var query = _dbCxt.Set<T>().AsQueryable();
@@ -97,16 +103,25 @@ namespace Data.EFCore.Rpsty
 
             #endregion
 
+            var skips = page.PageSize * (page.PageIndex - 1);
             var nums = await query.CountAsync(); // 获取总记录数
-            var datas = await query                // 获取分页数据
+            var datas = await query              // 获取分页数据
                 .AsNoTracking()
-                .Skip(page.Skips)
-                .Take(page.PageSize)
-                .ToListAsync();
+                .Skip(skips)
+                .Take(page.PageSize).ToListAsync();
 
             return (nums, datas);
         }
 
+        /// <summary>
+        /// 获取分页数据
+        /// 查询指定的字段
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="where"></param>
+        /// <param name="selector"></param>
+        /// <param name="page"></param>
         public async Task<(int, List<TResult>)> GetPagesAsync<T, TResult>(Expression<Func<T, bool>>? where, 
             Expression<Func<T, TResult>> selector, 
             PageInfo page) where T : class
@@ -164,11 +179,12 @@ namespace Data.EFCore.Rpsty
 
             #endregion
 
+            var skips = page.PageSize * (page.PageIndex - 1);
             var nums = await query.CountAsync(); // 获取总记录数
             var datas = await query                // 获取分页数据
                 .AsNoTracking()
                 .Select(selector)
-                .Skip(page.Skips)
+                .Skip(skips)
                 .Take(page.PageSize)
                 .ToListAsync();
 

@@ -53,18 +53,20 @@ namespace Data.EFCore.Cxt
                     //}).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                     break;
                 case DatabaseType.Sqlserver:
-                    optBlder.UseSqlServer(connString, blder =>
-                    {
-                        blder.CommandTimeout(_opt.TimeOuts);
-                        blder.MaxBatchSize(6000);
-                    });
+                    //optBlder.UseSqlServer(connString, blder =>
+                    //{
+                    //    blder.CommandTimeout(_opt.TimeOuts);
+                    //    blder.MaxBatchSize(6000);
+                    //});
+                    optBlder.UseSqlServer(connString);
                     break;
                 case DatabaseType.Postgresql:
-                    optBlder.UseNpgsql(connString, blder =>
-                    {
-                        blder.CommandTimeout(_opt.TimeOuts);
-                        blder.MaxBatchSize(6000);
-                    });
+                    //optBlder.UseNpgsql(connString, blder =>
+                    //{
+                    //    blder.CommandTimeout(_opt.TimeOuts);
+                    //    blder.MaxBatchSize(6000);
+                    //});
+                    optBlder.UseNpgsql(connString);
                     break;
                 case DatabaseType.Sqlite:
                     optBlder.UseSqlServer(connString, blder =>
