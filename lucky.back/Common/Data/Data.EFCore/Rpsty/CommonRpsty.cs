@@ -1,7 +1,5 @@
 ﻿using Common.CoreLib.Model.Option;
 using Data.EFCore.Cxt;
-using LinqKit;
-using LinqKit.Core;
 using Lucky.BaseModel.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
