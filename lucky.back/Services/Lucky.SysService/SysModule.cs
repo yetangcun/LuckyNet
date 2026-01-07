@@ -4,11 +4,10 @@ using Lucky.SysService.Cxt;
 using Lucky.SysService.Rpsty;
 using Lucky.SysService.Rpsty.IRpsty;
 using Lucky.SysService.Service;
-using Lucky.SysService.Service.IService;
 using Microsoft.AspNetCore.Builder;
+using Lucky.SysService.Service.IService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace Lucky.SysService
 {
