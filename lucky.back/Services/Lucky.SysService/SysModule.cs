@@ -33,13 +33,12 @@ namespace Lucky.SysService
             var entityTypes = assembly.GetTypes()
                 .Where(t => t.IsClass &&
                            !t.IsAbstract &&
-                           t.Namespace?.EndsWith(".Entity") == true)
-                .ToList();
+                           t.Namespace?.EndsWith(".Entity") == true).ToList();
             foreach (var entityType in entityTypes)
             {
-                var interfaceType = typeof(ISysRpsty<>).MakeGenericType(entityType);
-                var implementationType = typeof(SysRpsty<>).MakeGenericType(entityType);
-                services.AddScoped(interfaceType, implementationType);
+                var rpstyInterface = typeof(ISysRpsty<>).MakeGenericType(entityType);
+                var rpstyImp = typeof(SysRpsty<>).MakeGenericType(entityType);
+                services.AddScoped(rpstyInterface, rpstyImp);
             }
 
             #endregion
