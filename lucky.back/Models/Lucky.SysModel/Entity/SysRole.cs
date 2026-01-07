@@ -23,6 +23,7 @@ namespace Lucky.SysModel.Entity
 
         /// <summary>
         /// 状态
+        /// 0:禁用 1:正常
         /// </summary>
         public int Status { get; set; } = 1;
 

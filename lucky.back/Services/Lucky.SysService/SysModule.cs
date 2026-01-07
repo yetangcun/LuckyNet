@@ -1,4 +1,5 @@
 ﻿using Common.CoreLib.Model.Option;
+using Lucky.SysModel;
 using Lucky.SysService.Cxt;
 using Lucky.SysService.Rpsty;
 using Lucky.SysService.Rpsty.IRpsty;
@@ -7,6 +8,7 @@ using Lucky.SysService.Service.IService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Lucky.SysService
 {
@@ -23,9 +25,25 @@ namespace Lucky.SysService
         public static void SysModuleLoad(this IServiceCollection services, IConfiguration cfg)
         {
             services.Configure<SysDbOption>(cfg.GetSection("DbOption"));  // 添加数据库配置
-
             services.AddScoped<ISysCxt, SysCxt>();
-            services.AddScoped<ISysRpsty, SysRpsty>();
+
+            #region 扫描当前模块的所有Entity // services.AddScoped<ISysRpsty<object>, SysRpsty<object>>();
+
+            var assembly = typeof(SysModelModule).Assembly;
+            var entityTypes = assembly.GetTypes()
+                .Where(t => t.IsClass &&
+                           !t.IsAbstract &&
+                           t.Namespace?.EndsWith(".Entity") == true)
+                .ToList();
+            foreach (var entityType in entityTypes)
+            {
+                var interfaceType = typeof(ISysRpsty<>).MakeGenericType(entityType);
+                var implementationType = typeof(SysRpsty<>).MakeGenericType(entityType);
+                services.AddScoped(interfaceType, implementationType);
+            }
+
+            #endregion
+
             services.AddScoped<ISysUserService, SysUserService>();
         }
 

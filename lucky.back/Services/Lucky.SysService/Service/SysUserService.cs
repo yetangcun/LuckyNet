@@ -15,14 +15,18 @@ namespace Lucky.SysService.Service
     /// </summary>
     public class SysUserService : ISysUserService
     {
-        private readonly ISysRpsty _sysRpsty;
+        private readonly ISysRpsty<SysUser> _sysRpsty;
+        private readonly ISysRpsty<SysRole> _sysRoleRpsty;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        public SysUserService(ISysRpsty sysRpsty)
+        public SysUserService(
+            ISysRpsty<SysUser> sysRpsty,
+            ISysRpsty<SysRole> sysRoleRpsty)
         {
             _sysRpsty = sysRpsty;
+            _sysRoleRpsty = sysRoleRpsty;
         }
 
         public async Task<(int, List<SysUserOutput>)> GetList(SysUserQueryInput req)
@@ -35,9 +39,26 @@ namespace Lucky.SysService.Service
                 where = where.And(x => x.Status == req.Status);
 
             /**************测试方法*****************/
-            var maxId = await _sysRpsty.MaxAsync<SysUser, long>(where, x => x.Id);
+            var maxId = await _sysRpsty.MaxAsync<long>(where, x => x.Id);   // 获取用户最大Id
+            var maxRoleId = await _sysRoleRpsty.MaxAsync<int>(null, x => x.Id);  // 查询角色最大Id
+
             var likeStr = $"%{req.Txt}%";
-            var outObj = await _sysRpsty.SqlQueryAsync<SysUserOutput>($"select \"Id\",\"Account\",\"RealName\" from sys_user where \"Account\" like {likeStr} or \"RealName\" like {likeStr};");
+            var outRoleObj = await _sysRoleRpsty.SqlQueryAsync<SysRoleOutput>($"select id,name,remark from sys_role where name like {likeStr};");
+            var outObj = await _sysRpsty.SqlQueryAsync<SysUserOutput>($"select id,account,realname from sys_user where account like {likeStr} or realname like {likeStr};");
+
+            var outModel = await _sysRpsty.GetByIdAsync<SysUser, long, SysUserOutput>(2, x => new SysUserOutput()
+            {
+                Id = x.Id,
+                Account = x.Account,
+                RealName = x.RealName
+            });
+            var lst = await _sysRpsty.GetListAsync(where);
+            var lists = await _sysRpsty.GetListAsync(where, x => new SysUserOutput()
+            {
+                Id = x.Id,
+                Account = x.Account,
+                RealName = x.RealName
+            });
             /**************测试方法*****************/
 
             var pgInfo = new PageInfo()
@@ -54,6 +75,7 @@ namespace Lucky.SysService.Service
             //    Account = x.Account,
             //    Name = x.RealName
             //};
+
             var expr = SimpleMappingExtensions.AutoMap<SysUser, SysUserOutput>();  // 2、这是最简便的方式
             var res = await _sysRpsty.GetPagesAsync(where, expr, pgInfo);
 

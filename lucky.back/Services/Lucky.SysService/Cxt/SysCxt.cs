@@ -19,10 +19,10 @@ namespace Lucky.SysService.Cxt
         ///// </summary>
         //public DbSet<SysOrg> SysOrgs { get; set; }
 
-        ///// <summary>
-        ///// 角色
-        ///// </summary>
-        //public DbSet<SysRole> SysRoles { get; set; }
+        /// <summary>
+        /// 角色
+        /// </summary>
+        public DbSet<SysRole> SysRoles { get; set; }
 
         ///// <summary>
         ///// 菜单

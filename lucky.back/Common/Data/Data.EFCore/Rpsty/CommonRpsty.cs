@@ -12,7 +12,7 @@ namespace Data.EFCore.Rpsty
     /// <summary>
     /// 通用仓储实现
     /// </summary>
-    public class CommonRpsty<TCxt, TOpt> : ICommonRpsty where TCxt : CommonCxt where TOpt : DbDefaultOption
+    public class CommonRpsty<TCxt, TEntity, TOpt> : ICommonRpsty<TEntity> where TCxt : CommonCxt where TEntity : class where TOpt : DbDefaultOption
     {
         private readonly TOpt _opt;
         protected readonly TCxt _dbCxt;
@@ -45,7 +45,7 @@ namespace Data.EFCore.Rpsty
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="entity"></param>
-        public async Task<T> AddAsync<T>(T entity) where T : class
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
             var obj = await _dbCxt.AddAsync(entity);
             await _dbCxt.SaveChangesAsync();
@@ -55,7 +55,7 @@ namespace Data.EFCore.Rpsty
         /// <summary>
         /// 批量添加
         /// </summary>
-        public async Task<int> AddRangeAsync<T>(List<T> entities) where T : class
+        public async Task<int> AddRangeAsync(List<TEntity> entities)
         {
             await _dbCxt.AddRangeAsync(entities);
             var nums = await _dbCxt.SaveChangesAsync();
@@ -65,7 +65,7 @@ namespace Data.EFCore.Rpsty
         /// <summary>
         /// 删除
         /// </summary>
-        public async Task<int> DeleteAsync<T>(T entity) where T : class
+        public async Task<int> DeleteAsync(TEntity entity)
         {
             _dbCxt.Remove(entity);
             var nums = await _dbCxt.SaveChangesAsync();
@@ -75,7 +75,7 @@ namespace Data.EFCore.Rpsty
         /// <summary>
         /// 批量删除
         /// </summary>
-        public async Task<int> DeleteRangeAsync<T>(List<T> entities) where T : class
+        public async Task<int> DeleteRangeAsync(List<TEntity> entities)
         {
             _dbCxt.RemoveRange(entities);
             var nums = await _dbCxt.SaveChangesAsync();
@@ -85,7 +85,7 @@ namespace Data.EFCore.Rpsty
         /// <summary>
         /// 修改
         /// </summary>
-        public async Task<int> UpdateAsync<T>(T entity) where T : class
+        public async Task<int> UpdateAsync(TEntity entity)
         {
             _dbCxt.Update(entity);
             var nums = await _dbCxt.SaveChangesAsync();
@@ -95,7 +95,7 @@ namespace Data.EFCore.Rpsty
         /// <summary>
         /// 批量修改
         /// </summary>
-        public async Task<int> UpdateRangeAsync<T>(List<T> entities) where T : class
+        public async Task<int> UpdateRangeAsync(List<TEntity> entities)
         {
             _dbCxt.UpdateRange(entities);
             var nums = await _dbCxt.SaveChangesAsync();
@@ -105,10 +105,10 @@ namespace Data.EFCore.Rpsty
         /// <summary>
         /// 条件查询实体列表
         /// </summary>
-        public async Task<List<T>> GetListAsync<T>(Expression<Func<T, bool>>? where) where T : class
+        public async Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>>? where)
         {
             _opt.IsReadOnly = true;
-            var query = _dbCxt.Set<T>().AsNoTracking();
+            var query = _dbCxt.Set<TEntity>().AsNoTracking();
             if (where != null)
                 query = query.Where(where);
             var datas = await query.ToListAsync();
@@ -118,10 +118,10 @@ namespace Data.EFCore.Rpsty
         /// <summary>
         /// 条件查询结果列表
         /// </summary>
-        public async Task<List<TResult>> GetListAsync<T, TResult>(Expression<Func<T, bool>>? where, Expression<Func<T, TResult>> selectors) where T : class
+        public async Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TEntity, bool>>? where, Expression<Func<TEntity, TResult>> selectors)
         {
             _opt.IsReadOnly = true;
-            var query = _dbCxt.Set<T>().AsNoTracking();
+            var query = _dbCxt.Set<TEntity>().AsNoTracking();
             if (where != null)
                 query = query.Where(where);
             var datas = await query.Select(selectors).ToListAsync();
@@ -164,12 +164,12 @@ namespace Data.EFCore.Rpsty
         /// <summary>
         /// 获取单个字段的值
         /// </summary>
-        public async Task<TField?> GetScalarAsync<T, TField>(
-            Expression<Func<T, bool>>? where, 
-            Expression<Func<T, TField>> field) where T : class
+        public async Task<TField?> GetScalarAsync<TField>(
+            Expression<Func<TEntity, bool>>? where, 
+            Expression<Func<TEntity, TField>> field)
         {
             _opt.IsReadOnly = true;
-            var query = _dbCxt.Set<T>().AsNoTracking();
+            var query = _dbCxt.Set<TEntity>().AsNoTracking();
             if (where != null)
                 query = query.Where(where);
 
@@ -194,10 +194,10 @@ namespace Data.EFCore.Rpsty
         /// <summary>
         /// 获取数量
         /// </summary>
-        public async Task<int> CountAsync<T>(Expression<Func<T, bool>>? where) where T : class
+        public async Task<int> CountAsync(Expression<Func<TEntity, bool>>? where)
         {
             _opt.IsReadOnly = true;
-            var query = _dbCxt.Set<T>().AsNoTracking();
+            var query = _dbCxt.Set<TEntity>().AsNoTracking();
             if (where != null)
                 query = query.Where(where);
             var count = await query.CountAsync();
@@ -207,10 +207,10 @@ namespace Data.EFCore.Rpsty
         /// <summary>
         /// 获取最大值
         /// </summary>
-        public async Task<TField?> MaxAsync<T, TField>(Expression<Func<T, bool>>? where, Expression<Func<T, TField>> field) where T : class
+        public async Task<TField?> MaxAsync<TField>(Expression<Func<TEntity, bool>>? where, Expression<Func<TEntity, TField>> field)
         {
             _opt.IsReadOnly = true;
-            var query = _dbCxt.Set<T>().AsNoTracking();
+            var query = _dbCxt.Set<TEntity>().AsNoTracking();
             if (where != null)
                 query = query.Where(where);
 
@@ -308,18 +308,18 @@ namespace Data.EFCore.Rpsty
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <param name="page"></param>
-        public async Task<(int, List<T>)> GetPageListAsync<T>(Expression<Func<T, bool>>? where, PageInfo page) where T : class
+        public async Task<(int, List<TEntity>)> GetPageListAsync(Expression<Func<TEntity, bool>>? where, PageInfo page)
         {
             _opt.IsReadOnly = true;
-            var query = _dbCxt.Set<T>().AsNoTracking().AsQueryable();
+            var query = _dbCxt.Set<TEntity>().AsNoTracking().AsQueryable();
             if (where != null)
                 query = query.Where(where);
 
             #region 排序
-
+            var clsType = typeof(TEntity);
             if (!string.IsNullOrEmpty(page.Sort))
             {
-                IOrderedQueryable<T>? ordered = null;
+                IOrderedQueryable<TEntity>? ordered = null;
                 var arrs = page.Sort.Split(',', StringSplitOptions.RemoveEmptyEntries); // 获取排序字段, 去掉空格
                 var lens = arrs.Length;
                 if (!string.IsNullOrWhiteSpace(page.SortType) && page.SortType.Equals("asc", StringComparison.OrdinalIgnoreCase))
@@ -327,7 +327,7 @@ namespace Data.EFCore.Rpsty
                     for (var i = 0; i < lens; i++)
                     {
                         var itm = arrs[i].Trim();
-                        var prop = typeof(T).GetProperty(itm, BindingFlags.Public | BindingFlags.IgnoreCase);  // ✅ 新增：验证字段是否存在
+                        var prop = clsType.GetProperty(itm, BindingFlags.Public | BindingFlags.IgnoreCase);  // ✅ 新增：验证字段是否存在
                         if (prop == null)
                             continue;
 
@@ -342,7 +342,7 @@ namespace Data.EFCore.Rpsty
                     for (var i = 0; i < lens; i++)
                     {
                         var itm = arrs[i];
-                        var prop = typeof(T).GetProperty(itm, BindingFlags.Public | BindingFlags.IgnoreCase);  // ✅ 新增：验证字段是否存在
+                        var prop = clsType.GetProperty(itm, BindingFlags.Public | BindingFlags.IgnoreCase);  // ✅ 新增：验证字段是否存在
                         if (prop == null)
                             continue;
 
@@ -356,9 +356,9 @@ namespace Data.EFCore.Rpsty
                 if (ordered != null)
                     query = ordered;
             }
-            else if (typeof(T).GetProperty("CreateTime") != null)
+            else if (clsType.GetProperty("CreateTime") != null)
                 query = query.OrderByDescending(x => EF.Property<object>(x, "CreateTime"));
-            else if (typeof(T).GetProperty("Id") != null)
+            else if (clsType.GetProperty("Id") != null)
                 query = query.OrderBy(x => EF.Property<object>(x, "Id"));
 
             #endregion
@@ -381,20 +381,20 @@ namespace Data.EFCore.Rpsty
         /// <param name="where"></param>
         /// <param name="selector"></param>
         /// <param name="page"></param>
-        public async Task<(int, List<TResult>)> GetPagesAsync<T, TResult>(Expression<Func<T, bool>>? where, 
-            Expression<Func<T, TResult>> seletors, 
-            PageInfo page) where T : class
+        public async Task<(int, List<TResult>)> GetPagesAsync<TResult>(Expression<Func<TEntity, bool>>? where, 
+            Expression<Func<TEntity, TResult>> seletors, 
+            PageInfo page)
         {
             _opt.IsReadOnly = true;
-            var query = _dbCxt.Set<T>().AsNoTracking();
+            var query = _dbCxt.Set<TEntity>().AsNoTracking();
             if (where != null)
                 query = query.Where(where);
 
             #region 排序
-
+            var clsType = typeof(TEntity);
             if (!string.IsNullOrEmpty(page.Sort))
             {
-                IOrderedQueryable<T>? ordered = null;
+                IOrderedQueryable<TEntity>? ordered = null;
                 var arrs = page.Sort.Split(',', StringSplitOptions.RemoveEmptyEntries); // 获取排序字段, 去掉空格
                 var lens = arrs.Length;
                 if (!string.IsNullOrWhiteSpace(page.SortType) && page.SortType.Equals("asc", StringComparison.OrdinalIgnoreCase))
@@ -402,7 +402,7 @@ namespace Data.EFCore.Rpsty
                     for (var i = 0; i < lens; i++)
                     {
                         var itm = arrs[i].Trim();
-                        var prop = typeof(T).GetProperty(itm, BindingFlags.Public | BindingFlags.IgnoreCase);  // ✅ 新增：验证字段是否存在
+                        var prop = clsType.GetProperty(itm, BindingFlags.Public | BindingFlags.IgnoreCase);  // ✅ 新增：验证字段是否存在
                         if (prop == null)
                             continue;
 
@@ -417,7 +417,7 @@ namespace Data.EFCore.Rpsty
                     for (var i = 0; i < lens; i++)
                     {
                         var itm = arrs[i];
-                        var prop = typeof(T).GetProperty(itm, BindingFlags.Public | BindingFlags.IgnoreCase);  // ✅ 新增：验证字段是否存在
+                        var prop = clsType.GetProperty(itm, BindingFlags.Public | BindingFlags.IgnoreCase);  // ✅ 新增：验证字段是否存在
                         if (prop == null)
                             continue;
 
@@ -431,9 +431,9 @@ namespace Data.EFCore.Rpsty
                 if (ordered != null)
                     query = ordered;
             }
-            else if (typeof(T).GetProperty("CreateTime") != null)
+            else if (clsType.GetProperty("CreateTime") != null)
                 query = query.OrderByDescending(x => EF.Property<object>(x, "CreateTime"));
-            else if (typeof(T).GetProperty("Id") != null)
+            else if (clsType.GetProperty("Id") != null)
                 query = query.OrderBy(x => EF.Property<object>(x, "Id"));
 
             #endregion

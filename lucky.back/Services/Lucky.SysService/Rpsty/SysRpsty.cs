@@ -7,7 +7,7 @@ using Lucky.SysService.Rpsty.IRpsty;
 
 namespace Lucky.SysService.Rpsty
 {
-    public class SysRpsty : CommonRpsty<SysCxt, SysDbOption>, ISysRpsty
+    public class SysRpsty<TEntity> : CommonRpsty<SysCxt, TEntity, SysDbOption>, ISysRpsty<TEntity> where TEntity : class
     {
         /// <summary>
         /// 构造函数
@@ -15,6 +15,6 @@ namespace Lucky.SysService.Rpsty
         /// <param name="cxt"></param>
         /// <param name="opts"></param>
         /// <param name="logger"></param>
-        public SysRpsty(ISysCxt cxt, IOptionsSnapshot<SysDbOption> opt, ILogger<SysRpsty> logger) : base(cxt, opt.Value, logger) { }
+        public SysRpsty(ISysCxt cxt, IOptionsSnapshot<SysDbOption> opt, ILogger<SysRpsty<TEntity>> logger) : base(cxt, opt.Value, logger) { }
     }
 }

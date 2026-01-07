@@ -2,7 +2,7 @@
 
 namespace Lucky.SysService.Rpsty.IRpsty
 {
-    public interface ISysRpsty : ICommonRpsty
+    public interface ISysRpsty<TEntity> : ICommonRpsty<TEntity> where TEntity : class
     {
     }
 }
