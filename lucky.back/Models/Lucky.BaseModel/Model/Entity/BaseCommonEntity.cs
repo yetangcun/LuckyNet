@@ -13,6 +13,7 @@ namespace Lucky.BaseModel.Model.Entity
         /// Guid
         /// </summary>
         [Key]
+        [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public required T Id { get; set; }
 

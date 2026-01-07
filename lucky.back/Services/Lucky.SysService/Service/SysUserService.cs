@@ -25,7 +25,6 @@ namespace Lucky.SysService.Service
             _sysRpsty = sysRpsty;
         }
 
-
         public async Task<(int, List<SysUserOutput>)> GetList(SysUserQueryInput req)
         {
             var where = PredicateBuilder.New<SysUser>(x => !x.IsDel); // 初始化为 true
@@ -34,6 +33,12 @@ namespace Lucky.SysService.Service
 
             if (req.Status.HasValue)
                 where = where.And(x => x.Status == req.Status);
+
+            /**************测试方法*****************/
+            var maxId = await _sysRpsty.MaxAsync<SysUser, long>(where, x => x.Id);
+            var likeStr = $"%{req.Txt}%";
+            var outObj = await _sysRpsty.SqlQueryAsync<SysUserOutput>($"select \"Id\",\"Account\",\"RealName\" from sys_user where \"Account\" like {likeStr} or \"RealName\" like {likeStr};");
+            /**************测试方法*****************/
 
             var pgInfo = new PageInfo()
             {
