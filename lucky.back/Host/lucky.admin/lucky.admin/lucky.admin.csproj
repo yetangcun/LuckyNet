@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Services\Lucky.PrtclService\Lucky.PrtclService.csproj" />
     <ProjectReference Include="..\..\..\Services\Lucky.SysService\Lucky.SysService.csproj" />
   </ItemGroup>
 

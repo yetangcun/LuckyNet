@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Data\Data.SqlSugar\Data.SqlSugar.csproj" />
     <ProjectReference Include="..\..\Models\Lucky.PrtclModel\Lucky.PrtclModel.csproj" />
   </ItemGroup>
 

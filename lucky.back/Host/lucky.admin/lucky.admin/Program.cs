@@ -7,6 +7,7 @@ using Common.CoreLib.Extension.Common;
 using lucky.admin.Extensions.Filters;
 using Microsoft.AspNetCore.HttpOverrides;
 using Lucky.SysService;
+using Lucky.PrtclService;
 
 var bld = WebApplication.CreateBuilder(args);
 
@@ -36,7 +37,8 @@ bld.Services.AddControllers(c =>
 // builder.Services.AddOpenApi();
 bld.Services.BaseInitLoad(bld.Configuration);
 bld.Services.AddSwaggerExt(bld.Configuration); // 添加swagger配置
-bld.Services.SysModuleLoad(bld.Configuration);
+bld.Services.SysModuleLoad(bld.Configuration);  // 系统管理模块
+bld.Services.PrtclModuleLoad(bld.Configuration); // 协议管理模块
 
 bld.Host.UseSerilog((context, logger) => // 采用serilog日志
 {
