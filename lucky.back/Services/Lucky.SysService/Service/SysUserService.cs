@@ -39,8 +39,8 @@ namespace Lucky.SysService.Service
                 where = where.And(x => x.Status == req.Status);
 
             /**************测试方法*****************/
-            var maxId = await _usrRpsty.MaxAsync<long>(where, x => x.Id);   // 获取用户最大Id
-            var maxRoleId = await _roleRpsty.MaxAsync<int>(null, x => x.Id);  // 查询角色最大Id
+            var maxId = await _usrRpsty.MaxAsync(where, x => x.Id);   // 获取用户最大Id
+            var maxRoleId = await _roleRpsty.MaxAsync(null, x => x.Id);  // 查询角色最大Id
 
             var likeStr = $"%{req.Txt}%";
             var roleObj = await _roleRpsty.SqlQueryAsync<SysRoleOutput>($"select id,name,remark from sys_role where name like {likeStr};");

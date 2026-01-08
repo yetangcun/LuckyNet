@@ -13,6 +13,13 @@ namespace Common.CoreLib.Model.Option
         public bool IsMigration { get; set; } = false;
     }
 
+    /// <summary>
+    /// 协议管理模块数据库配置
+    /// </summary>
+    public class PrtclDbOption : DbDefaultOption
+    {
+    }
+
 
     /// <summary>
     /// 数据库参数选项

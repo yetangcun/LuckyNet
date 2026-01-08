@@ -18,10 +18,12 @@
   </Folder>
   <Folder Name="/Models/">
     <Project Path="../../Models/Lucky.BaseModel/Lucky.BaseModel.csproj" />
+    <Project Path="../../Models/Lucky.PrtclModel/Lucky.PrtclModel.csproj" Id="cefbe7fb-0a65-440c-a9eb-1ec808bcb652" />
     <Project Path="../../Models/Lucky.SysModel/Lucky.SysModel.csproj" />
   </Folder>
   <Folder Name="/Services/">
     <Project Path="../../Services/Lucky.BaseService/Lucky.BaseService.csproj" Id="20b473f9-1764-411f-968f-7d3b927980d4" />
+    <Project Path="../../Services/Lucky.PrtclService/Lucky.PrtclService.csproj" Id="c9f24dd7-6251-4dd7-b057-ce06920881a4" />
     <Project Path="../../Services/Lucky.SysService/Lucky.SysService.csproj" Id="ef438188-765e-40d9-be8c-d4163236b77d" />
   </Folder>
   <Folder Name="/Solution Items/">

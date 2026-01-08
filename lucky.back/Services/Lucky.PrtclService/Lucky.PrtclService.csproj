@@ -7,11 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SqlSugarCore" Version="5.1.4.211" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Common.CoreLib\Common.CoreLib.csproj" />
+    <ProjectReference Include="..\..\Common\Data\Data.SqlSugar\Data.SqlSugar.csproj" />
+    <ProjectReference Include="..\..\Models\Lucky.PrtclModel\Lucky.PrtclModel.csproj" />
   </ItemGroup>
 
 </Project>

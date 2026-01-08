@@ -16,33 +16,53 @@
         Sqlserver = 1,
 
         /// <summary>
-        /// postgresql
-        /// </summary>
-        Postgresql = 2,
-
-        /// <summary>
         /// sqlite
         /// </summary>
-        Sqlite = 3,
-
-        /// <summary>
-        /// mongodb
-        /// </summary>
-        Mongodb = 4,
-
-        /// <summary>
-        /// ClickHouse
-        /// </summary>
-        ClickHouse = 5,
+        Sqlite = 2,
 
         /// <summary>
         /// Oracle
         /// </summary>
-        Oracle = 6,
+        Oracle = 3,
+
+        /// <summary>
+        /// postgresql
+        /// </summary>
+        Postgresql = 4,
 
         /// <summary>
         /// 达梦
         /// </summary>
-        Dameng = 7,
+        Dameng = 5,
+
+        /// <summary>
+        /// ClickHouse
+        /// </summary>
+        ClickHouse = 13,
+
+        /// <summary>
+        /// 华为云数据库
+        /// </summary>
+        GaussDB = 18,
+
+        /// <summary>
+        /// 蚂蚁集团数据库
+        /// </summary>
+        OceanBase = 19,
+
+        /// <summary>
+        /// 阿里云数据库
+        /// </summary>
+        PolarDB = 22,
+
+        /// <summary>
+        /// Doris
+        /// </summary>
+        Doris = 23,
+
+        /// <summary>
+        /// mongodb
+        /// </summary>
+        Mongodb = 32,
     }
 }

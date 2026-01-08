@@ -76,7 +76,7 @@ namespace Lucky.SysService.Cxt
 
             //modelBuilder.Entity<SysOrg>().ToTable("sys_org").HasQueryFilter(r => !r.IsDel); ;
 
-            //modelBuilder.Entity<SysRole>().ToTable("sys_role").HasQueryFilter(r => !r.IsDel);
+            modelBuilder.Entity<SysRole>().ToTable("sys_role").HasQueryFilter(r => !r.IsDel);
 
             //modelBuilder.Entity<SysMenu>().ToTable("sys_menu").HasQueryFilter(r => !r.IsDel); ;
 

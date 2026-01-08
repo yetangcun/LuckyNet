@@ -152,12 +152,12 @@ namespace Data.EFCore.Rpsty
 
         /*  下面示例中的u表示的是泛型参数，表示实体类型(如下为:User)
             // 值类型示例（int, DateTime, bool等）
-            int? userId = await repo.GetScalarAsync<User, int>(
+            int? userId = await repo.GetScalarAsync<int>(
             u => u.Email == "test@example.com", 
             u => u.Id);
 
             // 引用类型示例（string, 自定义class等）
-            string? email = await repo.GetScalarAsync<User, string>(
+            string? email = await repo.GetScalarAsync<string>(
             u => u.Id == 1, 
             u => u.Email);
         */
@@ -225,9 +225,8 @@ namespace Data.EFCore.Rpsty
             //    // 使用可空类型的 MaxAsync 重载
             //    return await query.Select(nullableField).DefaultIfEmpty().MaxAsync();
             //}
-            //else
+            //else // 对于引用类型，可以直接使用
             //{
-            //    // 对于引用类型，可以直接使用
             //    return await query.Select(field).DefaultIfEmpty().MaxAsync();
             //}
 
@@ -273,21 +272,20 @@ namespace Data.EFCore.Rpsty
         }
 
 
-        /*
-        // 注意：执行sql查询时，请使用 {name} 语法，而不是使用 '{name}' 语法
+        /* // 注意：执行sql查询时，请使用 {name} 语法，而不是使用 '{name}' 语法
         public async Task<List<User>> GetUsersByNameAsync(string name)
         {
-            return await _dbCxt.Database.SqlQuery<User>(
+            return await _dbCxt.Database.SqlQuery<SysUserOutput>(
                 $"SELECT * FROM Users WHERE Name = {name}")
                 .ToListAsync();
         }
         // 注意：执行sql查询时，请使用 %{keyword}% 语法，而不是使用 '%{keyword}%' 语法
-        string keyword = "张";
-        var users = await _dbCxt.Database.SqlQuery<User>(
-            $"SELECT * FROM Users WHERE Name LIKE %{keyword}%")
+        string paramStr = $"%{keyword}%";
+        var users = await _dbCxt.Database.SqlQuery<SysUserOutput>(
+            $"SELECT * FROM Users WHERE Name LIKE {paramStr}")
             .ToListAsync();
         // 总之：就是不需要使用单引号包裹参数
-         */
+        */
         /// <summary>
         /// 执行查询sql
         /// 此方法不会存在sql注入问题
