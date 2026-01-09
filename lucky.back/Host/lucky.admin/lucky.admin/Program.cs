@@ -96,6 +96,8 @@ app.UseCors(allowedCors);  // app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.GeneralInit(bld.Configuration);
+
 app.MapControllers();
 
 app.Run();

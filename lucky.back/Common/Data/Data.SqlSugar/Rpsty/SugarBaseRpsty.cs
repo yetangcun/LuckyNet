@@ -12,11 +12,10 @@ namespace Data.SqlSugar.Rpsty
         private readonly TOption _option;
         private readonly ILogger _logger;
 
-        public bool IsSugarReadOnly
-        {
-            get;
-            set;
-        } = false;
+        /// <summary>
+        /// 数据库读标识
+        /// </summary>
+        public bool IsSugarReadOnly { get; set; } = false;
 
         /// <summary>
         /// 构造函数
@@ -254,6 +253,11 @@ namespace Data.SqlSugar.Rpsty
         public void CreateTable()
         {
             Context.CodeFirst.InitTables<TEntity>();
+        }
+
+        public void CreateTable<T>()
+        {
+            Context.CodeFirst.InitTables<T>();
         }
 
         public bool CreateTableAsync(string tableName, List<DbColumnInfo> columns)

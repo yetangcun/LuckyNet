@@ -41,7 +41,7 @@ namespace Lucky.SysModel.Entity
         /// <summary>
         /// 头像
         /// </summary>
-        [StringLength(150)]
+        [StringLength(120)]
         [Column("avatar")]
         public string? Avatar { get; set; }
 

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Lucky.SysService.Service.IService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Lucky.SysService
 {

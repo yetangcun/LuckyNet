@@ -24,7 +24,6 @@ namespace Lucky.PrtclService.Rpsty
         {
             try
             {
-                //CreateTable();  // 创建表
                 //if(req.Id > 0)
                 //{
                 //    var prtcl = new Prtcl()
@@ -35,7 +34,19 @@ namespace Lucky.PrtclService.Rpsty
                 //    var id = await InsertAsync(prtcl); // 插入数据
                 //}
 
-                IsSugarReadOnly = true; // 读写分离, 标识为读
+                CreateTable<PrtclGrpc>();  // 创建表
+                if (req.Id > 0)
+                {
+                    var prtcl = new PrtclGrpc()
+                    {
+                        id = req.Id,
+                        name = req.Name
+                    };
+                    var id = await Context.Insertable(prtcl).ExecuteCommandAsync();
+                }
+                var prtclGrpcs = await Context.Queryable<PrtclGrpc>().ToListAsync();
+
+                // IsSugarReadOnly = true; // 读写分离, 标识为读
 
                 var where = Expressionable.Create<Prtcl>();
                 where.AndIF(!string.IsNullOrWhiteSpace(req.Name), x => x.name == req.Name); // 筛选条件

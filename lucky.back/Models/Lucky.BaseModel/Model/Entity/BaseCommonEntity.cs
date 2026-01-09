@@ -37,7 +37,7 @@ namespace Lucky.BaseModel.Model.Entity
         /// 创建时间
         /// </summary>
         [Required]
-        [Column("create_time")]
+        [Column("create_time", TypeName = "timestamp")]
         public DateTime CreateTime { get; set; }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Lucky.BaseModel.Model.Entity
         /// 删除时间
         /// </summary>
         //[Comment("删除时间")]
-        [Column("del_time")]
+        [Column("del_time", TypeName = "timestamp")]
         public DateTime? DelTime { get; set; }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Lucky.BaseModel.Model.Entity
         /// <summary>
         /// 创建时间
         /// </summary>
-        [Column("create_time")]
+        [Column("create_time", TypeName = "timestamp")]
         public DateTime CreateTime { get; set; }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Lucky.BaseModel.Model.Entity
         /// <summary>
         /// 修改时间
         /// </summary>
-        [Column("update_time")]
+        [Column("update_time", TypeName = "timestamp")]
         public DateTime? UpdateTime { get; set; }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Lucky.BaseModel.Model.Entity
         /// <summary>
         /// 删除时间
         /// </summary>
-        [Column("del_time")]
+        [Column("del_time", TypeName = "timestamp")]
         public DateTime? DelTime { get; set; }
 
         /// <summary>

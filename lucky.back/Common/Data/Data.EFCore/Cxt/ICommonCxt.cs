@@ -12,5 +12,24 @@ namespace Data.EFCore.Cxt
         /// </summary>
         /// <returns></returns>
         TCxt GetDbCxt<TCxt, TOpt>(TOpt option) where TCxt : CommonCxt where TOpt : DbDefaultOption;
+
+        /// <summary>
+        ///  初始化
+        /// </summary>
+        /// <param name="opt"></param>
+        /// <returns></returns>
+        bool SetDbOption(DbDefaultOption opt);
+
+        /// <summary>
+        /// 初始化表结构
+        /// </summary>
+        /// <returns></returns>
+        bool InitTable();
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        /// <returns></returns>
+        bool InitData();
     }
 }
