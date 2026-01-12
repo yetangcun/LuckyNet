@@ -14,15 +14,18 @@
   </Folder>
   <Folder Name="/Document/" />
   <Folder Name="/Host/">
+    <Project Path="../Lucky.IOT/Lucky.IOT.csproj" Id="cea9de76-0e75-4c96-9fea-8a94faeb75e6" />
     <Project Path="lucky.admin/lucky.admin.csproj" />
   </Folder>
   <Folder Name="/Models/">
     <Project Path="../../Models/Lucky.BaseModel/Lucky.BaseModel.csproj" />
+    <Project Path="../../Models/Lucky.IotModel/Lucky.IotModel.csproj" Id="eea5711d-e530-4f16-99d7-83a45e06e883" />
     <Project Path="../../Models/Lucky.PrtclModel/Lucky.PrtclModel.csproj" Id="cefbe7fb-0a65-440c-a9eb-1ec808bcb652" />
     <Project Path="../../Models/Lucky.SysModel/Lucky.SysModel.csproj" />
   </Folder>
   <Folder Name="/Services/">
     <Project Path="../../Services/Lucky.BaseService/Lucky.BaseService.csproj" Id="20b473f9-1764-411f-968f-7d3b927980d4" />
+    <Project Path="../../Services/Lucky.IotService/Lucky.IotService.csproj" Id="b5d109ec-43ce-4562-9a45-8067ac8dfab8" />
     <Project Path="../../Services/Lucky.PrtclService/Lucky.PrtclService.csproj" Id="c9f24dd7-6251-4dd7-b057-ce06920881a4" />
     <Project Path="../../Services/Lucky.SysService/Lucky.SysService.csproj" Id="ef438188-765e-40d9-be8c-d4163236b77d" />
   </Folder>

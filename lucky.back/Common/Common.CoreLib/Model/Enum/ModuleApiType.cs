@@ -36,6 +36,12 @@
         /// 消息队列
         /// </summary>
         [ModuleApiInfo(Description = "消息队列模块", Title = "消息队列", Version = "1.0")]
-        mq = 1
+        mq = 1,
+
+        /// <summary>
+        /// IoT
+        /// </summary>
+        [ModuleApiInfo(Description = "IoT服务模块", Title = "IoT服务", Version = "1.0")]
+        IoT
     }
 }

@@ -7,9 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Service\IService\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Common\Protocol\Prtcl.Grpc\Prtcl.Grpc.csproj" />
-    <ProjectReference Include="..\..\Models\Lucky.SysModel\Lucky.SysModel.csproj" />
-    <ProjectReference Include="..\Lucky.BaseService\Lucky.BaseService.csproj" />
+    <ProjectReference Include="..\..\Common\Protocol\Prtcl.Mqtt\Prtcl.Mqtt.csproj" />
   </ItemGroup>
 
 </Project>

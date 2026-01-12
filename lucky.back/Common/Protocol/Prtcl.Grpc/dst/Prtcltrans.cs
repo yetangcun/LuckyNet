@@ -29,7 +29,7 @@ namespace GrpcTransCore.Services {
             "ZW1wdHkucHJvdG8iYwoIVHJhbnNSZXESCwoDc2lkGAEgASgDEgsKA29wdBgC",
             "IAEoBRIMCgRkYXRhGAMgASgJEgsKA2NpZBgEIAEoCRIiCgRleHRzGAUgASgL",
             "MhQuZ29vZ2xlLnByb3RvYnVmLkFueSJkCghUcmFuc1JlcxILCgNzaWQYASAB",
-            "KAMSCwoDb3B0GAIgASgFEgwKBGRhdGEYAyABKAkSDAoEY29kZRgEIAEoCRIi",
+            "KAMSCwoDb3B0GAIgASgFEgwKBGRhdGEYAyABKAkSDAoEY29kZRgEIAEoBRIi",
             "CgRleHRzGAUgASgLMhQuZ29vZ2xlLnByb3RvYnVmLkFueTK7BAoUR3JwY1Ry",
             "YW5zQ29yZVNlcnZpY2USVQoPR3JwY0dlbmVyYWxDYWxsEiAuR3JwY1RyYW5z",
             "Q29yZS5TZXJ2aWNlcy5UcmFuc1JlcRogLkdycGNUcmFuc0NvcmUuU2Vydmlj",
@@ -521,16 +521,16 @@ namespace GrpcTransCore.Services {
 
     /// <summary>Field number for the "code" field.</summary>
     public const int CodeFieldNumber = 4;
-    private string code_ = "";
+    private int code_;
     /// <summary>
-    /// 状态码
+    /// 状态码 200:成功  其他失败 500:服务器错误
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Code {
+    public int Code {
       get { return code_; }
       set {
-        code_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        code_ = value;
       }
     }
 
@@ -579,7 +579,7 @@ namespace GrpcTransCore.Services {
       if (Sid != 0L) hash ^= Sid.GetHashCode();
       if (Opt != 0) hash ^= Opt.GetHashCode();
       if (Data.Length != 0) hash ^= Data.GetHashCode();
-      if (Code.Length != 0) hash ^= Code.GetHashCode();
+      if (Code != 0) hash ^= Code.GetHashCode();
       if (exts_ != null) hash ^= Exts.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -611,9 +611,9 @@ namespace GrpcTransCore.Services {
         output.WriteRawTag(26);
         output.WriteString(Data);
       }
-      if (Code.Length != 0) {
-        output.WriteRawTag(34);
-        output.WriteString(Code);
+      if (Code != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(Code);
       }
       if (exts_ != null) {
         output.WriteRawTag(42);
@@ -641,9 +641,9 @@ namespace GrpcTransCore.Services {
         output.WriteRawTag(26);
         output.WriteString(Data);
       }
-      if (Code.Length != 0) {
-        output.WriteRawTag(34);
-        output.WriteString(Code);
+      if (Code != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(Code);
       }
       if (exts_ != null) {
         output.WriteRawTag(42);
@@ -668,8 +668,8 @@ namespace GrpcTransCore.Services {
       if (Data.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Data);
       }
-      if (Code.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Code);
+      if (Code != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Code);
       }
       if (exts_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Exts);
@@ -695,7 +695,7 @@ namespace GrpcTransCore.Services {
       if (other.Data.Length != 0) {
         Data = other.Data;
       }
-      if (other.Code.Length != 0) {
+      if (other.Code != 0) {
         Code = other.Code;
       }
       if (other.exts_ != null) {
@@ -735,8 +735,8 @@ namespace GrpcTransCore.Services {
             Data = input.ReadString();
             break;
           }
-          case 34: {
-            Code = input.ReadString();
+          case 32: {
+            Code = input.ReadInt32();
             break;
           }
           case 42: {
@@ -777,8 +777,8 @@ namespace GrpcTransCore.Services {
             Data = input.ReadString();
             break;
           }
-          case 34: {
-            Code = input.ReadString();
+          case 32: {
+            Code = input.ReadInt32();
             break;
           }
           case 42: {

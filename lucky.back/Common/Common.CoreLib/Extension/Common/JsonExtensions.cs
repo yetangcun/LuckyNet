@@ -1,5 +1,7 @@
-﻿using System.Text.Json;
+﻿using System.Buffers;
+using System.Text;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Common.CoreLib.Extension.Common
@@ -20,8 +22,8 @@ namespace Common.CoreLib.Extension.Common
 
         static JsonExtensions()
         {
+            dftOpts.Converters.Add(new StringConverter());
             dftOpts.Converters.Add(new DateTimeJsonConverter());
-            dftOpts.Converters.Add(new Util.StringConverter());
             dftOpts.Converters.Add(new DateTimeJsonConverter("yyyy-MM-dd HH:mm:ss"));
         }
 
@@ -74,7 +76,7 @@ namespace Common.CoreLib.Extension.Common
         /// <param name="options"></param>
         public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            return DateTime.Parse(reader.GetString());
+            return DateTime.Parse(reader.GetString()!);
         }
 
         /// <summary>
@@ -106,7 +108,7 @@ namespace Common.CoreLib.Extension.Common
             if (reader.TokenType == JsonTokenType.True || reader.TokenType == JsonTokenType.False)
                 return reader.GetBoolean();
 
-            return bool.Parse(reader.GetString());
+            return bool.Parse(reader.GetString()!);
         }
 
         /// <summary>
@@ -120,4 +122,56 @@ namespace Common.CoreLib.Extension.Common
             writer.WriteBooleanValue(value);
         }
     }
+
+
+    /// <summary>
+    /// Json任何类型读取到字符串属性
+    /// 因为 System.Text.Json 必须严格遵守类型一致，当非字符串读取到字符属性时报错：
+    /// The JSON value could not be converted to System.String.
+    /// </summary>
+    public class StringConverter : JsonConverter<string>
+    {
+        /// <summary>
+        /// 读取非字符串类型
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="typeToConvert"></param>
+        /// <param name="options"></param>
+        public override string? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            if (reader.TokenType == JsonTokenType.String)
+            {
+                return reader.GetString();
+            }
+            else
+            {
+                //非字符类型，返回原生内容
+                return GetRawPropertyValue(reader);
+            }
+
+            throw new JsonException();
+        }
+
+        /// <summary>
+        /// 写入字符串
+        /// </summary>
+        public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value);
+        }
+
+        /// <summary>
+        /// 非字符类型，返回原生内容
+        /// </summary>
+        /// <param name="jsonReader"></param>
+        /// <returns></returns>
+        private static string GetRawPropertyValue(Utf8JsonReader jsonReader)
+        {
+            ReadOnlySpan<byte> utf8Bytes = jsonReader.HasValueSequence ?
+            jsonReader.ValueSequence.ToArray() :
+            jsonReader.ValueSpan;
+            return Encoding.UTF8.GetString(utf8Bytes);
+        }
+    }
+
 }
