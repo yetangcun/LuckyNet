@@ -1,7 +1,7 @@
-﻿using Lucky.BaseModel.Enum;
+﻿using System.Text;
+using Lucky.BaseModel.Enum;
 using Common.CoreLib.Model.Option;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
 
 namespace Data.EFCore.Cxt
 {
@@ -11,12 +11,6 @@ namespace Data.EFCore.Cxt
     public class CommonCxt : DbContext, ICommonCxt
     {
         private DbDefaultOption? _opt;
-
-        public bool SetDbOption(DbDefaultOption opt)
-        {
-            _opt = opt;
-            return true;
-        }
 
         /// <summary>
         ///  获取数据库上下文
@@ -49,7 +43,7 @@ namespace Data.EFCore.Cxt
             switch (_opt.DbType)
             {
                 case DatabaseType.Mysql:
-                    //optBlder.UseMySql(connString, ServerVersion.AutoDetect(connString), blder =>  // 使用Pomelo. EntityFrameworkCore.MySql 时需添加此配置
+                    //optBlder.UseMySql(connString, ServerVersion.AutoDetect(connString), blder =>  // 使用Pomelo.EntityFrameworkCore.MySql 时需添加此配置
                     //{
                     //    blder.CommandTimeout(_opt.TimeOuts);
                     //});
@@ -95,14 +89,25 @@ namespace Data.EFCore.Cxt
         }
 
         /// <summary>
+        /// 设置数据库配置
+        /// </summary>
+        public bool SetDbOption(DbDefaultOption opt)
+        {
+            _opt = opt;
+            return true;
+        }
+
+        /// <summary>
         /// 初始化库、表结构
         /// </summary>
-        public bool InitTable()
+        public bool InitDbTable()
         {
             try
             {
                 var tis = this.GetType().Name;
                 var res = this.Database.EnsureCreated(); // 创建数据库、 创建表结构
+                if (!res) // 如果创建表结构失败，则执行迁移
+                    this.Database.Migrate();
 
                 return res;
             }

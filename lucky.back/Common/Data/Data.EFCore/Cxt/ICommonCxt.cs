@@ -21,10 +21,10 @@ namespace Data.EFCore.Cxt
         bool SetDbOption(DbDefaultOption opt);
 
         /// <summary>
-        /// 初始化表结构
+        /// 初始化库、表结构
         /// </summary>
         /// <returns></returns>
-        bool InitTable();
+        bool InitDbTable();
 
         /// <summary>
         /// 初始化数据

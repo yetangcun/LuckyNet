@@ -245,19 +245,41 @@ namespace Data.SqlSugar.Rpsty
 
         #region 初始化库、创建表
 
-        public bool InitDbAsync()
+        public bool InitDb()
         {
             return Context.DbMaintenance.CreateDatabase();
         }
 
         public void CreateTable()
         {
+            var rs = InitDb();
             Context.CodeFirst.InitTables<TEntity>();
         }
 
         public void CreateTable<T>()
         {
+            var rs = InitDb();
             Context.CodeFirst.InitTables<T>();
+        }
+
+        /// <summary>
+        /// 扫描程序集
+        /// 批量创建表
+        /// </summary>
+        public void CreateTables(string[] dllNames)
+        {
+            var rs = InitDb();
+            foreach (var dllName in dllNames)
+            {
+                var dllPath = $"{AppDomain.CurrentDomain.BaseDirectory}{dllName}";
+                var assembly = Assembly.LoadFrom(dllPath);
+                var entityTypes = assembly.GetTypes()
+                    .Where(t => t.IsClass &&
+                               !t.IsAbstract &&
+                               t.Namespace?.EndsWith(".Entity") == true).ToList();
+                // 创建表
+                Context.CodeFirst.InitTables(entityTypes.ToArray());
+            }
         }
 
         public bool CreateTableAsync(string tableName, List<DbColumnInfo> columns)

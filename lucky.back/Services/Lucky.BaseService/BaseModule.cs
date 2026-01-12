@@ -18,8 +18,8 @@ namespace Lucky.BaseService
         public static void BaseInitLoad(this IServiceCollection services, IConfiguration cfg)
         {
             services.Configure<JwtOptions>(cfg.GetSection("JwtOptions")); // 添加Jwt配置
-            services.Configure<UdpOption>(cfg.GetSection("UdpOption")); // 添加Udp配置
             services.Configure<MqttOption>(cfg.GetSection("MqttOption")); // 添加Mqtt配置
+            services.Configure<UdpOption>(cfg.GetSection("UdpOption")); // 添加Udp配置
             services.AddSingleton<JwtAuthExtension>(); // 添加Jwt认证
         }
     }

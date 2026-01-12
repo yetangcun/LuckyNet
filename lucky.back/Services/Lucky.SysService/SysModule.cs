@@ -2,13 +2,13 @@
 using Lucky.SysModel;
 using Lucky.SysService.Cxt;
 using Lucky.SysService.Rpsty;
+using Microsoft.Extensions.Options;
 using Lucky.SysService.Rpsty.IRpsty;
 using Lucky.SysService.Service;
-using Microsoft.AspNetCore.Builder;
 using Lucky.SysService.Service.IService;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace Lucky.SysService
 {
@@ -28,7 +28,6 @@ namespace Lucky.SysService
             services.AddScoped<ISysCxt, SysCxt>();
 
             #region 扫描当前模块的所有Entity // services.AddScoped<ISysRpsty<object>, SysRpsty<object>>();
-
             var assembly = typeof(SysModelModule).Assembly;
             var entityTypes = assembly.GetTypes()
                 .Where(t => t.IsClass &&
@@ -40,7 +39,6 @@ namespace Lucky.SysService
                 var rpstyImp = typeof(SysRpsty<>).MakeGenericType(entityType);
                 services.AddScoped(rpstyInterface, rpstyImp);
             }
-
             #endregion
 
             services.AddScoped<ISysUserService, SysUserService>();
@@ -53,6 +51,15 @@ namespace Lucky.SysService
         /// <param name="cfg"></param>
         public static void SysModuleInit(this IApplicationBuilder app, IConfiguration cfg)
         {
+            var dbOption = app.ApplicationServices.GetService<IOptions<SysDbOption>>();
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var sysCxt = scope.ServiceProvider.GetService<ISysCxt>();
+                sysCxt!.SetDbOption(dbOption!.Value);
+                var res = sysCxt.InitDbTable();
+                if (res)
+                    sysCxt.InitData();
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
-﻿using Lucky.SysService.Cxt;
-using Common.CoreLib.Model.Option;
-using Microsoft.Extensions.Options;
+﻿using Lucky.PrtclService;
+using Lucky.SysService;
 
 namespace lucky.admin.Extensions
 {
@@ -25,15 +24,8 @@ namespace lucky.admin.Extensions
             var isInit = cfg.GetValue<bool>("CommonCfg:IsInitDb");
             if (isInit)
             {
-                var dbOption = app.ApplicationServices.GetService<IOptions<SysDbOption>>();
-                using (var scope = app.ApplicationServices.CreateScope())
-                {
-                    var sysCxt = scope.ServiceProvider.GetService<ISysCxt>();
-                    sysCxt.SetDbOption(dbOption.Value);
-                    var res = sysCxt.InitTable();
-                    if (res)
-                        sysCxt.InitData();
-                }
+                app.SysModuleInit(cfg);   // 初始化系统管理模块
+                app.PrtclModuleInit(cfg); // 初始化协议模块
             }
         }
     }

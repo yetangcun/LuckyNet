@@ -34,20 +34,19 @@ namespace Lucky.PrtclService.Rpsty
                 //    var id = await InsertAsync(prtcl); // 插入数据
                 //}
 
-                CreateTable<PrtclGrpc>();  // 创建表
-                if (req.Id > 0)
-                {
-                    var prtcl = new PrtclGrpc()
-                    {
-                        id = req.Id,
-                        name = req.Name
-                    };
-                    var id = await Context.Insertable(prtcl).ExecuteCommandAsync();
-                }
-                var prtclGrpcs = await Context.Queryable<PrtclGrpc>().ToListAsync();
+                //CreateTable<PrtclGrpc>();  // 创建表
+                //if (req.Id > 0)
+                //{
+                //    var prtcl = new PrtclGrpc()
+                //    {
+                //        id = req.Id,
+                //        name = req.Name
+                //    };
+                //    var id = await Context.Insertable(prtcl).ExecuteCommandAsync();
+                //}
+                //var prtclGrpcs = await Context.Queryable<PrtclGrpc>().ToListAsync();
 
-                // IsSugarReadOnly = true; // 读写分离, 标识为读
-
+                IsSugarReadOnly = true; // 读写分离, 标识为读
                 var where = Expressionable.Create<Prtcl>();
                 where.AndIF(!string.IsNullOrWhiteSpace(req.Name), x => x.name == req.Name); // 筛选条件
 
@@ -58,7 +57,6 @@ namespace Lucky.PrtclService.Rpsty
                     TotalCount = 0
                 };
                 var lst = GetPageList(where.ToExpression(), pgModel); // 调用自带的分页查询
-
                 var pageInfo = new BaseModel.Model.PageInfo()
                 {
                     PageIndex = req.PageIndex,
