@@ -10,6 +10,12 @@
         /// </summary>
         public const ushort MachineNo = 1;
 
+        /// <summary>
+        /// 用户ID
+        /// </summary>
+
+        public const string U_ID = "uky";       // 用户ID
+
         #region AES 密钥
         //public const string AES_KY = "aiot2kyaes666666";  // 16位
         //public const string AES_IV = "aiot2ivaes888888";  // 16位

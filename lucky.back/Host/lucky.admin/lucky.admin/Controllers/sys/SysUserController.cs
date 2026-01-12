@@ -1,11 +1,11 @@
 ﻿using Common.CoreLib.Extension.Common;
 using Lucky.BaseModel.Model;
+using Lucky.BaseService.Extension;
 using Lucky.SysModel.Model.Input;
 using Lucky.SysModel.Model.Output;
-using Lucky.SysService.Service.IService;
 // using Microsoft.AspNetCore.Http;
+using Lucky.SysService.Service.IService;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.InteropServices;
 
 namespace lucky.admin.Controllers.sys
 {
@@ -46,6 +46,9 @@ namespace lucky.admin.Controllers.sys
         [HttpGet("list")]
         public async Task<ResModel<List<SysUserOutput>>> GetList([FromQuery] SysUserQueryInput req)
         {
+            var uid = HttpContext.GetUid();
+            // var ip = HttpContext.GetClientIp();
+
             var res = await _sysUserService.GetList(req);
             return ResModel<List<SysUserOutput>>.Success(res.Item2);
         }

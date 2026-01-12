@@ -1,9 +1,10 @@
-﻿using Lucky.BaseModel.Model;
+﻿using Common.CoreLib.Extension.Common;
+using Lucky.BaseModel;
+using Lucky.BaseModel.Model;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Common.CoreLib.Extension.Common;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 
 namespace lucky.admin.Extensions.Filters
 {
@@ -42,7 +43,7 @@ namespace lucky.admin.Extensions.Filters
                 if (!context.HttpContext.Request.Headers.Authorization.Any())
                 {
                     context.HttpContext.Response.StatusCode = 401;
-                    context.Result = new JsonResult(ResModel<string>.Failed("UnAuthorize", "未授权", 401));
+                    context.Result = new JsonResult(ResModel<string>.Failed("UnAuth", "未授权", 401));
                     return;
                 }
 
@@ -57,11 +58,11 @@ namespace lucky.admin.Extensions.Filters
                 var results = await _jwt.CheckToken(token);
                 if (!results.Item4)
                 {
-                    context.Result = new JsonResult(ResModel<string>.Failed("UnAuthorize", "未授权", 401));
+                    context.Result = new JsonResult(ResModel<string>.Failed("UnAuth", "未授权", 401));
                     return;
                 }
 
-                context.HttpContext.Items.Add("uky", results.Item3); // 当前用户id
+                context.HttpContext.Items.Add(GlobalConstant.U_ID, results.Item3); // 当前用户id
                 if (results.Item1 > DateTime.Now && results.Item1.Subtract(DateTime.Now).TotalMinutes < 9) // 距离当前token失效小于10分钟,则刷新token
                 {
                     var tken = _jwt.GetToken(results.Item2, results.Item3); // context.HttpContext.Response.Headers.Add("fresh_token", tokens.Item1);
