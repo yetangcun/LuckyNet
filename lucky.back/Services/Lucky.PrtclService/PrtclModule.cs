@@ -26,12 +26,15 @@ namespace Lucky.PrtclService
         /// </summary>
         public static void PrtclModuleInit(this IApplicationBuilder app, IConfiguration cfg)
         {
-            using (var scope = app.ApplicationServices.CreateScope())
+            var isInit = cfg.GetValue<bool>("CommonCfg:IsInitDb");
+            if (isInit)
             {
-                var prtclService = scope.ServiceProvider.GetService<IPrtclsService>();
-
-                var dlls = new string[] { "Lucky.PrtclModel.dll" };
-                prtclService!.CreateTables(dlls);
+                using (var scope = app.ApplicationServices.CreateScope())
+                {
+                    var prtclService = scope.ServiceProvider.GetService<IPrtclsService>();
+                    var dlls = new string[] { "Lucky.PrtclModel.dll" };
+                    prtclService!.CreateTables(dlls);
+                }
             }
         }
     }

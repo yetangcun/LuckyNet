@@ -51,14 +51,18 @@ namespace Lucky.SysService
         /// <param name="cfg"></param>
         public static void SysModuleInit(this IApplicationBuilder app, IConfiguration cfg)
         {
-            var dbOption = app.ApplicationServices.GetService<IOptions<SysDbOption>>();
-            using (var scope = app.ApplicationServices.CreateScope())
+            var isInit = cfg.GetValue<bool>("CommonCfg:IsInitDb");
+            if (isInit)
             {
-                var sysCxt = scope.ServiceProvider.GetService<ISysCxt>();
-                sysCxt!.SetDbOption(dbOption!.Value);
-                var res = sysCxt.InitDbTable();
-                if (res)
-                    sysCxt.InitData();
+                var dbOption = app.ApplicationServices.GetService<IOptions<SysDbOption>>();
+                using (var scope = app.ApplicationServices.CreateScope())
+                {
+                    var sysCxt = scope.ServiceProvider.GetService<ISysCxt>();
+                    sysCxt!.SetDbOption(dbOption!.Value);
+                    var res = sysCxt.InitDbTable();
+                    if (res)
+                        sysCxt.InitData();
+                }
             }
         }
     }

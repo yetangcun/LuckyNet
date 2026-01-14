@@ -26,12 +26,8 @@ namespace lucky.admin.Extensions
         /// </summary>
         public static void GeneralInit(this IApplicationBuilder app, IConfiguration cfg)
         {
-            var isInit = cfg.GetValue<bool>("CommonCfg:IsInitDb");
-            if (isInit)
-            {
-                app.SysModuleInit(cfg);   // 初始化系统管理模块
-                app.PrtclModuleInit(cfg); // 初始化协议模块
-            }
+            app.SysModuleInit(cfg);   // 初始化系统管理模块
+            app.PrtclModuleInit(cfg); // 初始化协议模块
 
 
             // 创建异步包装器
