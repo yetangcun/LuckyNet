@@ -70,7 +70,10 @@ namespace Common.CoreLib.Cache
         }
 
         #region 操作方法
-
+        /// <summary>
+        /// 判断缓存是否存在
+        /// </summary>
+        /// <param name="key"></param>
         public async Task<bool> ExistKey(string key)
         {
             if (_database == null)
