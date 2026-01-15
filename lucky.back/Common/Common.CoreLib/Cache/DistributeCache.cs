@@ -13,7 +13,7 @@ namespace Common.CoreLib.Cache
     {
         private readonly RdisOption _option;
         private readonly ILogger<DistributeCache> _logger;
-        private readonly ConfigurationOptions _redisConfig;
+        private readonly ConfigurationOptions _rdisConfig;
 
         private volatile IDatabase? _database;
         private readonly object _locker = new object();
@@ -29,7 +29,7 @@ namespace Common.CoreLib.Cache
 
             // redis配置项
             var host = _option.host ?? "127.0.0.1";
-            _redisConfig = new ConfigurationOptions()
+            _rdisConfig = new ConfigurationOptions()
             {
                 EndPoints =
                 {
@@ -58,7 +58,7 @@ namespace Common.CoreLib.Cache
                     _redisConnection.Dispose();
                 try
                 {
-                    _redisConnection = ConnectionMultiplexer.Connect(_redisConfig);
+                    _redisConnection = ConnectionMultiplexer.Connect(_rdisConfig);
                     _database = _redisConnection.GetDatabase();
                 }
                 catch (Exception ex)

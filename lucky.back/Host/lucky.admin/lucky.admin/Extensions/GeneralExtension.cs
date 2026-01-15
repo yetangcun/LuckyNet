@@ -1,4 +1,5 @@
-﻿using Common.CoreLib.Model.Option;
+﻿using Alot2.Admin.Common.Cache;
+using Common.CoreLib.Model.Option;
 using GrpcTransCore.Services;
 using lucky.admin.Extensions.Handler;
 using Lucky.PrtclService;
@@ -28,7 +29,10 @@ namespace lucky.admin.Extensions
         {
             app.SysModuleInit(cfg);   // 初始化系统管理模块
             app.PrtclModuleInit(cfg); // 初始化协议模块
-
+            if (cfg.GetValue<int>("RedisServr:open") == 1) // 初始化Redis服务
+            {
+                RedisServer.Init(cfg);
+            }
 
             // 创建异步包装器
             var _handle = app.ApplicationServices.GetService<IGrpcCommonHandler>();
