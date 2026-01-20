@@ -27,7 +27,8 @@ namespace Lucky.SysService
             services.Configure<SysDbOption>(cfg.GetSection("DbOption"));  // 添加数据库配置
             services.AddScoped<ISysCxt, SysCxt>();
 
-            #region 扫描当前模块的所有Entity // services.AddScoped<ISysRpsty<object>, SysRpsty<object>>();
+            #region 扫描当前模块的所有Entity 
+            // services.AddScoped<ISysRpsty<object>, SysRpsty<object>>(); // 此方法不可行
             var assembly = typeof(SysModelModule).Assembly;
             var entityTypes = assembly.GetTypes()
                 .Where(t => t.IsClass &&

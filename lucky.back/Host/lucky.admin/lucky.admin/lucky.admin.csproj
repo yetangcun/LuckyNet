@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\Services\Lucky.PrtclService\Lucky.PrtclService.csproj" />
     <ProjectReference Include="..\..\..\Services\Lucky.SysService\Lucky.SysService.csproj" />
   </ItemGroup>
