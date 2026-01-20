@@ -1,6 +1,5 @@
 ﻿using Lucky.BaseModel.Model;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using Lucky.PrtclModel.Model.Input;
 using Lucky.PrtclModel.Model.Output;
 using Lucky.PrtclService.Service.IService;

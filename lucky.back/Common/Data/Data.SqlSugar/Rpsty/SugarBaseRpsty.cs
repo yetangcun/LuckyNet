@@ -78,14 +78,14 @@ namespace Data.SqlSugar.Rpsty
         /// <typeparam name="TOut">输出结构</typeparam>
         /// <param name="where">条件表达式</param>
         /// <param name="selectors">结果表达式</param>
-        public async Task<(int,List<TOut>)> GetPageListAsync<TOut>(Expression<Func<TEntity, bool>>? where, Expression<Func<TEntity, TOut>> selectors, PageInfo page)
+        public async Task<(int, List<TOut>?)> GetPageListAsync<Tin, TOut>(Expression<Func<Tin, bool>>? where, Expression<Func<Tin, TOut>> selectors, PageInfo page)
         {
             var count = 0;
             var list = new List<TOut>();
-            var query = Context.Queryable<TEntity>();
+            var query = Context.Queryable<Tin>();
 
             #region 排序
-            var clsType = typeof(TEntity);
+            var clsType = typeof(Tin);
             if (!string.IsNullOrEmpty(page.Sort))
             {
                 var arrs = page.Sort.Split(',', StringSplitOptions.RemoveEmptyEntries); // 获取排序字段, 去掉空格
@@ -137,7 +137,7 @@ namespace Data.SqlSugar.Rpsty
             if (where == null)
             {
                 count = await query.CountAsync(where);
-                list = await Context.Queryable<TEntity>().Select(selectors).ToPageListAsync(page.PageIndex, page.PageSize);
+                list = await Context.Queryable<Tin>().Select(selectors).ToPageListAsync(page.PageIndex, page.PageSize);
                 return (count, list);
             }
 
@@ -148,6 +148,17 @@ namespace Data.SqlSugar.Rpsty
             list = await query.Where(where).Select(selectors).ToPageListAsync(page.PageIndex, page.PageSize);
 
             return (count, list);
+        }
+
+        public async Task<(int, List<TOut>)> GetPages<Entity, TOut>(Expression<Func<Entity, bool>>? where, Expression<Func<Entity, TOut>> selectors, PageInfo page)
+        {
+            var query = Context.Queryable<Entity>();
+            if (where == null)
+                query = query.Where(where);
+
+            var totals = new RefAsync<int>(0);
+            var result = await Context.Queryable<Entity>().Select(selectors).ToPageListAsync(page.PageIndex, page.PageSize, totals, CancellationToken.None);
+            return (totals, result);
         }
 
         /// <summary>

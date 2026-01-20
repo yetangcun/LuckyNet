@@ -47,28 +47,26 @@ namespace Lucky.PrtclService.Rpsty
                 //var prtclGrpcs = await Context.Queryable<PrtclGrpc>().ToListAsync();
 
                 IsSugarReadOnly = true; // 读写分离, 标识为读
+
                 var where = Expressionable.Create<Prtcl>();
                 where.AndIF(!string.IsNullOrWhiteSpace(req.Name), x => x.name == req.Name); // 筛选条件
 
-                var pgModel = new PageModel()
+                Expression<Func<Prtcl, PrtclOutput>> expr = x => new PrtclOutput()
                 {
-                    PageIndex = req.PageIndex,
-                    PageSize = req.PageSize,
-                    TotalCount = 0
+                    Name = x.name
                 };
-                var lst = GetPageList(where.ToExpression(), pgModel); // 调用自带的分页查询
-                var pageInfo = new BaseModel.Model.PageInfo()
+
+                var pgInfo = new BaseModel.Model.PageInfo()
                 {
                     PageIndex = req.PageIndex,
                     PageSize = req.PageSize,
                     Sort = req.Sort,
                     SortType = req.SortType
                 };
-                Expression<Func<Prtcl, PrtclOutput>> expr = x => new PrtclOutput()
-                {
-                    Name = x.name
-                };
-                return await GetPageListAsync(where.ToExpression(), expr, pageInfo); // 自己扩展的分页查询
+
+                var lst = await GetPages(where.ToExpression(), expr, pgInfo); // 调用自带的分页查询
+
+                return await GetPageListAsync(where.ToExpression(), expr, pgInfo); // 自己扩展的分页查询
             }
             catch (Exception ex)
             {
