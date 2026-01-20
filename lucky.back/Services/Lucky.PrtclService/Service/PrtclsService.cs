@@ -20,7 +20,7 @@ namespace Lucky.PrtclService.Rpsty
             _logger = logger;
         }
 
-        public async Task<(int, List<PrtclOutput>?)> GetPageListAsync(PrtclQueryInput req)
+        public async Task<(int, List<PrtclOutput>?)> GetPagesAsync(PrtclQueryInput req)
         {
             try
             {

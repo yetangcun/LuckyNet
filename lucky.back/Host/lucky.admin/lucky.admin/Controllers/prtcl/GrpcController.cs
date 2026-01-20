@@ -27,7 +27,7 @@ namespace lucky.admin.Controllers.prtcl
         [HttpGet("list")]
         public async Task<PageRes<List<PrtclOutput>?>> GetList([FromQuery] PrtclQueryInput req)
         {
-            var res = await _service.GetPageListAsync(req);
+            var res = await _service.GetPagesAsync(req);
             var pages = res.Item1 / req.PageSize;
             if (res.Item1 % req.PageSize > 0)
             {

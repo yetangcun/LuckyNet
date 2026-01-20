@@ -6,6 +6,6 @@ namespace Lucky.PrtclService.Service.IService
 {
     public interface IPrtclsService: ISugarBaseService
     {
-        Task<(int, List<PrtclOutput>?)> GetPageListAsync(PrtclQueryInput req);
+        Task<(int, List<PrtclOutput>?)> GetPagesAsync(PrtclQueryInput req);
     }
 }
