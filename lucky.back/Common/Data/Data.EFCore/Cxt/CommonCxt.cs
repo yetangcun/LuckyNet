@@ -43,16 +43,17 @@ namespace Data.EFCore.Cxt
             switch (_opt.DbType)
             {
                 case DatabaseType.Mysql:
-                    //optBlder.UseMySql(connString, ServerVersion.AutoDetect(connString), blder =>  // 使用Pomelo.EntityFrameworkCore.MySql 时需添加此配置
+                    //optBlder.UseMySql(connString, ServerVersion.AutoDetect(connString), blder =>  // 使用Pomelo.EntityFrameworkCore.MySql 时添加此配置
                     //{
                     //    blder.CommandTimeout(_opt.TimeOuts);
                     //});
-                    //optBlder.UseMySQL(connString, blder =>
+
+                    //optBlder.UseMySQL(connString, blder =>   // 使用MySql.EntityFrameworkCore 时添加此配置
                     //{
                     //    blder.CommandTimeout(_opt.TimeOuts);
                     //    blder.MaxBatchSize(6000);
                     //}).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                    optBlder.UseMySQL(connString);
+                    optBlder.UseMySQL(connString!);
                     break;
                 case DatabaseType.Sqlserver:
                     //optBlder.UseSqlServer(connString, blder =>

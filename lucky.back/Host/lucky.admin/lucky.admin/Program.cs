@@ -1,13 +1,14 @@
 using Serilog;
 using System.Net;
+using Lucky.SysService;
 using Lucky.BaseService;
+using Lucky.PrtclService;
 using lucky.admin.Extensions;
 using System.Text.Encodings.Web;
 using Common.CoreLib.Extension.Common;
 using lucky.admin.Extensions.Filters;
 using Microsoft.AspNetCore.HttpOverrides;
-using Lucky.SysService;
-using Lucky.PrtclService;
+//using lucky.admin.Extensions.Middleware;
 
 var bld = WebApplication.CreateBuilder(args);
 
@@ -30,7 +31,6 @@ bld.Services.AddControllers(c =>
 
     // 获取或设置要在转义字符串时使用的编码器
     opts.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
-
 });
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -90,13 +90,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerExt();
 }
 
+// app.UseStaticFiles(); // 启用静态文件, 静态文件直接返回，不进入路由
+
 app.UseForwardedHeaders(); // 开启反向代理
 
 app.UseCors(allowedCors);  // app.UseHttpsRedirection();
 
-app.UseAuthorization();
+// app.UseAuthentication(); // 启用认证
+
+app.UseAuthorization();  // 启用授权
 
 app.GeneralInit(bld.Configuration);
+
+// app.UseIpLimit();  // 启用IP限流 方式1 
+// app.UseMiddleware<IpLimitMiddleware>(); // 启用IP限流 方式2
 
 app.MapControllers();
 
