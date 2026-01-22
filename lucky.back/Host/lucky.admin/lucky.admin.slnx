@@ -12,6 +12,10 @@
     <Project Path="../../Common/Protocol/Prtcl.Mqtt/Prtcl.Mqtt.csproj" Id="19687d2b-757d-4561-ae54-253b71e7049d" />
     <Project Path="../../Common/Protocol/Prtcl.Tcudp/Prtcl.Tcudp.csproj" Id="f6ab20ad-9673-4137-ab1d-1f1d0289674d" />
   </Folder>
+  <Folder Name="/Common/Tsk/">
+    <Project Path="../../Common/Tsk/Tsk.Hangfire/Tsk.Hangfire.csproj" Id="cb084fae-6c57-4925-988d-adb247ff5ed1" />
+    <Project Path="../../Common/Tsk/Tsk.Quartz/Tsk.Quartz.csproj" Id="6ee83bc9-5a12-421e-aac6-765e76bb0817" />
+  </Folder>
   <Folder Name="/Document/" />
   <Folder Name="/Host/">
     <Project Path="../Lucky.IOT/Lucky.IOT.csproj" Id="cea9de76-0e75-4c96-9fea-8a94faeb75e6" />
