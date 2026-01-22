@@ -13,39 +13,22 @@ namespace Data.Dapper
         /// <summary>
         /// 查询单条记录
         /// </summary>
-        Task<T?> GetAsync<T>(string sql, string connectionString) where T : class;
-
-        /// <summary>
-        /// 查询单条记录
-        /// </summary>
-        Task<T?> GetAsync<T>(string sql, string connectionString, object prms) where T : class;
+        Task<T?> GetAsync<T>(string sql, string connectionString, object? prms = null) where T : class;
 
         /// <summary>
         /// 查询记录列表
         /// </summary>
-        Task<List<T>?> GetListAsync<T>(string sql, string connectionString) where T : class;
+        Task<List<T>?> GetListAsync<T>(string sql, string connectionString, object? prms = null) where T : class;
 
         /// <summary>
-        /// 查询记录列表
+        /// 分页查询(参数化)
         /// </summary>
-        Task<List<T>?> GetListAsync<T>(string sql, string connectionString, object prms) where T : class;
-
-        /// <summary>
-        /// 分页查询
-        /// </summary>
-        Task<(int, List<T>)> GetByPageAsync<T>(string sql, string connectionString) where T : class;
-
-        Task<(int, List<T>)> GetByPageAsync<T>(string sql, object prms, string connectionString) where T : class;
+        Task<(int, List<T>)> GetByPageAsync<T>(string sql, string connectionString, object? prms = null) where T : class;
 
         /// <summary>
         /// 执行操作
         /// </summary>
-        Task<bool> Opt(string sql, string connectionString);
-
-        /// <summary>
-        /// 执行操作
-        /// </summary>
-        Task<bool> Opt(string sql, string connectionString, object prms);
+        Task<bool> Opt(string sql, string connectionString, object? prms = null);
 
         /// <summary>
         /// 事务执行多个sql
@@ -95,16 +78,14 @@ namespace Data.Dapper
         /// <param name="sqlCounts">sql的数量</param>
         Task<List<string>?> GetMulResults(string sqls, string connectionString);
 
+        /// <summary>
+        /// 获取多个sql查询结果
+        /// </summary>
         Task<TResult> GetMulResultAsync<TResult>(string sqls, string connectionString, Func<SqlMapper.GridReader, Task<TResult>> mapper);
 
         /// <summary>
         /// 执行查询返回一个结果
         /// </summary>
-        Task<object?> ExeScardar(string sql, string connectionString);
-
-        /// <summary>
-        /// 执行查询返回一个结果
-        /// </summary>
-        Task<object?> ExeScardar(string sql, string connectionString, object prms);
+        Task<object?> ExeScardar(string sql, string connectionString, object? prms = null);
     }
 }

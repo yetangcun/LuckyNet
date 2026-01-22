@@ -52,6 +52,7 @@ namespace Data.EFCore.Cxt
                     //    blder.CommandTimeout(_opt.TimeOuts);
                     //    blder.MaxBatchSize(6000);
                     //}).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                    optBlder.UseMySQL(connString);
                     break;
                 case DatabaseType.Sqlserver:
                     //optBlder.UseSqlServer(connString, blder =>

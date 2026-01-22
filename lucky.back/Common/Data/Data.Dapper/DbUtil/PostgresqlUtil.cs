@@ -72,21 +72,7 @@ namespace Data.Dapper.DbUtil
         /// <summary>
         /// 单记录查询
         /// </summary>
-        public async Task<T?> GetAsync<T>(string sql, string connectionString) where T : class
-        {
-            using (var conn = new NpgsqlConnection(connectionString))
-            {
-                conn.Open();
-                var result = await conn.QueryAsync<T>(sql);
-                conn.Close();
-                return result.Any() ? result.First() : null;
-            }
-        }
-
-        /// <summary>
-        /// 单记录查询
-        /// </summary>
-        public async Task<T?> GetAsync<T>(string sql, string connectionString, object prms) where T : class
+        public async Task<T?> GetAsync<T>(string sql, string connectionString, object? prms = null) where T : class
         {
             using (var conn = new NpgsqlConnection(connectionString))
             {
@@ -100,29 +86,7 @@ namespace Data.Dapper.DbUtil
         /// <summary>
         /// 分页查询
         /// </summary>
-        public async Task<(int, List<T>)> GetByPageAsync<T>(string sql, string connectionString) where T : class
-        {
-            using (var conn = new NpgsqlConnection(connectionString))
-            {
-                conn.Open();
-
-                using (var reader = conn.QueryMultiple(sql))
-                {
-                    var total = await reader.ReadFirstAsync<int>();
-
-                    var data = await reader.ReadAsync<T>();
-
-                    conn.Close();
-
-                    return (total, data.ToList());
-                }
-            }
-        }
-
-        /// <summary>
-        /// 分页查询
-        /// </summary>
-        public async Task<(int, List<T>)> GetByPageAsync<T>(string sql, object prms, string connectionString) where T : class
+        public async Task<(int, List<T>)> GetByPageAsync<T>(string sql, string connectionString, object? prms = null) where T : class
         {
             using (var conn = new NpgsqlConnection(connectionString))
             {
@@ -144,21 +108,7 @@ namespace Data.Dapper.DbUtil
         /// <summary>
         /// 执行查询返回一个结果
         /// </summary>
-        public async Task<object?> ExeScardar(string sql, string connectionString)
-        {
-            using (var conn = new NpgsqlConnection(connectionString))
-            {
-                conn.Open();
-                var result = await conn.ExecuteScalarAsync(sql);
-                conn.Close();
-                return result;
-            }
-        }
-
-        /// <summary>
-        /// 执行查询返回一个结果
-        /// </summary>
-        public async Task<object?> ExeScardar(string sql, string connectionString, object prms)
+        public async Task<object?> ExeScardar(string sql, string connectionString, object? prms = null)
         {
             using (var conn = new NpgsqlConnection(connectionString))
             {
@@ -172,21 +122,7 @@ namespace Data.Dapper.DbUtil
         /// <summary>
         /// 条件查询列表
         /// </summary>
-        public async Task<List<T>?> GetListAsync<T>(string sql, string connectionString) where T : class
-        {
-            using (var conn = new NpgsqlConnection(connectionString))
-            {
-                conn.Open();
-                var result = await conn.QueryAsync<T>(sql);
-                conn.Close();
-                return result.ToList();
-            }
-        }
-
-        /// <summary>
-        /// 条件查询列表
-        /// </summary>
-        public async Task<List<T>?> GetListAsync<T>(string sql, string connectionString, object prms) where T : class
+        public async Task<List<T>?> GetListAsync<T>(string sql, string connectionString, object? prms = null) where T : class
         {
             using (var conn = new NpgsqlConnection(connectionString))
             {
@@ -337,24 +273,7 @@ namespace Data.Dapper.DbUtil
         /// <summary>
         /// sql操作
         /// </summary>
-        public async Task<bool> Opt(string sql, string connectionString)
-        {
-            using (var conn = new NpgsqlConnection(connectionString))
-            {
-                conn.Open();
-
-                var result = await conn.ExecuteAsync(sql);
-
-                conn.Close();
-
-                return (result > 0);
-            }
-        }
-
-        /// <summary>
-        /// sql操作
-        /// </summary>
-        public async Task<bool> Opt(string sql, string connectionString, object prms)
+        public async Task<bool> Opt(string sql, string connectionString, object? prms = null)
         {
             using (var conn = new NpgsqlConnection(connectionString))
             {

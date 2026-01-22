@@ -54,16 +54,7 @@ namespace Data.Dapper
         /// <summary>
         /// 单个查询
         /// </summary>
-        public async Task<T?> GetAsync<T>(string sql, string connectionString, DatabaseType databaseType) where T : class
-        {
-            var dbUtil = GetDbUtil(databaseType);
-            return await dbUtil.GetAsync<T>(sql, connectionString);
-        }
-
-        /// <summary>
-        /// 单个查询
-        /// </summary>
-        public async Task<T?> GetAsync<T>(string sql, string connectionString, DatabaseType databaseType, object prms) where T : class
+        public async Task<T?> GetAsync<T>(string sql, string connectionString, DatabaseType databaseType, object? prms = null) where T : class
         {
             var dbUtil = GetDbUtil(databaseType);
             return await dbUtil.GetAsync<T>(sql, connectionString, prms);
@@ -72,19 +63,7 @@ namespace Data.Dapper
         /// <summary>
         /// 条件查询|列表查询
         /// </summary>
-        public async Task<List<T>?> GetListAsync<T>(string sql, string connectionString, DatabaseType databaseType) where T : class
-        {
-            var dbUtil = GetDbUtil(databaseType);
-            if (dbUtil == null)
-                return default;
-
-            return await dbUtil.GetListAsync<T>(sql, connectionString);
-        }
-
-        /// <summary>
-        /// 条件查询|列表查询
-        /// </summary>
-        public async Task<List<T>?> GetListAsync<T>(string sql, string connectionString, DatabaseType databaseType, object prms) where T : class
+        public async Task<List<T>?> GetListAsync<T>(string sql, string connectionString, DatabaseType databaseType, object? prms = null) where T : class
         {
             var dbUtil = GetDbUtil(databaseType);
             if (dbUtil == null)
@@ -95,45 +74,21 @@ namespace Data.Dapper
 
         /// <summary>
         /// 分页查询
-        /// </summary>
-        public async Task<(int, List<T>)> GetByPageAsync<T>(string sql, string connectionString, DatabaseType databaseType) where T : class
-        {
-            var dbUtil = GetDbUtil(databaseType);
-            if (dbUtil == null)
-                return default;
-
-            return await dbUtil.GetByPageAsync<T>(sql, connectionString);
-        }
-
-        /// <summary>
-        /// 分页查询
         /// 参数化
         /// </summary>
-        public async Task<(int, List<T>)> GetByPageAsync<T>(string sql, object prms, string connectionString, DatabaseType databaseType) where T : class
+        public async Task<(int, List<T>)> GetByPageAsync<T>(string sql, string connectionString, DatabaseType databaseType, object? prms = null) where T : class
         {
             var dbUtil = GetDbUtil(databaseType);
             if (dbUtil == null)
                 return default;
 
-            return await dbUtil.GetByPageAsync<T>(sql, prms, connectionString);
+            return await dbUtil.GetByPageAsync<T>(sql, connectionString, prms);
         }
 
         /// <summary>
         /// sql增|删|改
         /// </summary>
-        public async Task<bool> Opt(string sql, string connectionString, DatabaseType databaseType)
-        {
-            var dbUtil = GetDbUtil(databaseType);
-            if (dbUtil == null)
-                return false;
-
-            return await dbUtil.Opt(sql, connectionString);
-        }
-
-        /// <summary>
-        /// sql增|删|改
-        /// </summary>
-        public async Task<bool> Opt(string sql, string connectionString, DatabaseType databaseType, object prms)
+        public async Task<bool> Opt(string sql, string connectionString, DatabaseType databaseType, object? prms = null)
         {
             var dbUtil = GetDbUtil(databaseType);
             if (dbUtil == null)
@@ -255,6 +210,9 @@ namespace Data.Dapper
         public async Task<TResult> GetMulResultAsync<TResult>(string sqls, string connectionString, DatabaseType databaseType, Func<SqlMapper.GridReader, Task<TResult>> mapper)
         {
             var dbUtil = GetDbUtil(databaseType);
+            if (dbUtil == null)
+                return default;
+
             return await dbUtil.GetMulResultAsync<TResult>(sqls, connectionString, mapper);
         }
 
@@ -267,7 +225,7 @@ namespace Data.Dapper
             return await dbUtil.ExeScardar(sql, connectionString);
         }
 
-        public async Task<object?> GetScalar(string sql, string connectionString, DatabaseType databaseType, object prms)
+        public async Task<object?> GetScalar(string sql, string connectionString, DatabaseType databaseType, object? prms = null)
         {
             var dbUtil = GetDbUtil(databaseType);
             if (dbUtil == null)
