@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Protocol\Prtcl.Grpc\Prtcl.Grpc.csproj" />
+    <ProjectReference Include="..\..\Common\Tsk\Tsk.Quartz\Tsk.Quartz.csproj" />
     <ProjectReference Include="..\..\Models\Lucky.SysModel\Lucky.SysModel.csproj" />
     <ProjectReference Include="..\Lucky.BaseService\Lucky.BaseService.csproj" />
   </ItemGroup>

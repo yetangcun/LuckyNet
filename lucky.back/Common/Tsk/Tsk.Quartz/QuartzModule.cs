@@ -1,8 +1,9 @@
-﻿using Common.CoreLib.Model.Option;
+﻿using Quartz;
+using Tsk.Quartz.Jobs;
+using Common.CoreLib.Model.Option;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Quartz;
 
 namespace Tsk.Quartz
 {
@@ -13,14 +14,14 @@ namespace Tsk.Quartz
         /// </summary>
         /// <param name="services"></param>
         /// <param name="configuration"></param>
-        public static void QuartzModuleLoad(IServiceCollection services, IConfiguration cfg)
+        public static void QuartzModuleLoad(this IServiceCollection services, IConfiguration cfg)
         {
             var quartzSection = cfg.GetSection("Quartz");
             services.Configure<QuartzOption>(quartzSection);
             var quartzOption = quartzSection.Get<QuartzOption>();
-
             services.AddQuartz(opt =>
             {
+                opt.UseDefaultThreadPool(4);
                 opt.SchedulerId = quartzOption!.SchedulerId;
             });
 
@@ -29,6 +30,8 @@ namespace Tsk.Quartz
             {
                 opt.WaitForJobsToComplete = true;
             });
+
+            services.AddSingleton<JobExtension>();
         }
 
         /// <summary>

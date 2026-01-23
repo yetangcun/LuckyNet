@@ -1,14 +1,15 @@
 ﻿using Common.CoreLib.Model.Option;
+using Tsk.Quartz;
 using Lucky.SysModel;
 using Lucky.SysService.Cxt;
 using Lucky.SysService.Rpsty;
-using Microsoft.Extensions.Options;
 using Lucky.SysService.Rpsty.IRpsty;
 using Lucky.SysService.Service;
 using Lucky.SysService.Service.IService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Lucky.SysService
 {
@@ -43,6 +44,8 @@ namespace Lucky.SysService
             #endregion
 
             services.AddScoped<ISysUserService, SysUserService>();
+
+            services.QuartzModuleLoad(cfg); // 添加Quartz
         }
 
         /// <summary>
