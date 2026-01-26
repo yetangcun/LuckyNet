@@ -44,7 +44,7 @@ namespace lucky.admin.Controllers.sys
         {
             #region job 测试 "0/5 * * * * ?"  秒 分 时 【日(Day of month)】 月 【星期几(Day of week)】 【年(可选，可以忽略)】
 
-            // await jobExt.AddOnceJob<OnceTestJob>(null);  // 一次性 立即执行
+            await jobExt.AddOnceJob<OnceTestJob>(null);  // 一次性 立即执行
 
             //await Task.Delay(100);
             //await jobExt.AddOnceDelayJob<OnceTestJob>(new Dictionary<string, object>() // 一次性 延迟执行
