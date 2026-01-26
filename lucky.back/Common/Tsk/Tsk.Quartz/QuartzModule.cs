@@ -21,7 +21,7 @@ namespace Tsk.Quartz
             var quartzOption = quartzSection.Get<QuartzOption>();
             services.AddQuartz(opt =>
             {
-                opt.UseDefaultThreadPool(4);
+                opt.UseDefaultThreadPool(pool => pool.MaxConcurrency = 10);
                 opt.SchedulerId = quartzOption!.SchedulerId;
             });
 
@@ -29,6 +29,8 @@ namespace Tsk.Quartz
             services.AddQuartzHostedService(opt =>
             {
                 opt.WaitForJobsToComplete = true;
+                opt.AwaitApplicationStarted = true;
+                opt.StartDelay = TimeSpan.FromSeconds(6);
             });
 
             services.AddSingleton<JobExtension>();

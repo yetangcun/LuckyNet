@@ -17,13 +17,18 @@ namespace lucky.admin.Controllers.sys
     public class SysUserController : SysBaseController
     {
         private readonly ISysUserService _sysUserService;
+        private readonly ILogger<SysUserController> _logger;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="sysUserService"></param>
-        public SysUserController(ISysUserService sysUserService)
+        /// <param name="logger"></param>
+        public SysUserController(
+            ILogger<SysUserController> logger,
+            ISysUserService sysUserService)
         {
+            _logger = logger;
             _sysUserService = sysUserService;
         }
 
@@ -39,7 +44,7 @@ namespace lucky.admin.Controllers.sys
         {
             #region job 测试 "0/5 * * * * ?"  秒 分 时 【日(Day of month)】 月 【星期几(Day of week)】 【年(可选，可以忽略)】
 
-            await jobExt.AddOnceJob<OnceTestJob>(null);  // 一次性 立即执行
+            // await jobExt.AddOnceJob<OnceTestJob>(null);  // 一次性 立即执行
 
             //await Task.Delay(100);
             //await jobExt.AddOnceDelayJob<OnceTestJob>(new Dictionary<string, object>() // 一次性 延迟执行
@@ -47,12 +52,31 @@ namespace lucky.admin.Controllers.sys
             //    {"name", "Quartz Once Delay 测试"}
             //}, TimeSpan.FromSeconds(6));
 
-            //await Task.Delay(100);
-            //await jobExt.AddIntervalJob<IntervalTestJob>(null, 4);  // 周期性循环执行
 
             //await Task.Delay(100);
-            await jobExt.AddCornJob<CornTestJob>(null, "0/6 * * * * ?"); // corn 表达式 循环执行 每隔6秒执行一次
+            //await jobExt.AddIntervalJob<IntervalTestJob>(null, 2);  // 周期性循环执行
 
+            //await Task.Delay(100);
+            //await jobExt.AddCornJob<CornTestJob>(null, "0/6 * * * * ?"); // corn 表达式 循环执行 每隔6秒执行一次
+
+            //var jobName = "CornTestJob";  // IntervalTestJob
+            //Task.Run(async () =>
+            //{
+            //    Console.WriteLine($"即将暂停调度任务：{jobName}");
+            //    await Task.Delay(10000);
+            //    await jobExt.PauseJob(jobName);
+            //    Console.WriteLine($"已暂停调度任务：{jobName}");
+
+            //    Console.WriteLine($"即将恢复调度任务：{jobName}");
+            //    await Task.Delay(10000);
+            //    await jobExt.ResumeJob(jobName);
+            //    Console.WriteLine($"已恢复调度任务：{jobName}");
+
+            //    Console.WriteLine($"即将删除调度任务：{jobName}");
+            //    await Task.Delay(10000);
+            //    await jobExt.DeleteJob(jobName);
+            //    Console.WriteLine($"已删除调度任务：{jobName}");
+            //});
             #endregion
 
             #region jwt 测试
