@@ -6,6 +6,7 @@ using Lucky.SysModel.Model.Output;
 // using Microsoft.AspNetCore.Http;
 using Lucky.SysService.Service.IService;
 using Microsoft.AspNetCore.Mvc;
+using Prtcl.Grpc;
 using Tsk.Quartz.Jobs;
 using Tsk.Quartz.Jobs.Example;
 
@@ -40,11 +41,12 @@ namespace lucky.admin.Controllers.sys
         public async Task<ResModel<SysLoginOutput>> Post(
             [FromBody] SysUserLoginInput req,
             [FromServices] JobExtension jobExt,
+            [FromServices] GrpcClientHdl grpcClt,
             [FromServices] JwtAuthExtension jwt)
         {
             #region job 测试 "0/5 * * * * ?"  秒 分 时 【日(Day of month)】 月 【星期几(Day of week)】 【年(可选，可以忽略)】
 
-            await jobExt.AddOnceJob<OnceTestJob>(null);  // 一次性 立即执行
+            // await jobExt.AddOnceJob<OnceTestJob>(null);  // 一次性 立即执行
 
             //await Task.Delay(100);
             //await jobExt.AddOnceDelayJob<OnceTestJob>(new Dictionary<string, object>() // 一次性 延迟执行
@@ -77,6 +79,12 @@ namespace lucky.admin.Controllers.sys
             //    await jobExt.DeleteJob(jobName);
             //    Console.WriteLine($"已删除调度任务：{jobName}");
             //});
+            #endregion
+
+            #region grpc 测试
+
+            await grpcClt.GrpcGeneralCall(9682, new GrpcTransCore.Services.TransReq() { Sid = 2, Opt = 2 });
+
             #endregion
 
             #region jwt 测试

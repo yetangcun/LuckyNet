@@ -1,7 +1,6 @@
 using Serilog;
 using System.Net;
 using Lucky.SysService;
-using Lucky.BaseService;
 using Lucky.PrtclService;
 using lucky.admin.Extensions;
 using System.Text.Encodings.Web;
@@ -35,7 +34,7 @@ bld.Services.AddControllers(c =>
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 // builder.Services.AddOpenApi();
-bld.Services.BaseInitLoad(bld.Configuration);
+bld.Services.GeneralLoad(bld.Configuration);   // 加载通用模块
 bld.Services.AddSwaggerExt(bld.Configuration); // 添加swagger配置
 bld.Services.SysModuleLoad(bld.Configuration);  // 系统管理模块
 bld.Services.PrtclModuleLoad(bld.Configuration); // 协议管理模块

@@ -11,7 +11,7 @@ using Lucky.PrtclService.Service.IService;
 
 namespace Lucky.PrtclService.Rpsty
 {
-    public class PrtclsService : SugarBaseService<Prtcl, PrtclDbOption>, IPrtclsService
+    public class PrtclsService : SugarBaseService<PrtclCommon, PrtclDbOption>, IPrtclsService
     {
         private readonly ILogger<PrtclsService> _logger;
 
@@ -48,10 +48,10 @@ namespace Lucky.PrtclService.Rpsty
 
                 IsSugarReadOnly = true; // 读写分离, 标识为读
 
-                var where = Expressionable.Create<Prtcl>();
+                var where = Expressionable.Create<PrtclCommon>();
                 where.AndIF(!string.IsNullOrWhiteSpace(req.Name), x => x.name == req.Name); // 筛选条件
 
-                Expression<Func<Prtcl, PrtclOutput>> expr = x => new PrtclOutput()
+                Expression<Func<PrtclCommon, PrtclOutput>> expr = x => new PrtclOutput()
                 {
                     Name = x.name
                 };

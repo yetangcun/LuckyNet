@@ -21,7 +21,7 @@ namespace Tsk.Quartz.Jobs
 
         private IScheduler? _scheduler;   // 调度器
         private bool _isrunning = false;  // 是否正在运行
-        private readonly SemaphoreSlim _lock = new(1, 1);  // 锁
+        private readonly SemaphoreSlim _lock = new(1, 1);  // 锁&信号量
 
         /// <summary>
         /// 获取调度器（单例）

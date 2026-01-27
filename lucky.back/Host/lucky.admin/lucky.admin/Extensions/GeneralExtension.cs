@@ -2,6 +2,7 @@
 using Common.CoreLib.Model.Option;
 using GrpcTransCore.Services;
 using lucky.admin.Extensions.Handler;
+using Lucky.BaseService;
 using Lucky.PrtclService;
 using Lucky.SysService;
 using Prtcl.Grpc;
@@ -17,9 +18,11 @@ namespace lucky.admin.Extensions
         /// <summary>
         /// 通用加载
         /// </summary>
-        public static void GeneralLoad(IServiceCollection services, IConfiguration configuration)
+        public static void GeneralLoad(this IServiceCollection services, IConfiguration cfg)
         {
+            services.Configure<GrpcConfig>(cfg.GetSection("GrpcCfg"));
             services.AddSingleton<IGrpcCommonHandler, GrpcDefaultHandler>();
+            services.BaseInitLoad(cfg);
         }
 
         /// <summary>

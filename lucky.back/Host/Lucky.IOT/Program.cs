@@ -1,4 +1,5 @@
 using Common.CoreLib.Extension.Common;
+using Lucky.IotService;
 using System.Text.Encodings.Web;
 
 var bld = WebApplication.CreateBuilder(args);
@@ -26,6 +27,8 @@ bld.Services.AddControllers().AddJsonOptions(opts =>  // 配置序列化 System.Text.
 // builder.Services.AddOpenApi();
 bld.Services.AddSwaggerExt(bld.Configuration); // 添加swagger配置
 
+bld.Services.IotModuleLoad(bld.Configuration); // 添加Iot模块
+
 var app = bld.Build();
 
 // Configure the HTTP request pipeline.
@@ -38,5 +41,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.IotModuleInit(bld.Configuration); // 初始化Iot模块
 
 app.Run();

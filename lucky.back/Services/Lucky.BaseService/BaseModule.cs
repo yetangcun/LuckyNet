@@ -2,6 +2,7 @@
 using Common.CoreLib.Model.Option;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Prtcl.Grpc;
 
 namespace Lucky.BaseService
 {
@@ -22,6 +23,7 @@ namespace Lucky.BaseService
             services.Configure<UdpOption>(cfg.GetSection("UdpOption")); // 添加Udp配置
             services.Configure<RdisOption>(cfg.GetSection("RdisOption")); // 添加Redis配置
             services.AddSingleton<JwtAuthExtension>(); // 添加Jwt认证
+            services.AddSingleton<GrpcClientHdl>();    // 添加Grpc客户端
         }
     }
 }

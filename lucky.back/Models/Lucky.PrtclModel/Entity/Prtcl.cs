@@ -5,8 +5,11 @@ using System.Collections.Generic;
 
 namespace Lucky.PrtclModel.Entity
 {
+    /// <summary>
+    /// 协议公用表
+    /// </summary>
     [SugarTable("prtcl")]
-    public class Prtcl
+    public class PrtclCommon
     {
         /// <summary>
         /// 主键
