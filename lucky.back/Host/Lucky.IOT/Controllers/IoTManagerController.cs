@@ -1,7 +1,9 @@
-﻿using Lucky.BaseModel.Model;
-using Microsoft.AspNetCore.Http;
+﻿using Prtcl.Grpc;
+using Google.Protobuf;
+using Lucky.BaseModel.Model;
 using Microsoft.AspNetCore.Mvc;
-using Prtcl.Grpc;
+using Google.Protobuf.WellKnownTypes;
+using Common.CoreLib.Extension.Common;
 
 namespace Lucky.IOT.Controllers
 {
@@ -27,8 +29,18 @@ namespace Lucky.IOT.Controllers
         [HttpGet("list")]
         public async Task<ResModel<List<string>>> GetList([FromServices] GrpcClientHdl grpcClt)
         {
-            await grpcClt.GrpcGeneralCall(9681, new GrpcTransCore.Services.TransReq() { Sid = 1, Opt = 1 });
-            return ResModel<List<string>>.Success(new List<string>() { "1", "2", "3" });
+            var exts = new Dictionary<string, string>() 
+            {
+                {"nm","xxiao" },
+                {"age", "18" }
+            };
+            var res = await grpcClt.GrpcGeneralCall(9681, new GrpcTransCore.Services.TransReq()
+            {
+                Sid = 1,
+                Opt = 1,
+                Exts = Any.Pack(new StringValue { Value = exts.ToJson() })
+            });
+            return ResModel<List<string>>.Success(new List<string>() { "1", "2", res.ToJson() });
         }
     }
 }

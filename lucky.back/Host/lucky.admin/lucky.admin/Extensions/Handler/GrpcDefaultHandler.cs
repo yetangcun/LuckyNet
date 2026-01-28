@@ -1,5 +1,7 @@
 ﻿using Prtcl.Grpc.extension;
 using GrpcTransCore.Services;
+using Google.Protobuf.WellKnownTypes;
+using Common.CoreLib.Extension.Common;
 
 namespace lucky.admin.Extensions.Handler
 {
@@ -14,7 +16,15 @@ namespace lucky.admin.Extensions.Handler
         /// <param name="reqParam"></param>
         public async Task<TransRes> Handler(TransReq? reqParam)
         {
-            throw new NotImplementedException();
+            reqParam.Exts.TryUnpack(out StringValue vl);
+            if (vl != null)
+            {
+                var dics = vl.Value.ToObj<Dictionary<string, string>>();
+            }
+            return new TransRes()
+            {
+                Data = vl.Value
+            };
         }
     }
 }
