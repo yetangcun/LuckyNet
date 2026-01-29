@@ -1,6 +1,6 @@
-/* eslint-env node
- // eslint-disable-next-line @typescript-eslint/no-require-imports
-require('@rushstack/eslint-patch/modern-module-resolution')  */
+/* eslint-env node  */
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+require('@rushstack/eslint-patch/modern-module-resolution')
 
 module.exports = {
   root: true,
@@ -12,6 +12,7 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: 'latest',
+    parser: '@typescript-eslint/parser', // 添加这行
   },
   rules: {
     'prettier/prettier': ['off', { endOfLine: 'auto' }],

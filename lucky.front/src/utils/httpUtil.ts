@@ -9,7 +9,7 @@ export const systemReq = new axiosReq({
   // baseURL: 'http://yao159.f3322.net:6116/',
   // baseURL: 'http://asr.7766.org:6116/',
   withCredentials: false,
-  timeout: 30000,
+  timeout: 10000, // 请求超时时间 10s
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
   },
