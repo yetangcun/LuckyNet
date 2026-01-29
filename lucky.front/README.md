@@ -23,6 +23,7 @@ TypeScript cannot handle type information for `.vue` imports by default, so we r
 
 ## 安装依赖包：
 
+npm install --save-dev js-md5
 npm install crypto-js --save
 npm install crypto-js --save-dev
 
