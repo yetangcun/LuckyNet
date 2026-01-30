@@ -83,7 +83,6 @@ namespace Common.CoreLib.Extension.Common
                     //获取枚举值上的特性
                     var info = f.GetCustomAttributes(typeof(ModuleApiInfo), false).OfType<ModuleApiInfo>().FirstOrDefault();
                     opt.SwaggerEndpoint($"/swagger/{f.Name}/swagger.json", info != null ? info.Title : f.Name);
-
                 });
             });
         }
