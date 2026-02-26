@@ -1,5 +1,6 @@
-﻿using GrpcTransCore.Services;
+﻿using Serilog;
 using Grpc.Core;
+using GrpcTransCore.Services;
 using Google.Protobuf.WellKnownTypes;
 
 namespace Prtcl.Grpc
@@ -9,7 +10,7 @@ namespace Prtcl.Grpc
         /// <summary>
         /// 开启grpc服务侦听
         /// </summary>
-        public static string GrpcServerStart(string listenIp, int listenPort, Func<TransReq?, Task<TransRes>> hdlFunc)
+        public static string GrpcServerStart(string listenIp, int listenPort, Func<TransReq?, Task<TransRes>> hdlFunc, ILogger? log = null)
         {
             try
             {
@@ -23,13 +24,19 @@ namespace Prtcl.Grpc
                 };
 
                 grpcServr.Start();
-                Console.WriteLine($"Grpc server start at {listenIp}:{listenPort} success");
+
+                if(log != null)
+                    log.Information($"Grpc server {listenIp}:{listenPort} start success");
+
                 return "success";
             }
             catch (Exception ex)
             {
                 var msg = $"{ex.Message},{ex.InnerException},{ex.StackTrace}";
-                Console.WriteLine(msg);
+
+                if (log != null)
+                    log.Error($"Grpc server {listenIp}:{listenPort} start error: {msg}");
+
                 return $"{ex.Message},{ex.InnerException},{ex.StackTrace}";
             }
         }

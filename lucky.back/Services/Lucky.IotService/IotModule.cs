@@ -1,12 +1,13 @@
-﻿using Common.CoreLib.Model.Option;
-using GrpcTransCore.Services;
+﻿using Serilog;
+using Prtcl.Grpc;
 using Lucky.BaseService;
-using Lucky.IotService.Extension.Handler;
+using Prtcl.Grpc.extension;
+using GrpcTransCore.Services;
+using Common.CoreLib.Model.Option;
 using Microsoft.AspNetCore.Builder;
+using Lucky.IotService.Extension.Handler;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Prtcl.Grpc;
-using Prtcl.Grpc.extension;
 
 namespace Lucky.IotService
 {
@@ -47,7 +48,8 @@ namespace Lucky.IotService
                 }
             };
             var grpcCfg = cfg.GetSection("GrpcCfg").Get<GrpcConfig>();
-            GrpcServrHdl.GrpcServerStart("0.0.0.0", grpcCfg!.ListenPort, grpcHdl); // 启动gRPC服务
+            var logger = app.ApplicationServices.GetService<ILogger>();
+            GrpcServrHdl.GrpcServerStart("0.0.0.0", grpcCfg!.ListenPort, grpcHdl, logger); // 启动gRPC服务
         }
     }
 }

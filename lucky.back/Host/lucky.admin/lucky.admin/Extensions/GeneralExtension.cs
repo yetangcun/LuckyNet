@@ -1,12 +1,12 @@
-﻿using Alot2.Admin.Common.Cache;
-using Common.CoreLib.Model.Option;
-using GrpcTransCore.Services;
-using lucky.admin.Extensions.Handler;
+﻿using Prtcl.Grpc;
+using Lucky.SysService;
 using Lucky.BaseService;
 using Lucky.PrtclService;
-using Lucky.SysService;
-using Prtcl.Grpc;
 using Prtcl.Grpc.extension;
+using GrpcTransCore.Services;
+using Alot2.Admin.Common.Cache;
+using Common.CoreLib.Model.Option;
+using lucky.admin.Extensions.Handler;
 
 namespace lucky.admin.Extensions
 {
@@ -55,7 +55,8 @@ namespace lucky.admin.Extensions
                 }
             };
             var grpcCfg = cfg.GetSection("GrpcCfg").Get<GrpcConfig>();
-            GrpcServrHdl.GrpcServerStart("0.0.0.0", grpcCfg.ListenPort, grpcHdl); // 启动gRPC服务
+            var logger = app.ApplicationServices.GetService<Serilog.ILogger>();
+            GrpcServrHdl.GrpcServerStart("0.0.0.0", grpcCfg.ListenPort, grpcHdl, logger); // 启动gRPC服务
         }
     }
 }
