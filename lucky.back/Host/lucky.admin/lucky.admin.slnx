@@ -10,6 +10,7 @@
   <Folder Name="/Common/Protocol/">
     <Project Path="../../Common/Protocol/Prtcl.Grpc/Prtcl.Grpc.csproj" Id="f8563c23-8e7a-40ca-a274-d28a082980b8" />
     <Project Path="../../Common/Protocol/Prtcl.Mqtt/Prtcl.Mqtt.csproj" Id="19687d2b-757d-4561-ae54-253b71e7049d" />
+    <Project Path="../../Common/Protocol/Prtcl.MqttServr/Prtcl.MqttServr.csproj" Id="d49a2d8a-2e75-409b-b99c-efdf8c914ea5" />
     <Project Path="../../Common/Protocol/Prtcl.Tcudp/Prtcl.Tcudp.csproj" Id="f6ab20ad-9673-4137-ab1d-1f1d0289674d" />
   </Folder>
   <Folder Name="/Common/Tsk/">
@@ -19,6 +20,7 @@
   <Folder Name="/Document/" />
   <Folder Name="/Host/">
     <Project Path="../Lucky.IOT/Lucky.IOT.csproj" Id="cea9de76-0e75-4c96-9fea-8a94faeb75e6" />
+    <Project Path="../Lucky.MqttServr/Lucky.MqttServr.csproj" Id="bbc620c8-5c74-4610-a3a9-822f71f8a2bb" />
     <Project Path="lucky.admin/lucky.admin.csproj" />
   </Folder>
   <Folder Name="/Models/">

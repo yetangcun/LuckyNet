@@ -1,0 +1,6 @@
+@Lucky.MqttServr_HostAddress = http://localhost:5234
+
+GET {{Lucky.MqttServr_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

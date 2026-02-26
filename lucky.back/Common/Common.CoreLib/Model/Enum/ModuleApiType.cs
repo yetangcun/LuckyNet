@@ -42,6 +42,12 @@
         /// IoT
         /// </summary>
         [ModuleApiInfo(Description = "IoT服务模块", Title = "IoT服务", Version = "1.0")]
-        IoT
+        IoT = 2,
+
+        /// <summary>
+        /// MQTT服务
+        /// </summary>
+        [ModuleApiInfo(Description = "MQTT服务模块", Title = "MQTT服务", Version = "1.0")]
+        mqttservr = 3
     }
 }

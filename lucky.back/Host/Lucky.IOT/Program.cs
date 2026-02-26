@@ -1,6 +1,7 @@
-using Common.CoreLib.Extension.Common;
+using Serilog;
 using Lucky.IotService;
 using System.Text.Encodings.Web;
+using Common.CoreLib.Extension.Common;
 
 var bld = WebApplication.CreateBuilder(args);
 
@@ -29,12 +30,19 @@ bld.Services.AddSwaggerExt(bld.Configuration); // 添加swagger配置
 
 bld.Services.IotModuleLoad(bld.Configuration); // 添加Iot模块
 
+// 使用Serilog
+bld.Host.UseSerilog((context, logger) => // 使用日志
+{
+    logger.ReadFrom.Configuration(context.Configuration);
+    logger.Enrich.FromLogContext();
+});
+
 var app = bld.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (true) // app.Environment.IsDevelopment()
 {
-    //app.MapOpenApi();
+    // app.MapOpenApi();
     app.UseSwaggerExt();
 }
 

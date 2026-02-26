@@ -4,8 +4,8 @@ using Lucky.SysService;
 using Lucky.PrtclService;
 using lucky.admin.Extensions;
 using System.Text.Encodings.Web;
-using Common.CoreLib.Extension.Common;
 using lucky.admin.Extensions.Filters;
+using Common.CoreLib.Extension.Common;
 using Microsoft.AspNetCore.HttpOverrides;
 //using lucky.admin.Extensions.Middleware;
 
@@ -39,9 +39,9 @@ bld.Services.AddSwaggerExt(bld.Configuration); // 添加swagger配置
 bld.Services.SysModuleLoad(bld.Configuration);  // 系统管理模块
 bld.Services.PrtclModuleLoad(bld.Configuration); // 协议管理模块
 
-bld.Host.UseSerilog((context, logger) => // 采用serilog日志
+bld.Host.UseSerilog((cxt, logger) => // 采用serilog日志
 {
-    logger.ReadFrom.Configuration(context.Configuration);
+    logger.ReadFrom.Configuration(cxt.Configuration);
     logger.Enrich.FromLogContext();
 });
 

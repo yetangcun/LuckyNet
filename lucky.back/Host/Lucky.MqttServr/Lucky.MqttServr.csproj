@@ -4,12 +4,17 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\lucky.admin</DockerfileContext>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Services\Lucky.PrtclService\Lucky.PrtclService.csproj" />
-    <ProjectReference Include="..\..\..\Services\Lucky.SysService\Lucky.SysService.csproj" />
+    <ProjectReference Include="..\..\Common\Protocol\Prtcl.MqttServr\Prtcl.MqttServr.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>

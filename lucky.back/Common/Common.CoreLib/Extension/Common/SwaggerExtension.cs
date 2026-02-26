@@ -35,9 +35,9 @@ namespace Common.CoreLib.Extension.Common
                 opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "Value: Bearer {token}",
-                    Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
+                    Name = "Authorization",
                     Scheme = "Bearer"
                 });
 
@@ -54,7 +54,7 @@ namespace Common.CoreLib.Extension.Common
                             },
                             Description = "Bearer {token}"
                         },
-                        new List<string>() //["readAccess", "writeAccess"]
+                        new List<string>() // ["readAccess", "writeAccess"]
                     }
                 });
 
