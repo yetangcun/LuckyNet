@@ -92,7 +92,8 @@ namespace Prtcl.MqttServr
                 if (!string.IsNullOrEmpty(_option.MqttCertificatePath))
                 {
                     // 读取证书文件
-                    X509Certificate2 certificate = new X509Certificate2(_option.MqttCertificatePath, _option.MqttCertificatePassword, X509KeyStorageFlags.Exportable);
+                    // X509Certificate2 certificate = new X509Certificate2(_option.MqttCertificatePath, _option.MqttCertificatePassword, X509KeyStorageFlags.Exportable); // 已过时
+                    X509Certificate2 certificate = X509CertificateLoader.LoadCertificateFromFile(_option.MqttCertificatePath);
 
                     // 设置加密端口号
                     optionsBuilder.WithEncryptedEndpointPort(_option.SSLPort);
