@@ -1,5 +1,8 @@
 ﻿namespace Prtcl.MqttServr
 {
+    /// <summary>
+    /// MQTT服务
+    /// </summary>
     public interface IMqttServr
     {
         /// <summary>
