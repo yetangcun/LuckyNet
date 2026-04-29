@@ -1,0 +1,5 @@
+nvm-windows : nvm-setup.exe -- 安装nvm-windows管理多个版本nodejs
+nvm ls -- 查看哪些node版本已经安装
+nvm use 版本号 -- 切换使用指定的node版本  比如 nvm use 16.20.2
+nvm install 16.20.2 -- 安装指定的node版本
+nvm list available  -- 查看所有可安装的node版本
