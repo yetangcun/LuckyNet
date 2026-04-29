@@ -48,16 +48,16 @@ namespace Lucky.SysService.Service
 
             var outModel = await _usrRpsty.GetByIdAsync<SysUser, long, SysUserOutput>(2, x => new SysUserOutput()
             {
-                Id = x.Id,
-                Account = x.Account,
-                RealName = x.RealName
+                id = x.Id,
+                account = x.Account,
+                realname = x.RealName
             });
             var lst = await _usrRpsty.GetListAsync(where);
             var lists = await _usrRpsty.GetListAsync(where, x => new SysUserOutput()
             {
-                Id = x.Id,
-                Account = x.Account,
-                RealName = x.RealName
+                id = x.Id,
+                account = x.Account,
+                realname = x.RealName
             });
             /**************测试方法*****************/
 
@@ -80,6 +80,11 @@ namespace Lucky.SysService.Service
             var res = await _usrRpsty.GetPagesAsync(where, expr, pgInfo);
 
             return (res.Item1, res.Item2);
+        }
+
+        public async Task<SysUserOutput?> Dologin(string account)
+        {
+           return await _usrRpsty.SqlSingleQueryAsync<SysUserOutput>($"select id,account,realname,password from sys_user where account={account} and is_del=false");
         }
     }
 }

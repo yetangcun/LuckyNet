@@ -298,6 +298,20 @@ namespace Data.EFCore.Rpsty
             return datas;
         }
 
+        /// <summary>
+        /// 执行查询sql
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="sql"></param>
+
+        public async Task<TResult?> SqlSingleQueryAsync<TResult>(FormattableString sql)
+        {
+            _opt.IsReadOnly = true;
+            var data = _dbCxt.Database.SqlQuery<TResult>(sql).FirstOrDefault();
+            return data;
+        }
+
+
         #region 分页查询
 
         /// <summary>

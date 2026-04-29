@@ -130,6 +130,12 @@ namespace Data.EFCore.Rpsty
         /// </summary>
         Task<List<TResult>> SqlQueryAsync<TResult>(FormattableString sql);
 
+        /// <summary>
+        /// 执行查询sql
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="sql"></param>
+        Task<TResult?> SqlSingleQueryAsync<TResult>(FormattableString sql);
         #endregion
     }
 }

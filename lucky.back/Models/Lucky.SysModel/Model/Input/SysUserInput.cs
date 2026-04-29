@@ -43,6 +43,6 @@ namespace Lucky.SysModel.Model.Input
         /// <summary>
         /// 密码
         /// </summary>
-        public required string Password { get; set; }
+        public required string Passwd { get; set; }
     }
 }

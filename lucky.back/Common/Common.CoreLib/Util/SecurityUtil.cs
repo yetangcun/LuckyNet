@@ -69,7 +69,39 @@ namespace Common.CoreLib.Helper
 
         #endregion
 
-        #region MD5加密
+        #region md5
+
+        /// <summary>
+        /// 源字符串
+        /// 32位
+        /// </summary>
+        public static string GetMd5(string sourceStr)
+        {
+            using (var md5 = MD5.Create())
+            {
+                var bytes = md5.ComputeHash(Encoding.UTF8.GetBytes(sourceStr));
+                var sb = new StringBuilder();
+                foreach (var b in bytes)
+                {
+                    sb.Append(b.ToString("x2"));
+                }
+
+                return sb.ToString();
+            }
+        }
+
+        /// <summary>
+        /// 16位
+        /// </summary>
+        public static string Get16Md5(string sourceStr)
+        {
+            using (var md5 = MD5.Create())
+            {
+                string t2 = BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(sourceStr)), 4, 8);
+                t2 = t2.Replace("-", "");
+                return t2.ToLower();
+            }
+        }
         #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Common.CoreLib.Extension.Common;
+using Common.CoreLib.Helper;
 using Lucky.BaseModel.Model;
 using Lucky.BaseService.Extension;
 using Lucky.SysModel.Model.Input;
@@ -7,6 +8,7 @@ using Lucky.SysModel.Model.Output;
 using Lucky.SysService.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Prtcl.Grpc;
+using System.Text;
 using Tsk.Quartz.Jobs;
 using Tsk.Quartz.Jobs.Example;
 
@@ -83,18 +85,27 @@ namespace lucky.admin.Controllers.sys
 
             #region grpc 测试
 
-            await grpcClt.GrpcGeneralCall(9682, new GrpcTransCore.Services.TransReq() { Sid = 2, Opt = 2 });
+            // await grpcClt.GrpcGeneralCall(9682, new GrpcTransCore.Services.TransReq() { Sid = 2, Opt = 2 });
 
             #endregion
 
             #region jwt 测试
 
-            var res = new SysLoginOutput();
-            var token = jwt.GetToken(req.Account, "999999");
-            res.Tkn = token;
-            return ResModel<SysLoginOutput>.Success(res);
-
             #endregion
+
+            var bts = Convert.FromBase64String(req.Account);
+            var account = Encoding.UTF8.GetString(bts);
+
+            var logRes = await _sysUserService.Dologin(account);
+
+            if (logRes == null || req.Passwd != logRes.password)
+                return ResModel<SysLoginOutput>.Failed(null, "账号或密码错误");
+
+            var res = new SysLoginOutput();
+            var token = jwt.GetToken(account, logRes.id.ToString());
+            res.Tkn = token;
+            res.Name = logRes.realname;
+            return ResModel<SysLoginOutput>.Success(res);
         }
 
         /// <summary>

@@ -13,5 +13,13 @@ namespace Lucky.SysService.Service.IService
         /// </summary>
         /// <param name="req"></param>
         Task<(int, List<SysUserOutput>)> GetList(SysUserQueryInput req);
+
+
+        /// <summary>
+        /// 登录操作
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="password"></param>
+        Task<SysUserOutput?> Dologin(string account);
     }
 }

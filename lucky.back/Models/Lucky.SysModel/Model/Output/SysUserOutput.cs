@@ -8,17 +8,22 @@
         /// <summary>
         /// 用户ID
         /// </summary>
-        public long Id { get; set; }
+        public long id { get; set; }
 
         /// <summary>
         /// 用户名
         /// </summary>
-        public string? Account { get; set; }
+        public string? account { get; set; }
 
         /// <summary>
         /// 姓名
         /// </summary>
-        public string? RealName { get; set; }
+        public string? realname { get; set; }
+
+        /// <summary>
+        /// 密码
+        /// </summary>
+        public string? password { get; set; }
     }
 
     /// <summary>
