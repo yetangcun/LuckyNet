@@ -3,7 +3,7 @@
 import { Cpu } from '@element-plus/icons-vue'
 import { ref } from 'vue';
 
-const lg_title = ref(import.meta.env.SYS_LOG_TITLE)
+const lg_title = ref(import.meta.env.VITE_SYS_LOG_TITLE)
 
 console.log(lg_title)
 
@@ -16,7 +16,7 @@ console.log(lg_title)
           <el-icon :size="46" :color="'white'"><Cpu /> </el-icon>
           <span>・</span>
           <!-- <span style="font-size: 23px; font-style: italic;">AI NEXT</span> -->
-          <span style="font-size: 23px; font-style: italic;">{{ lg_title }}</span>
+          <span style="font-size: 23px; font-style: italic;">{{lg_title}}</span>
       </div>
       <div id="l_nav"></div>
     </div>
