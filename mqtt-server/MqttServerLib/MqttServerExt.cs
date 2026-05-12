@@ -106,10 +106,10 @@ namespace MqttServerLib
                 MqttServerOptionsBuilder optionsBuilder = new MqttServerOptionsBuilder();
                 optionsBuilder.WithDefaultEndpointPort(_option.Port); // 设置 服务端 端口号
                 optionsBuilder.WithDefaultEndpoint();
-                if (!string.IsNullOrEmpty(_option.MqttCertificatePath))
+                if (!string.IsNullOrEmpty(_option.CertificatePath))
                 {
                     // 读取证书文件
-                    X509Certificate2 certificate = new X509Certificate2(_option.MqttCertificatePath, _option.MqttCertificatePassword, X509KeyStorageFlags.Exportable);
+                    X509Certificate2 certificate = new X509Certificate2(_option.CertificatePath, _option.CertificatePassword, X509KeyStorageFlags.Exportable);
 
                     // 设置加密端口号
                     optionsBuilder.WithEncryptedEndpointPort(_option.SSLPort);
@@ -300,7 +300,7 @@ namespace MqttServerLib
         /// <returns></returns>
         public static Task OnValidatingConnection(ValidatingConnectionEventArgs cxt)
         {
-            if (cxt.UserName == "admin" && cxt.Password == "666666")
+            if (cxt.UserName == _option.UserName && cxt.Password == _option.PassWord)
             {
                 cxt.ReasonCode = MqttConnectReasonCode.Success;
             }

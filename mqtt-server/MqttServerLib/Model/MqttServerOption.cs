@@ -53,12 +53,12 @@
         /// <summary>
         /// mqtt证书文件路径
         /// </summary>
-        public string? MqttCertificatePath { get; set; }
+        public string? CertificatePath { get; set; }
 
         /// <summary>
         /// mqtt证书文件密匙
         /// </summary>
-        public string? MqttCertificatePassword { get; set; }
+        public string? CertificatePassword { get; set; }
 
         /// <summary>
         /// mqtt保活时间 秒

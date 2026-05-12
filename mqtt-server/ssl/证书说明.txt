@@ -1,0 +1,9 @@
+生成.pfx证书文件的方法步骤：1、先下载安装openssl；2、然后执行下面两行命令:
+
+openssl req -newkey rsa:2048 -nodes -keyout socialnetwork.key -x509 -days 3650 -out socialnetwork.cer
+
+openssl pkcs12 -export -in socialnetwork.cer -inkey socialnetwork.key -out socialnetwork.pfx
+
+
+
+已有证书mattservr.pfx的密码：kw123456

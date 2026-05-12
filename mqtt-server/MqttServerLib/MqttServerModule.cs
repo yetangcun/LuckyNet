@@ -38,9 +38,9 @@ namespace MqttServerLib
                     serverBuilder.WithDefaultEndpointPort(mqttOption.Port);
 
                     // TCP SSL 配置
-                    if (mqttOption.SSLPort > 0 && !string.IsNullOrWhiteSpace(mqttOption.MqttCertificatePath) && File.Exists(mqttOption.MqttCertificatePath))
+                    if (mqttOption.SSLPort > 0 && !string.IsNullOrWhiteSpace(mqttOption.CertificatePath) && File.Exists(mqttOption.CertificatePath))
                     {
-                        var certificate = new X509Certificate2(mqttOption.MqttCertificatePath, mqttOption.MqttCertificatePassword);
+                        var certificate = new X509Certificate2(mqttOption.CertificatePath, mqttOption.CertificatePassword);
                         serverBuilder.WithEncryptedEndpoint();
                         serverBuilder.WithEncryptedEndpointPort(mqttOption.SSLPort);
                         serverBuilder.WithEncryptionCertificate(certificate);
@@ -55,7 +55,7 @@ namespace MqttServerLib
                 }
             });
 
-            // ⭐ 关键：注册 MqttServer 单例，供 MqttServerExt 注入
+            // 注册 MqttServer 单例，供 MqttServerExt 注入
             // 注意：AddHostedMqttServer 注册的是 IHostedService，我们需要获取实际的 MqttServer 实例
             bld.Services.AddSingleton(serviceProvider =>
             {
@@ -74,17 +74,18 @@ namespace MqttServerLib
             });
 
             // Kestrel 配置（用于 WebSocket）
-            if (mqttOption != null && (mqttOption.WsPort > 0 || mqttOption.WssPort > 0))
+            if (mqttOption != null)
             {
                 bld.WebHost.UseKestrel(o =>
                 {
                     o.ListenAnyIP(mqttOption.Port, l => l.UseMqtt()); // mqtt
 
-                    o.ListenAnyIP(mqttOption.WsPort);  // ws
+                    if (mqttOption.WsPort>0)
+                        o.ListenAnyIP(mqttOption.WsPort);  // ws
 
-                    if (mqttOption.WssPort > 0 && !string.IsNullOrWhiteSpace(mqttOption.MqttCertificatePath) && File.Exists(mqttOption.MqttCertificatePath))
+                    if (mqttOption.WssPort > 0 && !string.IsNullOrWhiteSpace(mqttOption.CertificatePath) && File.Exists(mqttOption.CertificatePath))
                     {
-                        var certificate = new X509Certificate2(mqttOption.MqttCertificatePath, mqttOption.MqttCertificatePassword);
+                        var certificate = new X509Certificate2(mqttOption.CertificatePath, mqttOption.CertificatePassword);
                         o.ListenAnyIP(mqttOption.WssPort, l => l.UseHttps(certificate)); // wss
                     }
                 });
@@ -101,9 +102,9 @@ namespace MqttServerLib
             app.UseMqttServer(server =>
             {
                 server.StartedAsync += MqttServerExt.OnStartedAsync;
-                server.ValidatingConnectionAsync += MqttServerExt.OnValidatingConnection;
                 server.ClientConnectedAsync += MqttServerExt.OnClientConnected;
                 server.ClientDisconnectedAsync += MqttServerExt.OnClientDisconnected;
+                server.ValidatingConnectionAsync += MqttServerExt.OnValidatingConnection;
                 server.ClientSubscribedTopicAsync += MqttServerExt.OnClientSubscribedTopic;
                 server.ClientUnsubscribedTopicAsync += MqttServerExt.OnClientUnsubscribedTopic;
                 server.ApplicationMessageNotConsumedAsync += MqttServerExt.OnApplicationMessageNotConsumed;
@@ -111,8 +112,7 @@ namespace MqttServerLib
 
             app.MapConnectionHandler<MqttConnectionHandler>("/mqtt", options =>
             {
-                options.WebSockets.SubProtocolSelector = protocolList =>
-                    protocolList.FirstOrDefault() ?? "mqtt";
+                options.WebSockets.SubProtocolSelector = protocolList => protocolList.FirstOrDefault() ?? "mqtt";
             });
         }
     }
