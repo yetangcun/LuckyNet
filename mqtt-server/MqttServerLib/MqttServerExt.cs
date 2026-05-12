@@ -28,7 +28,7 @@ namespace MqttServerLib
         /// <summary>
         /// 
         /// </summary>
-        public static MqttServerOption _option;
+        public static MqttServerOption? _option;
 
         /// <summary>
         /// 静态构造函数

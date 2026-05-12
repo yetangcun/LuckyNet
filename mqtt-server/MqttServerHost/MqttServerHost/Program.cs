@@ -16,7 +16,7 @@ builder.Services.AddSwaggerConfig();
 
 var mqttSection = builder.Configuration.GetSection("MqttServerOption");
 builder.Services.Configure<MqttServerOption>(mqttSection); // 添加MqttServerOption配置
-builder.Services.AddSingleton<IMqttServerExt, MqttServerExt>();
+// builder.Services.AddSingleton<IMqttServerExt, MqttServerExt>();
 
 // 使用Serilog
 builder.Host.UseSerilog((context, logger) => // 使用日志
