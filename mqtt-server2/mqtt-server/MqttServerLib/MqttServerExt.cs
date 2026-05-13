@@ -3,8 +3,6 @@ using MQTTnet.Server;
 using System.Buffers;
 using MQTTnet.Protocol;
 using MqttServerLib.Model;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System.Collections.Concurrent;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
@@ -45,7 +43,7 @@ namespace MqttServerLib
         /// <summary>
         /// 构造函数
         /// </summary>
-        public MqttServerExt(IOptions<MqttServerOption> option, ILogger<MqttServerExt> logger)
+        public MqttServerExt() // IOptions<MqttServerOption> option, ILogger<MqttServerExt> logger
         {
             //_logger = logger;
             //_option = option.Value;

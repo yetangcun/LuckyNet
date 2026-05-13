@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MqttServerLib;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using MqttServerLib;
 
 namespace MqttServerHost.Controllers
 {
@@ -12,12 +12,14 @@ namespace MqttServerHost.Controllers
     [ApiExplorerSettings(GroupName = "mqttservr")]
     public class MqttServerManagerController : ControllerBase
     {
+        private IMqttServerExt mqttServer = new MqttServerExt();
+
         /// <summary>
         /// 启动服务
         /// </summary>
         [HttpPost("start")]
         [AllowAnonymous]
-        public async Task<IActionResult> StartAsync([FromServices] IMqttServerExt mqttServer)
+        public async Task<IActionResult> StartAsync()
         {
             await mqttServer.StartAsync();
             return new JsonResult(0);
@@ -28,7 +30,7 @@ namespace MqttServerHost.Controllers
         /// </summary>
         [HttpPost("stop")]
         [AllowAnonymous]
-        public async Task<IActionResult> StopAsync([FromServices] IMqttServerExt mqttServer)
+        public async Task<IActionResult> StopAsync()
         {
             await mqttServer.StopAsync();
             return new JsonResult(0);
@@ -38,7 +40,7 @@ namespace MqttServerHost.Controllers
         /// 获取连接客户端数量
         /// </summary>
         [HttpGet("getConnectedClientsCount")]
-        public IActionResult GetConnectedClientsCountAsync([FromServices] IMqttServerExt mqttServer)
+        public IActionResult GetConnectedClientsCountAsync()
         {
             var count = mqttServer.GetConnectedClientsCountAsync();
             return new JsonResult(count);
@@ -48,7 +50,7 @@ namespace MqttServerHost.Controllers
         /// 获取客户端信息
         /// </summary>
         [HttpGet("getClientInfo")]
-        public IActionResult GetClientInfoAsync([FromServices] IMqttServerExt mqttServer, string clientId)
+        public IActionResult GetClientInfoAsync(string clientId)
         {
             var info = mqttServer.GetClientsInfoAsync(clientId);
             return new JsonResult(info);
@@ -58,7 +60,7 @@ namespace MqttServerHost.Controllers
         /// 获取客户端订阅
         /// </summary>
         [HttpGet("getClientSubscribes")]
-        public IActionResult GetClientSubscribesAsync([FromServices] IMqttServerExt mqttServer, string clientId)
+        public IActionResult GetClientSubscribesAsync(string clientId)
         {
             var list = mqttServer.GetClientSubscribesAsync(clientId);
             return new JsonResult(list);

@@ -42,7 +42,7 @@ namespace MqttServerLib
         /// <summary>
         /// 构造函数
         /// </summary>
-        public MqttServerExt(IOptions<MqttServerOption> option, ILogger<MqttServerExt> logger)
+        public MqttServerExt() // IOptions<MqttServerOption> option, ILogger<MqttServerExt> logger
         {
             //_logger = logger;
             //_option = option.Value;
