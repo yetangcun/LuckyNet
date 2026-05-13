@@ -106,7 +106,7 @@ namespace Data.EFCore.Cxt
         {
             try
             {
-                var tis = this.GetType().Name;
+                // var tis = this.GetType().Name;
                 var res = this.Database.EnsureCreated(); // 创建数据库、 创建表结构
                 if (!res) // 如果创建表结构失败，则执行迁移
                     this.Database.Migrate();

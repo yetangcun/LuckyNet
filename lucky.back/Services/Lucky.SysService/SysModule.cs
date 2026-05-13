@@ -55,8 +55,7 @@ namespace Lucky.SysService
         /// <param name="cfg"></param>
         public static void SysModuleInit(this IApplicationBuilder app, IConfiguration cfg)
         {
-            var isInit = cfg.GetValue<bool>("CommonCfg:IsInitDb");
-            if (isInit)
+            if (cfg.GetValue<bool>("CommonCfg:IsInitDb"))
             {
                 var dbOption = app.ApplicationServices.GetService<IOptions<SysDbOption>>();
                 using (var scope = app.ApplicationServices.CreateScope())

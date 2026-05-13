@@ -129,6 +129,17 @@ namespace lucky.admin.Controllers.sys
         #endregion
 
         #region 用户菜单
+        /// <summary>
+        /// 获取用户权限信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("Permissions")]
+        public async Task<ResModel<string>> GetPermissions()
+        {
+            var uid = HttpContext.GetUid();
+
+            return ResModel<string>.Success(string.Empty);
+        }
         #endregion
     }
 }
