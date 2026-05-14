@@ -16,6 +16,11 @@
         public string? account { get; set; }
 
         /// <summary>
+        /// 头像
+        /// </summary>
+        public string avatar { get; set; }
+
+        /// <summary>
         /// 姓名
         /// </summary>
         public string? realname { get; set; }
@@ -34,31 +39,37 @@
         /// <summary>
         /// 用户ID
         /// </summary>
-        public string? Uid { get; set; }
+        public string? uid { get; set; }
 
         /// <summary>
         /// 用户名|姓名
         /// </summary>
-        public string? Name { get; set; }
+        public string? name { get; set; }
 
         /// <summary>
         /// 昵称
         /// </summary>
-        public string? NickName { get; set; }
+        public string? nickName { get; set; }
 
         /// <summary>
         /// 角色名称
         /// </summary>
-        public string? RoleName { get; set; }
+        public string? roleName { get; set; }
 
         /// <summary>
         /// 头像
         /// </summary>
-        public string? Avatar { get; set; }
+        public string? avatar { get; set; }
 
         /// <summary>
         /// 令牌
         /// </summary>
-        public string? Tkn { get; set; }
+        public string? tkn { get; set; }
+
+        /// <summary>
+        /// 布局类型 1左侧  2顶部+左侧
+        /// 默认为1
+        /// </summary>
+        public int? layout { get; set; } = 1;
     }
 }

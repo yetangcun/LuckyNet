@@ -103,8 +103,10 @@ namespace lucky.admin.Controllers.sys
 
             var res = new SysLoginOutput();
             var token = jwt.GetToken(account, logRes.id.ToString());
-            res.Tkn = token;
-            res.Name = logRes.realname;
+            res.tkn = token;
+            res.avatar = logRes.avatar;
+            res.uid = logRes.id.ToString();
+            res.name = logRes.realname;
             return ResModel<SysLoginOutput>.Success(res);
         }
 
@@ -134,11 +136,11 @@ namespace lucky.admin.Controllers.sys
         /// </summary>
         /// <returns></returns>
         [HttpGet("Permissions")]
-        public async Task<ResModel<string>> GetPermissions()
+        public async Task<ResModel<List<SysUserPermissionOutput>>> GetPermissions()
         {
             var uid = HttpContext.GetUid();
 
-            return ResModel<string>.Success(string.Empty);
+            return ResModel<List<SysUserPermissionOutput>>.Success(null);
         }
         #endregion
     }

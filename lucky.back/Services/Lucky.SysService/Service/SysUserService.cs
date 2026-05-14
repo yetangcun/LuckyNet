@@ -17,16 +17,25 @@ namespace Lucky.SysService.Service
     {
         private readonly ISysRpsty<SysUser> _usrRpsty;
         private readonly ISysRpsty<SysRole> _roleRpsty;
+        private readonly ISysRpsty<SysMenu> _menuRpsty;
+        private readonly ISysRpsty<SysUserRole> _usrRoleRpsty;
+        private readonly ISysRpsty<SysRoleMenu> _roleMenuRpsty;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         public SysUserService(
             ISysRpsty<SysUser> usrRpsty,
-            ISysRpsty<SysRole> roleRpsty)
+            ISysRpsty<SysRole> roleRpsty,
+            ISysRpsty<SysMenu> menuRpsty,
+            ISysRpsty<SysRoleMenu> roleMenuRpsty,
+            ISysRpsty<SysUserRole> usrRoleRpsty)
         {
             _usrRpsty = usrRpsty;
             _roleRpsty = roleRpsty;
+            _menuRpsty = menuRpsty;
+            _usrRoleRpsty = usrRoleRpsty;
+            _roleMenuRpsty = roleMenuRpsty;
         }
 
         public async Task<(int, List<SysUserOutput>)> GetList(SysUserQueryInput req)
@@ -82,9 +91,36 @@ namespace Lucky.SysService.Service
             return (res.Item1, res.Item2);
         }
 
+        /// <summary>
+        /// 登录系统
+        /// </summary>
+        /// <param name="account"></param>
         public async Task<SysUserOutput?> Dologin(string account)
         {
-           return await _usrRpsty.SqlSingleQueryAsync<SysUserOutput>($"select id,account,realname,password from sys_user where account={account} and is_del=false");
+           return await _usrRpsty.SqlSingleQueryAsync<SysUserOutput>($"select id,account,password,realname,avatar from sys_user where account={account} and is_del=false");
+        }
+
+        /// <summary>
+        /// 获取用户权限
+        /// </summary>
+        /// <param name="uid"></param>
+        public async Task<List<SysUserPermissionOutput>> GetPermissions(long uid)
+        {
+            var usrRoles = await _usrRoleRpsty.GetListAsync(x => x.UserId == uid);
+            if (usrRoles.Any())
+            {
+                var roleIds = usrRoles.Select(x => x.RoleId);
+                var roleMenus = await _roleMenuRpsty.GetListAsync(x => roleIds.Contains(x.RoleId));
+
+                if (roleMenus.Any())
+                {
+                    var menuIds = roleMenus.Select(x => x.MenuId);
+                    var menus = await _menuRpsty.GetListAsync(x => menuIds.Contains(x.Id));
+
+                    var topMenus = menus.Where(x => x.ParentId == null || x.ParentId == 0);
+                }
+            }
+            return new List<SysUserPermissionOutput>();
         }
     }
 }

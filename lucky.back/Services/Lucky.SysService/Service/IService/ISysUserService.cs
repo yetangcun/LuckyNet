@@ -14,6 +14,13 @@ namespace Lucky.SysService.Service.IService
         /// <param name="req"></param>
         Task<(int, List<SysUserOutput>)> GetList(SysUserQueryInput req);
 
+        /// <summary>
+        /// 获取用户权限
+        /// </summary>
+        /// <param name="uid"></param>
+
+        Task<List<SysUserPermissionOutput>> GetPermissions(long uid);
+
 
         /// <summary>
         /// 登录操作
