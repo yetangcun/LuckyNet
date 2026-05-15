@@ -140,7 +140,9 @@ namespace lucky.admin.Controllers.sys
         {
             var uid = HttpContext.GetUid();
 
-            return ResModel<List<SysUserPermissionOutput>>.Success(null);
+            var lst = await _sysUserService.GetPermissions(uid);
+
+            return ResModel<List<SysUserPermissionOutput>>.Success(lst);
         }
         #endregion
     }

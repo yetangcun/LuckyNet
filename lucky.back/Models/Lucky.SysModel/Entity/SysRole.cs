@@ -1,4 +1,5 @@
-﻿using Lucky.BaseModel.Model.Entity;
+﻿using Lucky.BaseModel.Enum;
+using Lucky.BaseModel.Model.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -43,5 +44,12 @@ namespace Lucky.SysModel.Entity
         [StringLength(200)]
         [Column("remark")]
         public string? Remark { get; set; }
+
+        /// <summary>
+        /// 角色类型
+        /// 1普通 2管理员 3超级管理员
+        /// </summary>
+        [Column("role_type")]
+        public RoleType RoleType { get; set; } = RoleType.General;
     }
 }

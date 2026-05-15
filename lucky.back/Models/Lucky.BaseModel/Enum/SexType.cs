@@ -9,5 +9,14 @@ namespace Lucky.BaseModel.Enum
     /// </summary>
     public enum SexType
     {
+        /// <summary>
+        /// 男
+        /// </summary>
+        Male = 1,
+
+        /// <summary>
+        /// 女
+        /// </summary>
+        Female = 2
     }
 }
