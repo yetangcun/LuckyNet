@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using MQTTnet.AspNetCore;
+using MqttServerLib.Model;
+using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using MQTTnet.AspNetCore;
-using MqttServerLib.Model;
-using System.Security.Cryptography.X509Certificates;
 
 namespace MqttServerLib
 {
@@ -33,17 +32,17 @@ namespace MqttServerLib
                         MqttServerExt._option = mqttOption;
 
                         // TCP 端口配置
-                        serverBuilder.WithDefaultEndpoint();
-                        serverBuilder.WithDefaultEndpointPort(mqttOption.Port);
+                        //serverBuilder.WithDefaultEndpoint();
+                        //serverBuilder.WithDefaultEndpointPort(mqttOption.Port);
 
                         // TCP SSL 配置
-                        if (mqttOption.SSLPort > 0 && !string.IsNullOrWhiteSpace(mqttOption.CertificatePath) && File.Exists(mqttOption.CertificatePath))
-                        {
-                            var certificate = new X509Certificate2(mqttOption.CertificatePath, mqttOption.CertificatePassword);
-                            serverBuilder.WithEncryptedEndpoint();
-                            serverBuilder.WithEncryptedEndpointPort(mqttOption.SSLPort);
-                            serverBuilder.WithEncryptionCertificate(certificate);
-                        }
+                        //if (mqttOption.SSLPort > 0 && !string.IsNullOrWhiteSpace(mqttOption.CertificatePath) && File.Exists(mqttOption.CertificatePath))
+                        //{
+                        //    var certificate = new X509Certificate2(mqttOption.CertificatePath, mqttOption.CertificatePassword);
+                        //    serverBuilder.WithEncryptedEndpoint();
+                        //    serverBuilder.WithEncryptedEndpointPort(mqttOption.SSLPort);
+                        //    serverBuilder.WithEncryptionCertificate(certificate);
+                        //}
 
                         // 其他配置
                         serverBuilder.WithPersistentSessions(true);
@@ -76,6 +75,16 @@ namespace MqttServerLib
                     if (mqttOption.WssPort > 0 && !string.IsNullOrEmpty(mqttOption.CertificatePath))
                     {
                         options.ListenAnyIP(mqttOption.WssPort, listenOptions => listenOptions.UseHttps(mqttOption.CertificatePath, mqttOption.CertificatePassword));
+                    }
+
+                    // 配置 MQTTS (原生 MQTT over TLS) 端口
+                    if (mqttOption.SSLPort > 0 && !string.IsNullOrWhiteSpace(mqttOption.CertificatePath) && File.Exists(mqttOption.CertificatePath))
+                    {
+                        options.ListenAnyIP(mqttOption.SSLPort, listenOptions =>
+                        {
+                            listenOptions.UseHttps(mqttOption.CertificatePath, mqttOption.CertificatePassword);
+                            listenOptions.UseMqtt();  // 关键：告诉 Kestrel 这个端口用 MQTT 协议
+                        });
                     }
 
                     // 配置 HTTP 端口 (用于WS和HTTP API)
