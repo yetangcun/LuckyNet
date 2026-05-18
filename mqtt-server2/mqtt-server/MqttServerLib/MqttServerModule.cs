@@ -71,20 +71,23 @@ namespace MqttServerLib
 
                 bld.WebHost.ConfigureKestrel(options =>
                 {
-                    // 配置 HTTPS 端口 (用于WSS和HTTP API)
-                    if (mqttOption.WssPort > 0 && !string.IsNullOrEmpty(mqttOption.CertificatePath))
+                    if(!string.IsNullOrWhiteSpace(mqttOption.CertificatePath) && File.Exists(mqttOption.CertificatePath))
                     {
-                        options.ListenAnyIP(mqttOption.WssPort, listenOptions => listenOptions.UseHttps(mqttOption.CertificatePath, mqttOption.CertificatePassword));
-                    }
-
-                    // 配置 MQTTS (原生 MQTT over TLS) 端口
-                    if (mqttOption.SSLPort > 0 && !string.IsNullOrWhiteSpace(mqttOption.CertificatePath) && File.Exists(mqttOption.CertificatePath))
-                    {
-                        options.ListenAnyIP(mqttOption.SSLPort, listenOptions =>
+                        // 配置 HTTPS 端口 (用于WSS和HTTP API)
+                        if (mqttOption.WssPort > 0)
                         {
-                            listenOptions.UseHttps(mqttOption.CertificatePath, mqttOption.CertificatePassword);
-                            listenOptions.UseMqtt();  // 关键：告诉 Kestrel 这个端口用 MQTT 协议
-                        });
+                            options.ListenAnyIP(mqttOption.WssPort, listenOptions => listenOptions.UseHttps(mqttOption.CertificatePath, mqttOption.CertificatePassword));
+                        }
+
+                        // 配置 MQTTS (原生 MQTT over TLS) 端口
+                        if (mqttOption.SSLPort > 0)
+                        {
+                            options.ListenAnyIP(mqttOption.SSLPort, listenOptions =>
+                            {
+                                listenOptions.UseHttps(mqttOption.CertificatePath, mqttOption.CertificatePassword);
+                                listenOptions.UseMqtt();  // 关键：告诉 Kestrel 这个端口用 MQTT 协议
+                            });
+                        }
                     }
 
                     // 配置 HTTP 端口 (用于WS和HTTP API)

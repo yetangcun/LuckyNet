@@ -81,24 +81,27 @@ namespace MqttServerLib
                 {
                     o.ListenAnyIP(mqttOption.Port, l => l.UseMqtt()); // mqtt
 
-                    // 配置 MQTTS (原生 MQTT over TLS) 端口
-                    if (mqttOption.SSLPort > 0 && !string.IsNullOrWhiteSpace(mqttOption.CertificatePath) && File.Exists(mqttOption.CertificatePath))
+                    if (!string.IsNullOrWhiteSpace(mqttOption.CertificatePath) && File.Exists(mqttOption.CertificatePath))  // 前提是都要有证书
                     {
-                        o.ListenAnyIP(mqttOption.SSLPort, listenOptions =>
+                        if (mqttOption.SSLPort > 0) // 配置 mqtts (原生 MQTT over TLS) 端口
                         {
-                            listenOptions.UseHttps(mqttOption.CertificatePath, mqttOption.CertificatePassword);
-                            listenOptions.UseMqtt();  // 关键：告诉 Kestrel 这个端口用 MQTT 协议
-                        });
+                            o.ListenAnyIP(mqttOption.SSLPort, listenOptions =>
+                            {
+                                listenOptions.UseHttps(mqttOption.CertificatePath, mqttOption.CertificatePassword);
+                                listenOptions.UseMqtt();  // 关键：告诉 Kestrel 这个端口用 MQTT 协议
+                            });
+                        }
+
+                        if (mqttOption.WssPort > 0) // wss
+                        {
+                            var certificate = new X509Certificate2(mqttOption.CertificatePath, mqttOption.CertificatePassword);
+                            o.ListenAnyIP(mqttOption.WssPort, l => l.UseHttps(certificate)); // wss
+                        }
                     }
 
                     if (mqttOption.WsPort>0)
                         o.ListenAnyIP(mqttOption.WsPort);  // ws
 
-                    if (mqttOption.WssPort > 0 && !string.IsNullOrWhiteSpace(mqttOption.CertificatePath) && File.Exists(mqttOption.CertificatePath))
-                    {
-                        var certificate = new X509Certificate2(mqttOption.CertificatePath, mqttOption.CertificatePassword);
-                        o.ListenAnyIP(mqttOption.WssPort, l => l.UseHttps(certificate)); // wss
-                    }
                 });
             }
         }
