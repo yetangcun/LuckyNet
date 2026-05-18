@@ -136,13 +136,13 @@ namespace lucky.admin.Controllers.sys
         /// </summary>
         /// <returns></returns>
         [HttpGet("Permissions")]
-        public async Task<ResModel<List<SysUserPermissionOutput>>> GetPermissions()
+        public async Task<ResModel<UsrData>> GetPermissions()
         {
             var uid = HttpContext.GetUid();
 
             var lst = await _sysUserService.GetPermissions(uid);
 
-            return ResModel<List<SysUserPermissionOutput>>.Success(lst);
+            return ResModel<UsrData>.Success(lst);
         }
         #endregion
     }

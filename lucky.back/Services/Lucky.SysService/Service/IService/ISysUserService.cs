@@ -19,7 +19,7 @@ namespace Lucky.SysService.Service.IService
         /// </summary>
         /// <param name="uid"></param>
 
-        Task<List<SysUserPermissionOutput>> GetPermissions(long uid);
+        Task<UsrData> GetPermissions(long uid);
 
 
         /// <summary>

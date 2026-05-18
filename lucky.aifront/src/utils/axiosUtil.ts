@@ -15,9 +15,9 @@ class axiosReq {
     if (conf.interceptors == null || !conf.interceptors.requestInterceptorHandle)
       this.axiosIns.interceptors.request.use(
         (req: InternalAxiosRequestConfig) => {
-          const token = localStorage.getItem('curr_token')
+          const token = localStorage.getItem('tkn')
           if (token) req.headers!.Authorization = `Bearer ${token}`
-          else if (req.url != 'api/system/User/LoginHandleAsync') router.replace('/')
+          // else if (req.url != 'api/system/User/LoginHandleAsync') router.replace('/')
           return req
         },
         (err) => err,
@@ -46,7 +46,7 @@ class axiosReq {
           }
 
           const newToken = res.headers['fresh_token']
-          if (newToken) localStorage.setItem('curr_token', newToken)
+          if (newToken) localStorage.setItem('tkn', newToken)
 
           return data
         },

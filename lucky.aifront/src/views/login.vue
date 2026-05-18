@@ -196,9 +196,8 @@ const loginHandle = () => {
         })
         return
       }
-      localStorage.setItem('curr_token', res.Data.Tkn)
 
-      // console.log(res.Data)
+      localStorage.setItem('tkn', res.Data.tkn)
 
       glbStore.setUsrInfo(res.Data)
 

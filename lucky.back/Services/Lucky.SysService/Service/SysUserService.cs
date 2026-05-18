@@ -97,15 +97,23 @@ namespace Lucky.SysService.Service
         /// <param name="account"></param>
         public async Task<SysUserOutput?> Dologin(string account)
         {
-           return await _usrRpsty.SqlSingleQueryAsync<SysUserOutput>($"select id,account,password,realname,avatar from sys_user where account={account} and is_del=false");
+            return await _usrRpsty.SqlSingleQueryAsync<SysUserOutput>($"select id,account,password,realname,avatar from sys_user where account={account} and is_del=false");
         }
 
         /// <summary>
         /// 获取用户权限
         /// </summary>
         /// <param name="uid"></param>
-        public async Task<List<SysUserPermissionOutput>> GetPermissions(long uid)
+        public async Task<UsrData> GetPermissions(long uid)
         {
+            var usrData = new UsrData();
+            var usrInfo = await _usrRpsty.GetByIdAsync<SysUser, long>(uid);
+
+            usrData.layout = 1;
+            usrData.uid = uid.ToString();
+            usrData.name = usrInfo.RealName;
+            usrData.avatar = usrInfo.Avatar;
+
             var usrRoles = await _usrRoleRpsty.GetListAsync(x => x.UserId == uid);
             if (usrRoles.Any())
             {
@@ -116,11 +124,13 @@ namespace Lucky.SysService.Service
                 {
                     var menuIds = roleMenus.Select(x => x.MenuId);
                     var menus = await _menuRpsty.GetListAsync(x => menuIds.Contains(x.Id));
-
                     var topMenus = menus.Where(x => x.ParentId == null || x.ParentId == 0);
+
+                    usrData.permissions = new List<SysUserPermissionOutput>();
                 }
             }
-            return new List<SysUserPermissionOutput>();
+
+            return usrData;
         }
     }
 }

@@ -1,14 +1,15 @@
 <script lang="ts" setup>
 // import { RouterView } from 'vue-router';
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { Cpu, Expand, Fold } from '@element-plus/icons-vue'
 import type { menuModel } from '@/models/sys/menuModel'
 
-import { useGlbStateStore } from '@/stores/glbstate'
+// import { useGlbStateStore } from '@/stores/glbstate'
+import { systemReq } from '@/utils/reqUtil'
 
-const glbstate = useGlbStateStore()
+// const glbstate = useGlbStateStore()
 
-console.log(glbstate.usrInfo.avatar + ' --- ' + glbstate.usrInfo.name)
+// console.log(glbstate.usrInfo.avatar + ' --- ' + glbstate.usrInfo.name)
 
 const lg_title = ref(import.meta.env.VITE_SYS_LOG_TITLE)
 const md = reactive<{
@@ -360,6 +361,16 @@ const md = reactive<{
       ]
     }
   ]
+})
+
+onMounted(() => { // 初始化加载
+  systemReq.axiosIns.get('api/sys/SysUser/Permissions')
+  .then(res=>{
+    console.log(res)
+  })
+  .catch(ex=>{
+    console.log(ex.message)
+  })
 })
 
 console.log(lg_title)
