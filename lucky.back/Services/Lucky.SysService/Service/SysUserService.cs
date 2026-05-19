@@ -125,8 +125,9 @@ namespace Lucky.SysService.Service
                     var menuIds = roleMenus.Select(x => x.MenuId);
                     var menus = await _menuRpsty.GetListAsync(x => menuIds.Contains(x.Id));
                     var topMenus = menus.Where(x => x.ParentId == null || x.ParentId == 0);
+                    var lst = new List<SysUserPermissionOutput>();
 
-                    usrData.permissions = new List<SysUserPermissionOutput>();
+                    usrData.permissions = lst;
                 }
             }
 

@@ -15,8 +15,8 @@ class axiosReq {
     if (conf.interceptors == null || !conf.interceptors.requestInterceptorHandle)
       this.axiosIns.interceptors.request.use(
         (req: InternalAxiosRequestConfig) => {
-          const token = localStorage.getItem('tkn')
-          if (token) req.headers!.Authorization = `Bearer ${token}`
+          const tkn = localStorage.getItem('tkn')
+          if (tkn) req.headers!.Authorization = `Bearer ${tkn}`
           // else if (req.url != 'api/system/User/LoginHandleAsync') router.replace('/')
           return req
         },

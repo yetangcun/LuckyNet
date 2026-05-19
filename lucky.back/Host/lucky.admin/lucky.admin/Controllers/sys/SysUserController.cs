@@ -102,11 +102,9 @@ namespace lucky.admin.Controllers.sys
                 return ResModel<SysLoginOutput>.Failed(null, "账号或密码错误");
 
             var res = new SysLoginOutput();
-            var token = jwt.GetToken(account, logRes.id.ToString());
-            res.tkn = token;
-            res.avatar = logRes.avatar;
+            var tkn = jwt.GetToken(account, logRes.id.ToString());
+            res.tkn = tkn;
             res.uid = logRes.id.ToString();
-            res.name = logRes.realname;
             return ResModel<SysLoginOutput>.Success(res);
         }
 
