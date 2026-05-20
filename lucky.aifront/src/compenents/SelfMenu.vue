@@ -3,8 +3,8 @@
     <div v-for="menu in menus" :key="menu.code">
       <div v-if="menu.menu_type==1 || menu.menu_type==2"> <!-- 模块、分组 -->
         <div v-if="menu.childs && menu.childs.length>0">
-          <div class="menuStl">
-            <div class="menuPartStl" @click="menu.isExpand=!menu.isExpand">
+          <div class="menuStl" @click="menu.isExpand=!menu.isExpand">
+            <div class="menuPartStl">
               <span :class="'iconfont '+ menu.icon" :style="{fontSize:menu.icon_size+'px',marginTop:'2px', marginRight:'6px'}"></span>
               <span>{{ menu.name }}</span>
             </div>
@@ -16,31 +16,31 @@
                 <div v-if="child.childs && child.childs.length>0">
                   <div class="menuStl">
                     <div class="menuPartStl">
-                      <span :class="'iconfont '+ menu.icon" :style="{fontSize:menu.icon_size+'px',marginTop:'2px', marginRight:'6px'}"></span>
-                      <span>{{ menu.name }}</span>
+                      <span :class="'iconfont '+ child.icon" :style="{fontSize:child.icon_size+'px',marginTop:'2px', marginRight:'6px'}"></span>
+                      <span>{{ child.name }}</span>
                     </div>
-                    <span :class="child.isExpand?'iconfont icon-arrow-down':'iconfont icon-arrow-right'" :style="{fontSize:menu.icon_size+'px',marginTop:'2px',display:'flex'}"></span>
+                    <span :class="child.isExpand?'iconfont icon-arrow-down':'iconfont icon-arrow-right'" :style="{fontSize:child.icon_size+'px',marginTop:'2px',display:'flex'}"></span>
                   </div>
                   <div v-show="child.isExpand">
                     <div v-for="chr in child.childs" :key="chr.code">
                       <div class="menuPartStl">
-                        <span :class="'iconfont '+ menu.icon" :style="{fontSize:menu.icon_size+'px',marginTop:'2px'}"></span>
-                        <span>{{ menu.name }}</span>
+                        <span :class="'iconfont '+ chr.icon" :style="{fontSize:chr.icon_size+'px',marginTop:'2px'}"></span>
+                        <span>{{ chr.name }}</span>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div v-else>
                   <div class="menuPartStl">
-                    <span :class="'iconfont '+ menu.icon" :style="{fontSize:menu.iconSize+'px'}"></span>
-                    <span>{{ menu.name }}</span>
+                    <span :class="'iconfont '+ child.icon" :style="{fontSize:child.iconSize+'px'}"></span>
+                    <span>{{ child.name }}</span>
                   </div>
                 </div>
               </div>
               <div v-else-if="child.menu_type==3">
                 <div class="menuPartStl">
-                  <span :class="'iconfont '+ menu.icon" :style="{fontSize:menu.icon_size+'px',marginTop:'2px'}"></span>
-                  <span>{{ menu.name }}</span>
+                  <span :class="'iconfont '+ child.icon" :style="{fontSize:child.icon_size+'px',marginTop:'2px'}"></span>
+                  <span>{{ child.name }}</span>
                 </div>
               </div>
             </div>
