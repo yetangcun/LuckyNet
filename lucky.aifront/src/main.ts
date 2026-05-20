@@ -8,7 +8,7 @@ import 'element-plus/dist/index.css'
 import '@/assets/iconfonts/iconfont.css'
 import './assets/main.css'
 
-import './assets/iconfonts/iconfont.js'
+// import './assets/iconfonts/iconfont.js'
 
 const app = createApp(App)
 

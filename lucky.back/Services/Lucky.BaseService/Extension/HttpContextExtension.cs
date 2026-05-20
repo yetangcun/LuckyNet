@@ -49,5 +49,13 @@ namespace Lucky.BaseService.Extension
             return !string.IsNullOrEmpty(uid) ? long.Parse(uid) : 0;
         }
 
+        /// <summary>
+        /// 是否管理员
+        /// </summary>
+        /// <param name="context"></param>
+        public static bool IsAdmin(this HttpContext context)
+        {
+            return false;
+        }
     }
 }

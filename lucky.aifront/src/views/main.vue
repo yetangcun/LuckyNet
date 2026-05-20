@@ -6,6 +6,7 @@ import type { menuModel } from '@/models/sys/menuModel'
 
 // import { useGlbStateStore } from '@/stores/glbstate'
 import { systemReq } from '@/utils/reqUtil'
+import SelfMenu from '@/compenents/SelfMenu.vue';
 
 // const glbstate = useGlbStateStore()
 
@@ -31,8 +32,9 @@ const md = reactive<{
       "code": "01",
       "menu_type": 1,
       "path": "/system",
-      "icon": "setting",
-      "icon_size": "24",
+      "icon": "icon-system-locked",
+      "icon_size": "19",
+      "isExpand":false,
       "childs": [
         {
           "id": "101",
@@ -43,7 +45,8 @@ const md = reactive<{
           "path": "/system/user",
           "icon": "user",
           "icon_size": "20",
-          "childs": []
+          "childs": [],
+          "isExpand":false
         },
         {
           "id": "102",
@@ -54,7 +57,8 @@ const md = reactive<{
           "path": "/system/role",
           "icon": "team",
           "icon_size": "20",
-          "childs": []
+          "childs": [],
+          "isExpand":false
         },
         {
           "id": "103",
@@ -65,7 +69,8 @@ const md = reactive<{
           "path": "/system/menu",
           "icon": "menu",
           "icon_size": "20",
-          "childs": []
+          "childs": [],
+          "isExpand":false
         },
         {
           "id": "104",
@@ -76,19 +81,21 @@ const md = reactive<{
           "path": "/system/log",
           "icon": "file-text",
           "icon_size": "20",
-          "childs": []
+          "childs": [],
+          "isExpand":false
         }
       ]
     },
     {
       "id": "2",
       "parent_id": "0",
-      "name": "内容管理",
+      "name": "任务管理",
       "code": "02",
       "menu_type": 1,
       "path": "/content",
-      "icon": "folder",
-      "icon_size": "24",
+      "icon": "icon-task-time",
+      "icon_size": "21",
+      "isExpand":false,
       "childs": [
         {
           "id": "201",
@@ -99,7 +106,8 @@ const md = reactive<{
           "path": "/content/article",
           "icon": "file",
           "icon_size": "20",
-          "childs": []
+          "childs": [],
+      "isExpand":false
         },
         {
           "id": "202",
@@ -110,7 +118,8 @@ const md = reactive<{
           "path": "/content/category",
           "icon": "tags",
           "icon_size": "20",
-          "childs": []
+          "childs": [],
+      "isExpand":false
         },
         {
           "id": "203",
@@ -121,7 +130,8 @@ const md = reactive<{
           "path": "/content/comment",
           "icon": "message",
           "icon_size": "20",
-          "childs": []
+          "childs": [],
+      "isExpand":false
         },
         {
           "id": "204",
@@ -132,19 +142,21 @@ const md = reactive<{
           "path": "/content/link",
           "icon": "link",
           "icon_size": "20",
-          "childs": []
+          "childs": [],
+      "isExpand":false
         }
       ]
     },
     {
+      "isExpand":false,
       "id": "3",
       "parent_id": "0",
-      "name": "运营工具",
+      "name": "移动端管理",
       "code": "03",
       "menu_type": 1,
       "path": "/operation",
-      "icon": "tool",
-      "icon_size": "24",
+      "icon": "icon-shouji",
+      "icon_size": "20",
       "childs": [
         {
           "id": "301",
@@ -155,7 +167,8 @@ const md = reactive<{
           "path": "/operation/dashboard",
           "icon": "dashboard",
           "icon_size": "20",
-          "childs": []
+          "childs": [],
+      "isExpand":false
         },
         {
           "id": "302",
@@ -166,7 +179,8 @@ const md = reactive<{
           "path": "/operation/push",
           "icon": "notification",
           "icon_size": "20",
-          "childs": []
+          "childs": [],
+      "isExpand":false
         },
         {
           "id": "303",
@@ -177,7 +191,8 @@ const md = reactive<{
           "path": "/operation/activity",
           "icon": "gift",
           "icon_size": "20",
-          "childs": []
+          "childs": [],
+      "isExpand":false
         },
         {
           "id": "304",
@@ -188,19 +203,21 @@ const md = reactive<{
           "path": "/operation/survey",
           "icon": "form",
           "icon_size": "20",
-          "childs": []
+          "childs": [],
+      "isExpand":false
         }
       ]
     },
     {
       "id": "4",
       "parent_id": "0",
-      "name": "数据分析",
+      "name": "统计分析",
       "code": "04",
       "menu_type": 1,
       "path": "/analytics",
-      "icon": "bar-chart",
-      "icon_size": "24",
+      "icon": "icon-tubiao",
+      "icon_size": "22",
+      "isExpand":false,
       "childs": [
         {
           "id": "401",
@@ -211,7 +228,8 @@ const md = reactive<{
           "path": "/analytics/user",
           "icon": "user",
           "icon_size": "20",
-          "childs": []
+          "childs": [],
+      "isExpand":false
         },
         {
           "id": "402",
@@ -222,7 +240,8 @@ const md = reactive<{
           "path": "/analytics/sales",
           "icon": "shopping-cart",
           "icon_size": "20",
-          "childs": []
+          "childs": [],
+      "isExpand":false
         },
         {
           "id": "403",
@@ -233,7 +252,8 @@ const md = reactive<{
           "path": "/analytics/traffic",
           "icon": "line-chart",
           "icon_size": "20",
-          "childs": []
+          "childs": [],
+      "isExpand":false
         },
         {
           "id": "404",
@@ -244,119 +264,8 @@ const md = reactive<{
           "path": "/analytics/funnel",
           "icon": "funnel-plot",
           "icon_size": "20",
-          "childs": []
-        }
-      ]
-    },
-    {
-      "id": "5",
-      "parent_id": "0",
-      "name": "商城模块",
-      "code": "05",
-      "menu_type": 1,
-      "path": "/shop",
-      "icon": "store",
-      "icon_size": "24",
-      "childs": [
-        {
-          "id": "501",
-          "parent_id": "5",
-          "name": "商品管理",
-          "code": "0501",
-          "menu_type": 2,
-          "path": "/shop/product",
-          "icon": "shopping",
-          "icon_size": "20",
-          "childs": []
-        },
-        {
-          "id": "502",
-          "parent_id": "5",
-          "name": "订单管理",
-          "code": "0502",
-          "menu_type": 2,
-          "path": "/shop/order",
-          "icon": "profile",
-          "icon_size": "20",
-          "childs": []
-        },
-        {
-          "id": "503",
-          "parent_id": "5",
-          "name": "库存管理",
-          "code": "0503",
-          "menu_type": 2,
-          "path": "/shop/stock",
-          "icon": "inbox",
-          "icon_size": "20",
-          "childs": []
-        },
-        {
-          "id": "504",
-          "parent_id": "5",
-          "name": "促销管理",
-          "code": "0504",
-          "menu_type": 2,
-          "path": "/shop/promotion",
-          "icon": "tag",
-          "icon_size": "20",
-          "childs": []
-        }
-      ]
-    },
-    {
-      "id": "6",
-      "parent_id": "0",
-      "name": "系统监控",
-      "code": "06",
-      "menu_type": 1,
-      "path": "/monitor",
-      "icon": "eye",
-      "icon_size": "24",
-      "childs": [
-        {
-          "id": "601",
-          "parent_id": "6",
-          "name": "服务状态",
-          "code": "0601",
-          "menu_type": 2,
-          "path": "/monitor/health",
-          "icon": "heart",
-          "icon_size": "20",
-          "childs": []
-        },
-        {
-          "id": "602",
-          "parent_id": "6",
-          "name": "SQL监控",
-          "code": "0602",
-          "menu_type": 2,
-          "path": "/monitor/sql",
-          "icon": "database",
-          "icon_size": "20",
-          "childs": []
-        },
-        {
-          "id": "603",
-          "parent_id": "6",
-          "name": "缓存监控",
-          "code": "0603",
-          "menu_type": 2,
-          "path": "/monitor/cache",
-          "icon": "rocket",
-          "icon_size": "20",
-          "childs": []
-        },
-        {
-          "id": "604",
-          "parent_id": "6",
-          "name": "job",
-          "code": "0604",
-          "menu_type": 2,
-          "path": "/monitor/job",
-          "icon": "clock-circle",
-          "icon_size": "20",
-          "childs": []
+          "childs": [],
+      "isExpand":false
         }
       ]
     }
@@ -387,9 +296,10 @@ console.log(lg_title)
           <span style="font-size: 23px; font-style: italic;">{{lg_title}}</span>
       </div>
       <div id="l_nav">
-        <div v-for="vl in md.menus" :key="vl.code">
+        <self-menu :menus="md.menus"></self-menu>
+        <!-- <div v-for="vl in md.menus" :key="vl.code">
 
-        </div>
+        </div> -->
       </div>
       <div id="l_footer">
         <el-icon :size="26" :color="'white'" style="cursor: pointer;">
@@ -403,7 +313,70 @@ console.log(lg_title)
         <div v-if="md.modules && md.modules.length>0">
 
         </div>
-        <div></div>
+        <div>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+          <span class="iconfont icon-xihuan icnstl"></span>
+        </div>
       </div>
       <div id="r_content">
         <router-view></router-view>
@@ -425,8 +398,8 @@ console.log(lg_title)
 }
 #pg_l {
   display: flex;
-  min-width: 168px;
-  max-width: 199px;
+  min-width: 199px;
+  max-width: 211px;
   flex-direction: column;
   background-color: #3964fe;
 }
@@ -462,6 +435,7 @@ console.log(lg_title)
   align-items: flex-start;
   flex-direction: column;
   justify-content: flex-start;
+  padding: 10px 0px 0px 10px;
 }
 #r_nav {
   display: flex;
@@ -474,5 +448,11 @@ console.log(lg_title)
   align-items: center;
   justify-content: center;
   border-top: 1px solid lightgray;
+}
+
+.icnstl {
+  font-size: 32px;
+  color: #3964fe;
+  padding: 0px 6px 0px 0px;
 }
 </style>

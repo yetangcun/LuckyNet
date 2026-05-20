@@ -125,7 +125,7 @@ import { Md5 } from 'ts-md5'
 import axiosReq from '@/utils/axiosUtil'
 import { ElMessage } from 'element-plus'
 import { Avatar, Unlock, Cpu } from '@element-plus/icons-vue'
-import { useGlbStateStore } from '@/stores/glbstate'
+// import { useGlbStateStore } from '@/stores/glbstate'
 
 const router = useRouter()
 const loading = ref(false)
@@ -137,7 +137,7 @@ const reqlogin = reactive<reqLogin>({
   validateCode: '',
 })
 
-const glbStore = useGlbStateStore()
+// const glbStore = useGlbStateStore()
 
 const chgBackColor = (type: number) => {
   const formEle: HTMLElement | null = document.getElementById('page_form')
@@ -199,7 +199,7 @@ const loginHandle = () => {
 
       localStorage.setItem('tkn', res.Data.tkn)
 
-      glbStore.setUsrInfo(res.Data)
+      // glbStore.setUsrInfo(res.Data)
 
       axiosReq.runCounts = 0 // 初始化成默认值
 

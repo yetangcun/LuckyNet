@@ -7,5 +7,6 @@ export interface menuModel {
   path: string,   // 路由地址
   icon: string,  // 图标
   icon_size: string,  // 图标大小尺寸
-  childs: menuModel[]
+  childs: menuModel[],
+  isExpand: boolean   // 是否展开
 }
