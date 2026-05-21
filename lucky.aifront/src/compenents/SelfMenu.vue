@@ -8,7 +8,7 @@
               <span :class="'iconfont '+ menu.icon" :style="{fontSize:menu.icon_size+'px',margin:'2px 6px 0px 8px'}"></span>
               <span v-show="isExpand">{{ menu.name }}</span>
             </div>
-            <span v-show="isExpand" :class="menu.isExpand?'iconfont icon-arrow-down':'iconfont icon-arrow-right'" :style="{fontSize:menu.icon_size+'px',marginTop:'2px',display:'flex'}"></span>
+            <span v-show="isExpand" :class="menu.isExpand?'iconfont icon-arrow-down':'iconfont icon-arrow-right'" :style="{fontSize:menu.icon_size+'px',marginTop:'2px',display:'flex', opacity:'0.7'}"></span>
           </div>
           <div v-show="menu.isExpand" class="menuChildPanel">
             <div v-for="child in menu.childs" :key="child.code">
@@ -19,7 +19,7 @@
                       <span :class="'iconfont '+ child.icon" :style="{fontSize:child.icon_size+'px',margin:'2px 6px 0px 8px'}"></span>
                       <span v-show="isExpand">{{ child.name }}</span>
                     </div>
-                    <span v-show="isExpand" :class="child.isExpand?'iconfont icon-arrow-down':'iconfont icon-arrow-right'" :style="{fontSize:child.icon_size+'px',marginTop:'2px',display:'flex'}"></span>
+                    <span v-show="isExpand" :class="child.isExpand?'iconfont icon-arrow-down':'iconfont icon-arrow-right'" :style="{fontSize:child.icon_size+'px',marginTop:'2px',display:'flex', opacity:'0.7'}"></span>
                   </div>
                   <div v-show="child.isExpand" class="menuChildPanel">
                     <div v-for="chr in child.childs" :key="chr.code">
