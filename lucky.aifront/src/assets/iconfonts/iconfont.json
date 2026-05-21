@@ -3919,13 +3919,6 @@
       "unicode_decimal": 58940
     },
     {
-      "icon_id": "46716180",
-      "name": "MenuIcon-日志管理-黑色",
-      "font_class": "MenuIcon-rizhiguanli-heise1",
-      "unicode": "e63f",
-      "unicode_decimal": 58943
-    },
-    {
       "icon_id": "14689284",
       "name": "Modify Password",
       "font_class": "ModifyPassword",

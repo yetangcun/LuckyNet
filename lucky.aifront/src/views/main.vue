@@ -15,13 +15,13 @@ import SelfMenu from '@/compenents/SelfMenu.vue';
 const lg_title = ref(import.meta.env.VITE_SYS_LOG_TITLE)
 const md = reactive<{
   loading:boolean,
-  navState:boolean,
   layout:number,
   modules:menuModel[],
-  menus:menuModel[]
+  menus:menuModel[],
+  isNavExpand:boolean,
+  navWdth:string
 }>({
   loading: false,
-  navState: true,
   layout:1,   // 布局类型 1全部左侧 2顶部模块+左侧子菜单
   modules: [],
   menus:[
@@ -33,7 +33,7 @@ const md = reactive<{
       "menu_type": 1,
       "path": "/system",
       "icon": "icon-system-locked",
-      "icon_size": "19",
+      "icon_size": "20",
       "isExpand":false,
       "childs": [
         {
@@ -94,7 +94,7 @@ const md = reactive<{
       "menu_type": 1,
       "path": "/content",
       "icon": "icon-task-time",
-      "icon_size": "21",
+      "icon_size": "22",
       "isExpand":false,
       "childs": [
         {
@@ -104,8 +104,8 @@ const md = reactive<{
           "code": "0201",
           "menu_type": 3,
           "path": "/content/article",
-          "icon": "file",
-          "icon_size": "20",
+          "icon": "icon-article",
+          "icon_size": "19",
           "childs": [],
       "isExpand":false
         },
@@ -116,7 +116,7 @@ const md = reactive<{
           "code": "0202",
           "menu_type": 3,
           "path": "/content/category",
-          "icon": "tags",
+          "icon": "icon-gengduo",
           "icon_size": "20",
           "childs": [],
       "isExpand":false
@@ -128,7 +128,7 @@ const md = reactive<{
           "code": "0203",
           "menu_type": 3,
           "path": "/content/comment",
-          "icon": "message",
+          "icon": "icon-pinglun",
           "icon_size": "20",
           "childs": [],
       "isExpand":false
@@ -140,7 +140,7 @@ const md = reactive<{
           "code": "0204",
           "menu_type": 3,
           "path": "/content/link",
-          "icon": "link",
+          "icon": "icon-lianjie",
           "icon_size": "20",
           "childs": [],
       "isExpand":false
@@ -156,7 +156,7 @@ const md = reactive<{
       "menu_type": 1,
       "path": "/operation",
       "icon": "icon-shouji",
-      "icon_size": "20",
+      "icon_size": "21",
       "childs": [
         {
           "id": "301",
@@ -165,10 +165,10 @@ const md = reactive<{
           "code": "0301",
           "menu_type": 3,
           "path": "/operation/dashboard",
-          "icon": "dashboard",
+          "icon": "icon-shujujianguan",
           "icon_size": "20",
           "childs": [],
-      "isExpand":false
+          "isExpand":false
         },
         {
           "id": "302",
@@ -177,10 +177,10 @@ const md = reactive<{
           "code": "0302",
           "menu_type": 3,
           "path": "/operation/push",
-          "icon": "notification",
+          "icon": "icon-fenxiang1",
           "icon_size": "20",
           "childs": [],
-      "isExpand":false
+          "isExpand":false
         },
         {
           "id": "303",
@@ -189,7 +189,7 @@ const md = reactive<{
           "code": "0303",
           "menu_type": 3,
           "path": "/operation/activity",
-          "icon": "gift",
+          "icon": "icon-huodongchouhua",
           "icon_size": "20",
           "childs": [],
       "isExpand":false
@@ -201,7 +201,7 @@ const md = reactive<{
           "code": "0304",
           "menu_type": 3,
           "path": "/operation/survey",
-          "icon": "form",
+          "icon": "icon-dengji",
           "icon_size": "20",
           "childs": [],
       "isExpand":false
@@ -216,7 +216,7 @@ const md = reactive<{
       "menu_type": 1,
       "path": "/analytics",
       "icon": "icon-tubiao",
-      "icon_size": "22",
+      "icon_size": "23",
       "isExpand":false,
       "childs": [
         {
@@ -226,7 +226,7 @@ const md = reactive<{
           "code": "0401",
           "menu_type": 3,
           "path": "/analytics/user",
-          "icon": "user",
+          "icon": "icon-MenuIcon-renyuanguanli-heise",
           "icon_size": "20",
           "childs": [],
       "isExpand":false
@@ -238,8 +238,8 @@ const md = reactive<{
           "code": "0402",
           "menu_type": 3,
           "path": "/analytics/sales",
-          "icon": "shopping-cart",
-          "icon_size": "20",
+          "icon": "icon-yunyingguize",
+          "icon_size": "21",
           "childs": [],
       "isExpand":false
         },
@@ -250,8 +250,8 @@ const md = reactive<{
           "code": "0403",
           "menu_type": 3,
           "path": "/analytics/traffic",
-          "icon": "line-chart",
-          "icon_size": "20",
+          "icon": "icon-celve",
+          "icon_size": "18",
           "childs": [],
       "isExpand":false
         },
@@ -262,25 +262,88 @@ const md = reactive<{
           "code": "0404",
           "menu_type": 3,
           "path": "/analytics/funnel",
-          "icon": "funnel-plot",
+          "icon": "icon-shaixuan",
           "icon_size": "20",
           "childs": [],
       "isExpand":false
         }
       ]
+    },
+    {
+      "id": "5",
+      "parent_id": "0",
+      "name": "测试007",
+      "code": "05",
+      "menu_type": 1,
+      "path": "/analytics",
+      "icon": "icon-tubiao",
+      "icon_size": "23",
+      "isExpand":false,
+      "childs": [
+        {
+          "id": "502",
+          "parent_id": "5",
+          "name": "测试00071",
+          "code": "0502",
+          "menu_type": 3,
+          "path": "/analytics",
+          "icon": "icon-tubiao",
+          "icon_size": "20",
+          "isExpand":false,
+          "childs": []
+        },
+        {
+          "id": "501",
+          "parent_id": "5",
+          "name": "测试00070",
+          "code": "0501",
+          "menu_type": 2,
+          "path": "/analytics",
+          "icon": "icon-tubiao",
+          "icon_size": "20",
+          "isExpand":false,
+          "childs": [
+            {
+              "id": "50101",
+              "parent_id": "501",
+              "name": "测试00007",
+              "code": "050101",
+              "menu_type": 3,
+              "path": "/analytics",
+              "icon": "icon-tubiao",
+              "icon_size": "20",
+              "isExpand":false,
+              "childs": []
+            }
+          ]
+        }
+      ]
     }
-  ]
+  ],
+  isNavExpand:true,
+  navWdth:'199px'
 })
 
 onMounted(() => { // 初始化加载
+  md.loading = true
   systemReq.axiosIns.get('api/sys/SysUser/Permissions')
   .then(res=>{
     console.log(res)
+    md.loading = false
   })
   .catch(ex=>{
     console.log(ex.message)
+    md.loading = false
   })
 })
+
+const expandOr = () => {
+  md.menus.forEach(e=>{
+    e.isExpand = false
+  })
+  md.isNavExpand = !md.isNavExpand
+  md.navWdth = md.isNavExpand?'199px':'66px'
+}
 
 console.log(lg_title)
 
@@ -288,22 +351,22 @@ console.log(lg_title)
 
 <template>
   <div id="pg_top" v-loading="md.loading">
-    <div id="pg_l">
+    <div id="pg_l" :style="{maxWidth:md.navWdth, minWidth:md.navWdth}">
       <div id="l_header">
           <el-icon :size="46" :color="'white'"><Cpu /> </el-icon>
-          <span>・</span>
+          <span v-show="md.isNavExpand">・</span>
           <!-- <span style="font-size: 23px; font-style: italic;">AI NEXT</span> -->
-          <span style="font-size: 23px; font-style: italic;">{{lg_title}}</span>
+          <span v-show="md.isNavExpand" style="font-size: 23px; font-style: italic;">{{lg_title}}</span>
       </div>
       <div id="l_nav">
-        <self-menu :menus="md.menus"></self-menu>
+        <self-menu :menus="md.menus" :is-expand="md.isNavExpand"></self-menu>
         <!-- <div v-for="vl in md.menus" :key="vl.code">
 
         </div> -->
       </div>
       <div id="l_footer">
-        <el-icon :size="26" :color="'white'" style="cursor: pointer;">
-          <Fold v-if="md.navState" />
+        <el-icon :size="26" :color="'white'" style="cursor: pointer;" @click="expandOr">
+          <Fold v-if="md.isNavExpand" />
           <Expand v-else />
         </el-icon>
       </div>
@@ -398,8 +461,9 @@ console.log(lg_title)
 }
 #pg_l {
   display: flex;
-  min-width: 199px;
-  max-width: 211px;
+  /* min-width: 199px;
+  max-width: 199px; */
+  overflow: hidden;
   flex-direction: column;
   background-color: #3964fe;
 }
@@ -416,7 +480,7 @@ console.log(lg_title)
   max-height: 66px;
   width: 100%;
   color: snow;
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid cornflowerblue;
 }
 #r_header {
   display: flex;
@@ -435,7 +499,7 @@ console.log(lg_title)
   align-items: flex-start;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 10px 0px 0px 10px;
+  overflow: auto;
 }
 #r_nav {
   display: flex;
@@ -447,12 +511,13 @@ console.log(lg_title)
   padding: 10px 0px;
   align-items: center;
   justify-content: center;
-  border-top: 1px solid lightgray;
+  border-top: 1px solid cornflowerblue;
 }
 
 .icnstl {
   font-size: 32px;
-  color: #3964fe;
+  color: orangered;
+  /* color: #3964fe; */
   padding: 0px 6px 0px 0px;
 }
 </style>

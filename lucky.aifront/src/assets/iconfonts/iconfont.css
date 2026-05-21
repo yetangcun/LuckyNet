@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 5180610 */
-  src: url('iconfont.woff2?t=1779269810224') format('woff2')
-       /*,url('iconfont.woff?t=1779269810224') format('woff'),
-       url('iconfont.ttf?t=1779269810224') format('truetype')*/;
+  src: url('iconfont.woff2?t=1779273115962') format('woff2')
+       /*,url('iconfont.woff?t=1779273115962') format('woff'),
+       url('iconfont.ttf?t=1779273115962') format('truetype')*/;
 }
 
 .iconfont {
@@ -2247,10 +2247,6 @@
 
 .icon-MenuIcon-renyuanguanli-heise:before {
   content: "\e63c";
-}
-
-.icon-MenuIcon-rizhiguanli-heise1:before {
-  content: "\e63f";
 }
 
 .icon-ModifyPassword:before {
