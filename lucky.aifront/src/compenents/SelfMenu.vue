@@ -23,7 +23,7 @@
                   </div>
                   <div v-show="child.isExpand" class="menuChildPanel">
                     <div v-for="chr in child.childs" :key="chr.code">
-                      <div class="menuChildPartStl" @click="to_pg(chr)">
+                      <div class="menuChildPartStl" click="$emit('toPg', chr)">
                         <span :class="'iconfont '+ chr.icon" :style="{fontSize:chr.icon_size+'px',margin:'2px 6px 0px 20px'}"></span>
                         <span v-show="isExpand">{{ chr.name }}</span>
                       </div>
@@ -38,7 +38,7 @@
                 </div>
               </div>
               <div v-else-if="child.menu_type==3">
-                <div class="menuChildPartStl" @click="to_pg(child)">
+                <div class="menuChildPartStl" @click="$emit('toPg', child)">
                   <span :class="'iconfont '+ child.icon" :style="{fontSize:child.icon_size+'px',margin:'2px 6px 0px 8px'}"></span>
                   <span v-show="isExpand">{{ child.name }}</span>
                 </div>
@@ -64,20 +64,11 @@
 </template>
 
 <script lang="ts" setup>
-import { useRouter } from 'vue-router';
-import type { menuModel } from '@/models/sys/menuModel'
-const router = useRouter()
 
-const props = defineProps({
+defineProps({
   menus: Object,
   isExpand: Boolean
 })
-
-const to_pg = (obj: menuModel) => {
-  router.push(obj.path)
-}
-
-console.log(props.isExpand)
 
 </script>
 

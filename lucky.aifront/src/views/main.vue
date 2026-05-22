@@ -4,9 +4,17 @@ import { onMounted, reactive, ref } from 'vue';
 import { Cpu, Expand, Fold } from '@element-plus/icons-vue'
 import type { menuModel } from '@/models/sys/menuModel'
 
+import { useRouter } from 'vue-router';
 // import { useGlbStateStore } from '@/stores/glbstate'
 import { systemReq } from '@/utils/reqUtil'
 import SelfMenu from '@/compenents/SelfMenu.vue';
+
+const router = useRouter()
+
+const to_pg = (obj: menuModel) => {
+  console.log('---666666---', obj)
+  router.push(obj.path)
+}
 
 // const glbstate = useGlbStateStore()
 
@@ -42,7 +50,7 @@ const md = reactive<{
           "name": "用户管理",
           "code": "0101",
           "menu_type": 3,
-          "path": "/system/user",
+          "path": "/sys/user",
           "icon": "icon-yonghuguanli",
           "icon_size": "21",
           "childs": [],
@@ -327,9 +335,10 @@ const md = reactive<{
 onMounted(() => { // 初始化加载
   md.loading = true
   systemReq.axiosIns.get('api/sys/SysUser/Permissions')
-  .then(res=>{
-    console.log(res)
+  .then((res:any)=>{
+    // console.log(res)
     md.loading = false
+    console.log(res.Code == 200)
   })
   .catch(ex=>{
     console.log(ex.message)
@@ -345,7 +354,7 @@ const expandOr = () => {
   md.navWdth = md.isNavExpand?'199px':'66px'
 }
 
-console.log(lg_title)
+// console.log(lg_title)
 
 </script>
 
@@ -359,7 +368,7 @@ console.log(lg_title)
           <span v-show="md.isNavExpand" style="font-size: 23px; font-style: italic;">{{lg_title}}</span>
       </div>
       <div id="l_nav">
-        <self-menu :menus="md.menus" :is-expand="md.isNavExpand"></self-menu>
+        <self-menu :menus="md.menus" :is-expand="md.isNavExpand" @to-pg="to_pg"></self-menu>
         <!-- <div v-for="vl in md.menus" :key="vl.code">
 
         </div> -->
@@ -442,7 +451,9 @@ console.log(lg_title)
         </div>
       </div>
       <div id="r_content">
-        <router-view></router-view>
+        <!-- <RouterView /> -->
+        <router-view />
+        <!-- <router-view/> -->
       </div>
     </div>
   </div>
@@ -470,6 +481,7 @@ console.log(lg_title)
 #pg_r {
   display: flex;
   flex: 1;
+  flex-direction: column;
   background-color: transparent;
 }
 #l_header {
@@ -492,6 +504,11 @@ console.log(lg_title)
   width: 100%;
   background-color: lightgray;
   border-bottom: 1px solid snow;
+}
+#r_content {
+  display: flex;
+  flex: 1;
+  background-color:cornflowerblue;
 }
 #l_nav {
   display: flex;
