@@ -515,9 +515,10 @@ console.log(lg_title)
 }
 
 .icnstl {
+  opacity: 0.8;
   font-size: 32px;
-  color: orangered;
-  /* color: #3964fe; */
+  /* color: #49cc90; */
+  color: #3964fe;
   padding: 0px 6px 0px 0px;
 }
 </style>
