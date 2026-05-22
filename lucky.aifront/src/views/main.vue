@@ -21,12 +21,14 @@ const lg_title = ref(import.meta.env.VITE_SYS_LOG_TITLE)
 const md = reactive<{
   loading:boolean,
   layout:number,
+  currNav:string,
   modules:menuModel[],
   menus:menuModel[],
   isNavExpand:boolean,
   navWdth:string
 }>({
   loading: false,
+  currNav: '',
   layout:1,   // 布局类型 1全部左侧 2顶部模块+左侧子菜单
   modules: [],
   menus:[
@@ -39,7 +41,7 @@ const md = reactive<{
       "path": "/system",
       "icon": "icon-system-locked",
       "icon_size": "20",
-      "isExpand":false,
+      "isExpand":true,
       "childs": [
         {
           "id": "101",
@@ -319,6 +321,55 @@ const md = reactive<{
               "icon_size": "20",
               "isExpand":false,
               "childs": []
+            },
+            {
+              "id": "50102",
+              "parent_id": "501",
+              "name": "测试000072",
+              "code": "050102",
+              "menu_type": 3,
+              "path": "/analytics",
+              "icon": "icon-tubiao",
+              "icon_size": "20",
+              "isExpand":false,
+              "childs": []
+            }
+          ]
+        },
+        {
+          "id": "503",
+          "parent_id": "5",
+          "name": "测试00072",
+          "code": "0503",
+          "menu_type": 2,
+          "path": "/analytics",
+          "icon": "icon-tubiao",
+          "icon_size": "20",
+          "isExpand":false,
+          "childs": [
+            {
+              "id": "50301",
+              "parent_id": "503",
+              "name": "测试000073",
+              "code": "050301",
+              "menu_type": 3,
+              "path": "/analytics",
+              "icon": "icon-tubiao",
+              "icon_size": "20",
+              "isExpand":false,
+              "childs": []
+            },
+            {
+              "id": "50302",
+              "parent_id": "503",
+              "name": "测试000075",
+              "code": "050302",
+              "menu_type": 3,
+              "path": "/analytics",
+              "icon": "icon-tubiao",
+              "icon_size": "20",
+              "isExpand":false,
+              "childs": []
             }
           ]
         }
@@ -332,7 +383,7 @@ const md = reactive<{
 onMounted(() => { // 初始化加载
   md.loading = true
   systemReq.axiosIns.get('api/sys/SysUser/Permissions')
-  .then((res:any)=>{
+  .then((res: any) => {
     // console.log(res)
     md.loading = false
     console.log(res.Code == 200)
@@ -344,9 +395,21 @@ onMounted(() => { // 初始化加载
 })
 
 const expandOr = () => {
-  md.menus.forEach(e=>{
-    e.isExpand = false
-  })
+  if (md.isNavExpand) {
+    md.menus.forEach(e=>{
+      if (e.isExpand)
+         md.currNav = e.id
+      e.isExpand = false
+    })
+  }
+  else if (md.currNav) {
+    md.menus.forEach(e=>{
+      if (e.id == md.currNav && e.isExpand == false) {
+         e.isExpand = true
+         return
+      }
+    })
+  }
   md.isNavExpand = !md.isNavExpand
   md.navWdth = md.isNavExpand?'199px':'66px'
 }
