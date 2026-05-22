@@ -3,7 +3,7 @@
     <div v-for="menu in menus" :key="menu.code">
       <div v-if="menu.menu_type==1 || menu.menu_type==2"> <!-- 模块、分组 -->
         <div v-if="menu.childs && menu.childs.length>0">
-          <div class="menuStl" :style="{justifyContent:isExpand?'space-between':'center'}" @click="menu.isExpand=!menu.isExpand">
+          <div class="menuStl" :style="{justifyContent:isExpand?'space-between':'center'}" @click="expandClose(menu)">
             <div class="menuPartStl">
               <span :class="'iconfont '+ menu.icon" :style="{fontSize:menu.icon_size+'px',margin:'2px 6px 0px 8px'}"></span>
               <span v-show="isExpand">{{ menu.name }}</span>
@@ -14,7 +14,7 @@
             <div v-for="child in menu.childs" :key="child.code">
               <div v-if="child.menu_type==1 || child.menu_type==2"> <!-- 模块、分组 -->
                 <div v-if="child.childs && child.childs.length>0">
-                  <div class="menuChildStl" @click="child.isExpand=!child.isExpand">
+                  <div class="menuChildStl" @click="expandClose(child)">
                     <div class="menuChildPartStl">
                       <span :class="'iconfont '+ child.icon" :style="{fontSize:child.icon_size+'px',margin:'2px 6px 0px 8px'}"></span>
                       <span v-show="isExpand">{{ child.name }}</span>
@@ -64,11 +64,39 @@
 </template>
 
 <script lang="ts" setup>
+import type { menuModel } from '@/models/sys/menuModel'
 
-defineProps({
+const prps = defineProps({
   menus: Object,
   isExpand: Boolean
 })
+
+const expandClose = (obj: menuModel) => {
+  if (prps.menus) {
+    if (obj.parent_id=='0') {
+      prps.menus.forEach((e:menuModel)=>{
+        e.isExpand = false
+      });
+    }
+    else {
+      const pid = obj.parent_id
+      let tmp:menuModel = null
+      prps.menus.forEach((e:menuModel)=>{
+        if (pid == e.id) {
+          tmp = e
+          return
+        }
+      })
+
+      if (tmp && tmp.childs && tmp.childs.length>0) {
+        tmp.childs.forEach((e:menuModel)=>{
+          e.isExpand = false
+        })
+      }
+    }
+  }
+  obj.isExpand = !obj.isExpand
+}
 
 </script>
 

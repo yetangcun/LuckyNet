@@ -13,7 +13,7 @@ import airouter from './module/airouter'
 
 const routers = sysrouter.concat(airouter) // 组合路由集合
 
-console.log(routers)
+// console.log(routers)
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

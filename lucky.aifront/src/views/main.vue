@@ -5,19 +5,16 @@ import { Cpu, Expand, Fold } from '@element-plus/icons-vue'
 import type { menuModel } from '@/models/sys/menuModel'
 
 import { useRouter } from 'vue-router';
-// import { useGlbStateStore } from '@/stores/glbstate'
 import { systemReq } from '@/utils/reqUtil'
 import SelfMenu from '@/compenents/SelfMenu.vue';
+// import { useGlbStateStore } from '@/stores/glbstate'
 
 const router = useRouter()
-
-const to_pg = (obj: menuModel) => {
-  console.log('---666666---', obj)
+const to_pg = (obj: menuModel) => { // console.log('---666666---', obj)
   router.push(obj.path)
 }
 
 // const glbstate = useGlbStateStore()
-
 // console.log(glbstate.usrInfo.avatar + ' --- ' + glbstate.usrInfo.name)
 
 const lg_title = ref(import.meta.env.VITE_SYS_LOG_TITLE)
@@ -59,10 +56,10 @@ const md = reactive<{
         {
           "id": "102",
           "parent_id": "1",
-          "name": "角色管理",
+          "name": "角色权限管理",
           "code": "0102",
           "menu_type": 3,
-          "path": "/system/role",
+          "path": "/sys/permission",
           "icon": "icon-jiaose",
           "icon_size": "18",
           "childs": [],
@@ -74,7 +71,7 @@ const md = reactive<{
           "name": "菜单管理",
           "code": "0103",
           "menu_type": 3,
-          "path": "/system/menu",
+          "path": "/sys/menu",
           "icon": "icon-view-module",
           "icon_size": "18",
           "childs": [],
@@ -86,7 +83,7 @@ const md = reactive<{
           "name": "日志管理",
           "code": "0104",
           "menu_type": 3,
-          "path": "/system/log",
+          "path": "/sys/loginlog",
           "icon": "icon-MenuIcon-rizhiguanli-heise",
           "icon_size": "20",
           "childs": [],
