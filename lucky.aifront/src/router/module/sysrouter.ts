@@ -48,8 +48,8 @@ const sysrouter = [
     },
   },
   {
-    path: '/sys/organization',
-    name: 'sys_organization',
+    path: '/sys/org',
+    name: 'sys_org',
     component: () => import('../../views/sys/org.vue'),
     meta: {
       keepAlive: true,

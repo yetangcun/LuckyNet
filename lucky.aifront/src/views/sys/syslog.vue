@@ -1,7 +1,5 @@
 <template>
-  <div class="pg_top">
-    <h1>系统日志页面</h1>
-  </div>
+  <div class="pg_top">系统日志页面</div>
 </template>
 
 

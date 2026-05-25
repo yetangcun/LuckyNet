@@ -11,6 +11,20 @@ import SelfMenu from '@/compenents/SelfMenu.vue';
 
 const router = useRouter()
 const to_pg = (obj: menuModel) => { // console.log('---666666---', obj)
+  md.menus.forEach((e:menuModel) => {
+    if (e.childs && e.childs.length>0) {
+      e.childs.forEach((c:menuModel) => {
+        if (c.menu_type == 3)
+          c.isSelect = false
+        else if (c.childs && c.childs.length > 0) {
+          c.childs.forEach((ch:menuModel) => {
+            if (ch.menu_type == 3) ch.isSelect = false
+          })
+        }
+      })
+    }
+  })
+  obj.isSelect = true
   router.push(obj.path)
 }
 
@@ -42,6 +56,7 @@ const md = reactive<{
       "icon": "icon-system-locked",
       "icon_size": "20",
       "isExpand":true,
+      "isSelect":false,
       "childs": [
         {
           "id": "101",
@@ -53,6 +68,7 @@ const md = reactive<{
           "icon": "icon-yonghuguanli",
           "icon_size": "21",
           "childs": [],
+      "isSelect":false,
           "isExpand":false
         },
         {
@@ -65,6 +81,7 @@ const md = reactive<{
           "icon": "icon-jiaose",
           "icon_size": "18",
           "childs": [],
+      "isSelect":false,
           "isExpand":false
         },
         {
@@ -77,6 +94,7 @@ const md = reactive<{
           "icon": "icon-view-module",
           "icon_size": "18",
           "childs": [],
+      "isSelect":false,
           "isExpand":false
         },
         {
@@ -89,6 +107,7 @@ const md = reactive<{
           "icon": "icon-MenuIcon-rizhiguanli-heise",
           "icon_size": "20",
           "childs": [],
+      "isSelect":false,
           "isExpand":false
         }
       ]
@@ -99,10 +118,11 @@ const md = reactive<{
       "name": "任务管理",
       "code": "02",
       "menu_type": 1,
-      "path": "/content",
+      "path": "/",
       "icon": "icon-task-time",
       "icon_size": "22",
       "isExpand":false,
+      "isSelect":false,
       "childs": [
         {
           "id": "201",
@@ -110,11 +130,12 @@ const md = reactive<{
           "name": "文章管理",
           "code": "0201",
           "menu_type": 3,
-          "path": "/content/article",
+          "path": "/sys/org",
           "icon": "icon-article",
           "icon_size": "19",
           "childs": [],
-      "isExpand":false
+          "isSelect":false,
+          "isExpand":false
         },
         {
           "id": "202",
@@ -122,11 +143,12 @@ const md = reactive<{
           "name": "分类管理",
           "code": "0202",
           "menu_type": 3,
-          "path": "/content/category",
+          "path": "/sys/org",
           "icon": "icon-gengduo",
           "icon_size": "20",
           "childs": [],
-      "isExpand":false
+          "isSelect":false,
+          "isExpand":false
         },
         {
           "id": "203",
@@ -134,11 +156,12 @@ const md = reactive<{
           "name": "评论管理",
           "code": "0203",
           "menu_type": 3,
-          "path": "/content/comment",
+          "path": "/sys/org",
           "icon": "icon-pinglun",
           "icon_size": "20",
           "childs": [],
-      "isExpand":false
+          "isSelect":false,
+          "isExpand":false
         },
         {
           "id": "204",
@@ -146,11 +169,12 @@ const md = reactive<{
           "name": "友情链接",
           "code": "0204",
           "menu_type": 3,
-          "path": "/content/link",
+          "path": "/sys/org",
           "icon": "icon-lianjie",
           "icon_size": "20",
           "childs": [],
-      "isExpand":false
+          "isSelect":false,
+          "isExpand":false
         }
       ]
     },
@@ -164,6 +188,7 @@ const md = reactive<{
       "path": "/operation",
       "icon": "icon-shouji",
       "icon_size": "21",
+      "isSelect":false,
       "childs": [
         {
           "id": "301",
@@ -175,6 +200,7 @@ const md = reactive<{
           "icon": "icon-shujujianguan",
           "icon_size": "20",
           "childs": [],
+          "isSelect":false,
           "isExpand":false
         },
         {
@@ -187,6 +213,7 @@ const md = reactive<{
           "icon": "icon-fenxiang1",
           "icon_size": "20",
           "childs": [],
+          "isSelect":false,
           "isExpand":false
         },
         {
@@ -199,7 +226,8 @@ const md = reactive<{
           "icon": "icon-huodongchouhua",
           "icon_size": "20",
           "childs": [],
-      "isExpand":false
+          "isSelect":false,
+          "isExpand":false
         },
         {
           "id": "304",
@@ -211,7 +239,8 @@ const md = reactive<{
           "icon": "icon-dengji",
           "icon_size": "20",
           "childs": [],
-      "isExpand":false
+          "isSelect":false,
+          "isExpand":false
         }
       ]
     },
@@ -225,6 +254,7 @@ const md = reactive<{
       "icon": "icon-tubiao",
       "icon_size": "23",
       "isExpand":false,
+      "isSelect":false,
       "childs": [
         {
           "id": "401",
@@ -236,7 +266,8 @@ const md = reactive<{
           "icon": "icon-MenuIcon-renyuanguanli-heise",
           "icon_size": "20",
           "childs": [],
-      "isExpand":false
+          "isSelect":false,
+          "isExpand":false
         },
         {
           "id": "402",
@@ -248,7 +279,8 @@ const md = reactive<{
           "icon": "icon-yunyingguize",
           "icon_size": "21",
           "childs": [],
-      "isExpand":false
+          "isSelect":false,
+          "isExpand":false
         },
         {
           "id": "403",
@@ -260,7 +292,8 @@ const md = reactive<{
           "icon": "icon-celve",
           "icon_size": "18",
           "childs": [],
-      "isExpand":false
+          "isSelect":false,
+          "isExpand":false
         },
         {
           "id": "404",
@@ -272,7 +305,8 @@ const md = reactive<{
           "icon": "icon-shaixuan",
           "icon_size": "20",
           "childs": [],
-      "isExpand":false
+          "isSelect":false,
+          "isExpand":false
         }
       ]
     },
@@ -286,6 +320,7 @@ const md = reactive<{
       "icon": "icon-tubiao",
       "icon_size": "23",
       "isExpand":false,
+      "isSelect":false,
       "childs": [
         {
           "id": "502",
@@ -297,6 +332,7 @@ const md = reactive<{
           "icon": "icon-tubiao",
           "icon_size": "20",
           "isExpand":false,
+          "isSelect":false,
           "childs": []
         },
         {
@@ -309,6 +345,7 @@ const md = reactive<{
           "icon": "icon-tubiao",
           "icon_size": "20",
           "isExpand":false,
+          "isSelect":false,
           "childs": [
             {
               "id": "50101",
@@ -320,6 +357,7 @@ const md = reactive<{
               "icon": "icon-tubiao",
               "icon_size": "20",
               "isExpand":false,
+              "isSelect":false,
               "childs": []
             },
             {
@@ -332,6 +370,7 @@ const md = reactive<{
               "icon": "icon-tubiao",
               "icon_size": "20",
               "isExpand":false,
+              "isSelect":false,
               "childs": []
             }
           ]
@@ -346,6 +385,7 @@ const md = reactive<{
           "icon": "icon-tubiao",
           "icon_size": "20",
           "isExpand":false,
+          "isSelect":false,
           "childs": [
             {
               "id": "50301",
@@ -357,6 +397,7 @@ const md = reactive<{
               "icon": "icon-tubiao",
               "icon_size": "20",
               "isExpand":false,
+              "isSelect":false,
               "childs": []
             },
             {
@@ -369,6 +410,7 @@ const md = reactive<{
               "icon": "icon-tubiao",
               "icon_size": "20",
               "isExpand":false,
+              "isSelect":false,
               "childs": []
             }
           ]
@@ -568,7 +610,6 @@ const expandOr = () => {
 #r_content {
   display: flex;
   flex: 1;
-  background-color:cornflowerblue;
 }
 #l_nav {
   display: flex;

@@ -1,7 +1,5 @@
 <template>
-  <div class="pg_top">
-    <h1>角色权限管理页面</h1>
-  </div>
+  <div class="pg_top">角色权限管理页面</div>
 </template>
 
 <script lang="ts" setup>

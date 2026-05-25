@@ -23,7 +23,7 @@
                   </div>
                   <div v-show="child.isExpand" class="menuChildPanel">
                     <div v-for="chr in child.childs" :key="chr.code">
-                      <div class="menuChildPartStl" click="$emit('toPg', chr)">
+                      <div :class="child.isSelect?'menuChildPartStlSel':'menuChildPartStl'" click="$emit('toPg', chr)">
                         <span :class="'iconfont '+ chr.icon" :style="{fontSize:chr.icon_size+'px',margin:'2px 6px 0px 20px'}"></span>
                         <span v-show="isExpand">{{ chr.name }}</span>
                       </div>
@@ -38,7 +38,7 @@
                 </div>
               </div>
               <div v-else-if="child.menu_type==3">
-                <div class="menuChildPartStl" @click="$emit('toPg', child)">
+                <div :class="child.isSelect?'menuChildPartStlSel':'menuChildPartStl'" @click="$emit('toPg', child)">
                   <span :class="'iconfont '+ child.icon" :style="{fontSize:child.icon_size+'px',margin:'2px 6px 0px 8px'}"></span>
                   <span v-show="isExpand">{{ child.name }}</span>
                 </div>
@@ -54,7 +54,7 @@
         </div>
       </div>
       <div v-else-if="menu.menu_type==3">
-          <div class="menuPartStl" @click="to_pg(menu)">
+          <div :class="menu.isSelect?'menuPartStlSel':'menuPartStl'" @click="to_pg(menu)">
             <span :class="'iconfont '+ menu.icon" :style="{fontSize:menu.icon_size+'px',margin:'2px 6px 0px 8px'}"></span>
             <span v-show="isExpand">{{ menu.name }}</span>
           </div>
@@ -72,11 +72,15 @@ const prps = defineProps({
 })
 
 const expandClose = (obj: menuModel) => {
+  console.log('curr state is:' + obj.isExpand)
+  const sourceState = obj.isExpand
   if (prps.menus) {
     if (obj.parent_id=='0') {
       prps.menus.forEach((e:menuModel)=>{
         e.isExpand = false
       });
+
+      if (sourceState) return
     }
     else {
       const pid = obj.parent_id
@@ -92,6 +96,8 @@ const expandClose = (obj: menuModel) => {
         tmp.childs.forEach((e:menuModel)=>{
           e.isExpand = false
         })
+
+        if (sourceState) return
       }
     }
   }
@@ -120,6 +126,16 @@ const expandClose = (obj: menuModel) => {
   padding: 10px 0px;
  }
 
+ .menuPartStlSel {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: #3964fe;
+  font-size: 18px;
+  padding: 10px 0px;
+  background-color: white;
+ }
+
  .menuChildStl {
   display: flex;
   width: 100%;
@@ -137,6 +153,17 @@ const expandClose = (obj: menuModel) => {
   color: white;
   font-size: 16px;
   cursor: pointer;
+  padding: 10px 0px 8px 18px;
+ }
+
+ .menuChildPartStlSel {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: #3964fe;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: white;
   padding: 10px 0px 8px 18px;
  }
 
