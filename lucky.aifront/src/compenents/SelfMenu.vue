@@ -23,7 +23,7 @@
                   </div>
                   <div v-show="child.isExpand" class="menuChildPanel">
                     <div v-for="chr in child.childs" :key="chr.code">
-                      <div :class="child.isSelect?'menuChildPartStlSel':'menuChildPartStl'" click="$emit('toPg', chr)">
+                      <div :class="chr.isSelect?'menuChildPartStlSel':'menuChildPartStl'" @click="$emit('toPg', chr)">
                         <span :class="'iconfont '+ chr.icon" :style="{fontSize:chr.icon_size+'px',margin:'2px 6px 0px 20px'}"></span>
                         <span v-show="isExpand">{{ chr.name }}</span>
                       </div>

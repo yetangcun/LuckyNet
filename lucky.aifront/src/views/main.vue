@@ -10,7 +10,8 @@ import SelfMenu from '@/compenents/SelfMenu.vue';
 // import { useGlbStateStore } from '@/stores/glbstate'
 
 const router = useRouter()
-const to_pg = (obj: menuModel) => { // console.log('---666666---', obj)
+const to_pg = (obj: menuModel) => {
+  // console.log('---666666---', obj)
   md.menus.forEach((e:menuModel) => {
     if (e.childs && e.childs.length>0) {
       e.childs.forEach((c:menuModel) => {
@@ -316,7 +317,7 @@ const md = reactive<{
       "name": "测试007",
       "code": "05",
       "menu_type": 1,
-      "path": "/analytics",
+      "path": "/sys/org",
       "icon": "icon-tubiao",
       "icon_size": "23",
       "isExpand":false,
@@ -328,7 +329,7 @@ const md = reactive<{
           "name": "测试00071",
           "code": "0502",
           "menu_type": 3,
-          "path": "/analytics",
+          "path": "/sys/org",
           "icon": "icon-tubiao",
           "icon_size": "20",
           "isExpand":false,
@@ -341,7 +342,7 @@ const md = reactive<{
           "name": "测试00070",
           "code": "0501",
           "menu_type": 2,
-          "path": "/analytics",
+          "path": "/sys/org",
           "icon": "icon-tubiao",
           "icon_size": "20",
           "isExpand":false,
@@ -353,7 +354,7 @@ const md = reactive<{
               "name": "测试00007",
               "code": "050101",
               "menu_type": 3,
-              "path": "/analytics",
+              "path": "/sys/org",
               "icon": "icon-tubiao",
               "icon_size": "20",
               "isExpand":false,
@@ -366,7 +367,7 @@ const md = reactive<{
               "name": "测试000072",
               "code": "050102",
               "menu_type": 3,
-              "path": "/analytics",
+              "path": "/sys/org",
               "icon": "icon-tubiao",
               "icon_size": "20",
               "isExpand":false,
@@ -381,7 +382,7 @@ const md = reactive<{
           "name": "测试00072",
           "code": "0503",
           "menu_type": 2,
-          "path": "/analytics",
+          "path": "/sys/org",
           "icon": "icon-tubiao",
           "icon_size": "20",
           "isExpand":false,
@@ -393,7 +394,7 @@ const md = reactive<{
               "name": "测试000073",
               "code": "050301",
               "menu_type": 3,
-              "path": "/analytics",
+              "path": "/sys/org",
               "icon": "icon-tubiao",
               "icon_size": "20",
               "isExpand":false,
@@ -406,7 +407,7 @@ const md = reactive<{
               "name": "测试000075",
               "code": "050302",
               "menu_type": 3,
-              "path": "/analytics",
+              "path": "/sys/org",
               "icon": "icon-tubiao",
               "icon_size": "20",
               "isExpand":false,
