@@ -115,6 +115,9 @@ const expandClose = (obj: menuModel) => {
   color: white;
   font-size: 18px;
   cursor: pointer;
+  margin-top: 4px;
+  box-shadow: 0px 0px 14px 0px cornflowerblue inset;
+  /* border-bottom: 1px solid cornflowerblue; */
  }
 
  .menuPartStl {
@@ -144,6 +147,9 @@ const expandClose = (obj: menuModel) => {
   color: white;
   font-size: 16px;
   cursor: pointer;
+  margin-top: 4px;
+  box-shadow: 0px 0px 14px 0px cornflowerblue inset;
+  /* border-bottom: 1px solid cornflowerblue; */
  }
 
  .menuChildPartStl {

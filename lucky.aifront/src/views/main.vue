@@ -489,68 +489,6 @@ const expandOr = () => {
 
         </div>
         <div>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
-          <span class="iconfont icon-xihuan icnstl"></span>
         </div>
       </div>
       <div id="r_content">
@@ -595,18 +533,20 @@ const expandOr = () => {
   max-height: 66px;
   width: 100%;
   color: snow;
-  border-bottom: 1px solid cornflowerblue;
+  /* border-bottom: 1px solid cornflowerblue; */
+  box-shadow: 0px 0px 14px 0px cornflowerblue inset;
 }
 #r_header {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   padding-left: 16px;
-  min-height: 66px;
-  max-height: 66px;
+  min-height: 67px;
+  max-height: 67px;
   width: 100%;
   background-color: lightgray;
   border-bottom: 1px solid snow;
+  box-shadow: 0px 0px 11px 0px whitesmoke inset;
 }
 #r_content {
   display: flex;
@@ -630,7 +570,8 @@ const expandOr = () => {
   padding: 10px 0px;
   align-items: center;
   justify-content: center;
-  border-top: 1px solid cornflowerblue;
+  /* border-top: 1px solid cornflowerblue; */
+  box-shadow: 0px 0px 14px 0px cornflowerblue inset;
 }
 
 .icnstl {

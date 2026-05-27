@@ -36,7 +36,7 @@ namespace Lucky.SysModel.Model.Output
         /// <summary>
         /// 权限
         /// </summary>
-        public List<SysUserPermissionOutput> permissions { get; set; }
+        public List<SysUserPermissionOutput>? permissions { get; set; }
     }
 
     /// <summary>
@@ -47,42 +47,52 @@ namespace Lucky.SysModel.Model.Output
         /// <summary>
         /// id
         /// </summary>
-        public string id { get; set; }
+        public required string id { get; set; }
 
         /// <summary>
         /// 父级id
         /// </summary>
-        public string parent_id { get; set; }
+        public required string parent_id { get; set; }
 
         /// <summary>
         /// 名称
         /// </summary>
-        public string name { get; set; }
+        public required string name { get; set; }
 
         /// <summary>
         /// 唯一编码
         /// </summary>
-        public string code { get; set; }
+        public required string code { get; set; }
 
         /// <summary>
         /// 地址
         /// </summary>
-        public string path { get; set; }
+        public string? path { get; set; }
 
         /// <summary>
         /// 图标
         /// </summary>
-        public string icon { get; set; }
+        public string? icon { get; set; }
 
         /// <summary>
         /// 图标大小
         /// </summary>
-        public string icon_size { get; set; }
+        public string? icon_size { get; set; }
 
         /// <summary>
         /// 菜单类型
         /// </summary>
         public MenuType menu_type { get; set; }
+
+        /// <summary>
+        /// 是否选中
+        /// </summary>
+        public bool isSelect { get; set; } = false;
+
+        /// <summary>
+        /// 是否展开
+        /// </summary>
+        public bool isExpand { get; set; } = false;
 
         /// <summary>
         /// 子级

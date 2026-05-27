@@ -115,23 +115,77 @@ namespace Lucky.SysService.Service
             usrData.avatar = usrInfo.Avatar;
 
             var usrRoles = await _usrRoleRpsty.GetListAsync(x => x.UserId == uid);
-            if (usrRoles.Any())
+            if (!usrRoles.Any())
+                return usrData;
+
+            var roleIds = usrRoles.Select(x => x.RoleId);
+            var roleMenus = await _roleMenuRpsty.GetListAsync(x => roleIds.Contains(x.RoleId));
+
+            if (roleMenus.Any())
             {
-                var roleIds = usrRoles.Select(x => x.RoleId);
-                var roleMenus = await _roleMenuRpsty.GetListAsync(x => roleIds.Contains(x.RoleId));
-
-                if (roleMenus.Any())
-                {
-                    var menuIds = roleMenus.Select(x => x.MenuId);
-                    var menus = await _menuRpsty.GetListAsync(x => menuIds.Contains(x.Id));
-                    var topMenus = menus.Where(x => x.ParentId == null || x.ParentId == 0);
-                    var lst = new List<SysUserPermissionOutput>();
-
-                    usrData.permissions = lst;
-                }
+                var menuIds = roleMenus.Select(x => x.MenuId);
+                var menus = await _menuRpsty.GetListAsync(x => menuIds.Contains(x.Id));
+                usrData.permissions = GetMenuTree(menus);
             }
 
             return usrData;
+        }
+
+        private List<SysUserPermissionOutput> GetMenuTree(List<SysMenu> menus)
+        {
+            var topMenus = menus.Where(x => x.ParentId == null || x.ParentId == 0 || x.ParentId == -1);
+            var lst = new List<SysUserPermissionOutput>();
+            foreach (var item in topMenus)
+            {
+                var parentEle = new SysUserPermissionOutput()
+                {
+                    id = item.Id.ToString(),
+                    name = item.Name,
+                    code = item.Code,
+                    parent_id = item.ParentId.ToString(),
+                    path = item.Path,
+                    icon = item.Icon,
+                    icon_size = item.IconSize,
+                    menu_type = item.MenuType
+                };
+
+                GetMenuTrees(parentEle, menus);
+
+                lst.Add(parentEle);
+            }
+            return lst;
+        }
+
+        private void GetMenuTrees(SysUserPermissionOutput pEle, IEnumerable<SysMenu> menus)
+        {
+            if (menus == null || menus.Count() < 1) return;
+
+            if (pEle.childs == null) pEle.childs = new List<SysUserPermissionOutput>();
+
+            int.TryParse(pEle.id, out int pId);
+
+            var childs = menus.Where(m=>m.ParentId == pId);
+
+            foreach (var itm in childs)
+            {
+                var tmp = new SysUserPermissionOutput()
+                {
+                    id = itm.Id.ToString(),
+                    name = itm.Name,
+                    code = itm.Code,
+                    parent_id = itm.ParentId.ToString(),
+                    path = itm.Path,
+                    icon = itm.Icon,
+                    icon_size = itm.IconSize,
+                    menu_type = itm.MenuType
+                };
+                if (itm.MenuType != BaseModel.Enum.MenuType.Menu)
+                {
+                    var chlds = menus.Where(m => m.ParentId == itm.Id);
+                    GetMenuTrees(tmp, menus);
+                }
+                pEle.childs.Add(tmp);
+            }
         }
     }
 }
