@@ -428,7 +428,7 @@ onMounted(() => { // 初始化加载
   md.loading = true
   systemReq.axiosIns.get('api/sys/SysUser/Permissions')
   .then((res: any) => {
-    console.log(res)
+    // console.log(res)
     md.loading = false
     md.menus = res.Data.permissions
     // console.log(res.Code == 200)

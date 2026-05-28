@@ -139,14 +139,14 @@ namespace Lucky.SysService.Service
             {
                 var parentEle = new SysUserPermissionOutput()
                 {
-                    id = item.Id.ToString(),
+                    id = item.Id,
                     name = item.Name,
                     code = item.Code,
-                    parent_id = item.ParentId.ToString(),
                     path = item.Path,
                     icon = item.Icon,
                     icon_size = item.IconSize,
-                    menu_type = item.MenuType
+                    menu_type = item.MenuType,
+                    parent_id = item.ParentId.ToString()
                 };
 
                 GetMenuTrees(parentEle, menus);
@@ -163,15 +163,13 @@ namespace Lucky.SysService.Service
 
             if (pEle.childs == null) pEle.childs = new List<SysUserPermissionOutput>();
 
-            int.TryParse(pEle.id, out int pId);
-
-            var childs = menus.Where(m=>m.ParentId == pId).OrderBy(o => o.Sort);
+            var childs = menus.Where(m=>m.ParentId == pEle.id).OrderBy(o => o.Sort);
 
             foreach (var itm in childs)
             {
                 var tmp = new SysUserPermissionOutput()
                 {
-                    id = itm.Id.ToString(),
+                    id = itm.Id,
                     name = itm.Name,
                     code = itm.Code,
                     path = itm.Path,

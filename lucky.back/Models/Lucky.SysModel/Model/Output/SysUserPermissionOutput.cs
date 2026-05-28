@@ -47,7 +47,7 @@ namespace Lucky.SysModel.Model.Output
         /// <summary>
         /// id
         /// </summary>
-        public required string id { get; set; }
+        public int id { get; set; }
 
         /// <summary>
         /// 父级id
