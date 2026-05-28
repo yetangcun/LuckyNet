@@ -45,4 +45,5 @@ namespace Lucky.SysModel.Model.Input
         /// </summary>
         public required string Passwd { get; set; }
     }
+
 }

@@ -1,4 +1,6 @@
-﻿namespace Lucky.SysModel.Model.Output
+﻿using Lucky.BaseModel.Enum;
+
+namespace Lucky.SysModel.Model.Output
 {
     /// <summary>
     /// 系统用户输出
@@ -29,6 +31,53 @@
         /// 密码
         /// </summary>
         public string? password { get; set; }
+    }
+
+    /// <summary>
+    /// 系统用户输出
+    /// </summary>
+    public class SysUserInfoOutput
+    {
+        /// <summary>
+        /// 用户ID
+        /// </summary>
+        public long id { get; set; }
+
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public string? account { get; set; }
+
+        /// <summary>
+        /// 姓名
+        /// </summary>
+        public string? realname { get; set; }
+
+        /// <summary>
+        /// 性别
+        /// </summary>
+        public SexType sex { get; set; }
+
+        /// <summary>
+        /// 手机号
+        /// </summary>
+        public string phone { get; set; }
+
+        /// <summary>
+        /// 邮箱
+        /// </summary>
+        public string email { get; set; }
+
+        /// <summary>
+        /// 地址
+        /// </summary>
+        public string addr { get; set; }
+
+        /// <summary>
+        /// 头像
+        /// </summary>
+        public string avatar { get; set; }
+
     }
 
     /// <summary>
