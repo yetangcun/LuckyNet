@@ -72,7 +72,7 @@ const prps = defineProps({
 })
 
 const expandClose = (obj: menuModel) => {
-  console.log('curr state is:' + obj.isExpand)
+  // console.log('curr state is:' + obj.isExpand)
   const sourceState = obj.isExpand
   if (prps.menus) {
     if (obj.parent_id=='0') {

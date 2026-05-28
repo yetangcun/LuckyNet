@@ -133,7 +133,7 @@ namespace Lucky.SysService.Service
 
         private List<SysUserPermissionOutput> GetMenuTree(List<SysMenu> menus)
         {
-            var topMenus = menus.Where(x => x.ParentId == null || x.ParentId == 0 || x.ParentId == -1);
+            var topMenus = menus.Where(x => x.ParentId == null || x.ParentId == 0 || x.ParentId == -1).OrderBy(o => o.Sort);
             var lst = new List<SysUserPermissionOutput>();
             foreach (var item in topMenus)
             {
@@ -153,6 +153,7 @@ namespace Lucky.SysService.Service
 
                 lst.Add(parentEle);
             }
+            lst[0].isExpand = true;
             return lst;
         }
 
@@ -164,7 +165,7 @@ namespace Lucky.SysService.Service
 
             int.TryParse(pEle.id, out int pId);
 
-            var childs = menus.Where(m=>m.ParentId == pId);
+            var childs = menus.Where(m=>m.ParentId == pId).OrderBy(o => o.Sort);
 
             foreach (var itm in childs)
             {
@@ -173,11 +174,11 @@ namespace Lucky.SysService.Service
                     id = itm.Id.ToString(),
                     name = itm.Name,
                     code = itm.Code,
-                    parent_id = itm.ParentId.ToString(),
                     path = itm.Path,
                     icon = itm.Icon,
                     icon_size = itm.IconSize,
-                    menu_type = itm.MenuType
+                    menu_type = itm.MenuType,
+                    parent_id = itm.ParentId.ToString()
                 };
                 if (itm.MenuType != BaseModel.Enum.MenuType.Menu)
                 {
