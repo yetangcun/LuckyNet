@@ -15,7 +15,7 @@ namespace lucky.admin.Controllers.sys
         /// 分页查询
         /// </summary>
         /// <param name="req"></param>
-        [HttpGet("getPages")]
+        [HttpGet("pages")]
         public async Task<PageRes<List<SysMenuOutput>>> GetPages(SysMenuQueryInput req)
         {
             return PageRes<List<SysMenuOutput>>.Success(0, 0, null);

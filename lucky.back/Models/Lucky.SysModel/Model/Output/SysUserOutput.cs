@@ -20,7 +20,7 @@ namespace Lucky.SysModel.Model.Output
         /// <summary>
         /// 头像
         /// </summary>
-        public string avatar { get; set; }
+        public string? avatar { get; set; }
 
         /// <summary>
         /// 姓名
@@ -56,27 +56,27 @@ namespace Lucky.SysModel.Model.Output
         /// <summary>
         /// 性别
         /// </summary>
-        public SexType sex { get; set; }
+        public SexType? sex { get; set; }
 
         /// <summary>
         /// 手机号
         /// </summary>
-        public string phone { get; set; }
+        public string? phone { get; set; }
 
         /// <summary>
         /// 邮箱
         /// </summary>
-        public string email { get; set; }
+        public string? email { get; set; }
 
         /// <summary>
         /// 地址
         /// </summary>
-        public string addr { get; set; }
+        public string? addr { get; set; }
 
         /// <summary>
         /// 头像
         /// </summary>
-        public string avatar { get; set; }
+        public string? avatar { get; set; }
 
     }
 

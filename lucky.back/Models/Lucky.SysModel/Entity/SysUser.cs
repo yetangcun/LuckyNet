@@ -50,7 +50,7 @@ namespace Lucky.SysModel.Entity
         /// </summary>
         [StringLength(20)]
         [Column("phone")]
-        public required string Phone { get; set; }
+        public string? Phone { get; set; }
 
         /// <summary>
         /// 状态

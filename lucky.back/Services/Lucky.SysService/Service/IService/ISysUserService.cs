@@ -14,6 +14,8 @@ namespace Lucky.SysService.Service.IService
         /// <param name="req"></param>
         Task<(int, List<SysUserOutput>)> GetList(SysUserQueryInput req);
 
+        Task<(int, List<SysUserInfoOutput>)> GetPages(SysUserQueryInput req);
+
         /// <summary>
         /// 获取用户权限
         /// </summary>

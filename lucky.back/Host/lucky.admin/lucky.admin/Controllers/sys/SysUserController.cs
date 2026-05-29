@@ -125,10 +125,12 @@ namespace lucky.admin.Controllers.sys
         /// 分页查询
         /// </summary>
         /// <param name="req"></param>
-        [HttpGet("getPages")]
-        public async Task<PageRes<List<SysUserInfoOutput>>> GetPages(SysUserQueryInput req)
+        [HttpGet("pages")]
+        public async Task<PageRes<List<SysUserInfoOutput>>> GetPages([FromQuery] SysUserQueryInput req)
         {
-            return PageRes<List<SysUserInfoOutput>>.Success(0, 0, null);
+            var res = await _sysUserService.GetPages(req);
+            var pgs = res.Item1 % req.PageSize == 0 ? (res.Item1 / req.PageSize) : (res.Item1 / req.PageSize) + 1;
+            return PageRes<List<SysUserInfoOutput>>.Success(res.Item1, pgs, res.Item2);
         }
 
         /// <summary>
