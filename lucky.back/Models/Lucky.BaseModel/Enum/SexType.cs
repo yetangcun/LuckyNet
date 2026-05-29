@@ -17,6 +17,11 @@ namespace Lucky.BaseModel.Enum
         /// <summary>
         /// 女
         /// </summary>
-        Female = 2
+        Female = 2,
+
+        /// <summary>
+        /// 未知
+        /// </summary>
+        None = 3,
     }
 }

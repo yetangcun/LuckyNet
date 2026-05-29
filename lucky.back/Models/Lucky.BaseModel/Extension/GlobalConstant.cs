@@ -16,6 +16,11 @@
 
         public const string U_ID = "uky";       // 用户ID
 
+        /// <summary>
+        /// 默认密码
+        /// </summary>
+        public const string DFT_PWD = "9d1182f9eafa6672a186a03173cb585d";
+
         #region AES 密钥
         //public const string AES_KY = "aiot2kyaes666666";  // 16位
         //public const string AES_IV = "aiot2ivaes888888";  // 16位

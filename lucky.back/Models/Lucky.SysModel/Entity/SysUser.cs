@@ -1,4 +1,5 @@
-﻿using Lucky.BaseModel.Model.Entity;
+﻿using Lucky.BaseModel.Enum;
+using Lucky.BaseModel.Model.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -30,6 +31,12 @@ namespace Lucky.SysModel.Entity
         [StringLength(30)]
         [Column("realname")]
         public string? RealName { get; set; }
+
+        /// <summary>
+        /// 性别
+        /// </summary>
+        [Column("sex")]
+        public SexType? Sex { get; set; }
 
         /// <summary>
         /// 邮箱

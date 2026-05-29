@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Lucky.BaseModel.Model.Entity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lucky.SysModel.Entity
 {
@@ -6,7 +7,7 @@ namespace Lucky.SysModel.Entity
     /// 用户角色
     /// </summary>
     [Table("sys_user_role")]
-    public class SysUserRole
+    public class SysUserRole: BaseCommonEntity<long>
     {
         /// <summary>
         /// 用户Id

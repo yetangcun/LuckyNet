@@ -1,4 +1,5 @@
 ﻿using Lucky.BaseModel.Enum;
+using Lucky.BaseModel.Model.Entity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,18 +10,8 @@ namespace Lucky.SysModel.Entity
     /// 系统日志
     /// </summary>
     [Table("sys_log")]
-    public class SysLog
+    public class SysLog : BaseFullEntity<long>
     {
-        /// <summary>
-        /// 主键
-        /// </summary>
-        [Key]
-        [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Comment("主键Id")]
-        [Column("id")]
-        public long Id { get; set; }
-
         /// <summary>
         /// 接口地址
         /// </summary>

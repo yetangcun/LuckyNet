@@ -1,4 +1,5 @@
-﻿using Lucky.BaseModel.Model;
+﻿using Lucky.BaseModel.Enum;
+using Lucky.BaseModel.Model;
 
 namespace Lucky.SysModel.Model.Input
 {
@@ -27,7 +28,36 @@ namespace Lucky.SysModel.Model.Input
     /// 用户操作入参
     /// </summary>
     public class SysUserOptInput
-    { 
+    {
+        /// <summary>
+        /// 用户id
+        /// </summary>
+        public long Id { get; set; }
+
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public required string Account { get; set; }
+
+        /// <summary>
+        /// 性别
+        /// </summary>
+        public SexType? SexType { get; set; }
+
+        /// <summary>
+        /// 姓名
+        /// </summary>
+        public string? Name { get; set; }
+
+        /// <summary>
+        /// 组织ID
+        /// </summary>
+        public int? OrgId { get; set; }
+
+        /// <summary>
+        /// 状态
+        /// </summary>
+        public int? Status { get; set; }
     }
 
     /// <summary>

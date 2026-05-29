@@ -12,7 +12,7 @@ namespace Data.EFCore.Rpsty
     /// <summary>
     /// 通用仓储实现
     /// </summary>
-    public class CommonRpsty<TCxt, TEntity, TOpt> : ICommonRpsty<TEntity> where TCxt : CommonCxt where TEntity : class where TOpt : DbDefaultOption
+    public class CommonRpsty<TCxt, TEntity, TOpt, TKey> : ICommonRpsty<TEntity, TKey> where TCxt : CommonCxt where TEntity : BaseCommonEntity<TKey> where TOpt : DbDefaultOption
     {
         private readonly TOpt _opt;
         protected readonly TCxt _dbCxt;
@@ -131,10 +131,10 @@ namespace Data.EFCore.Rpsty
         /// <summary>
         /// 根据Id查询实体对象
         /// </summary>
-        public async Task<T?> GetByIdAsync<T, TKey>(TKey id) where T : BaseCommonEntity<TKey>
+        public async Task<TEntity?> GetByIdAsync(TKey id) 
         {
             _opt.IsReadOnly = true;
-            var query = _dbCxt.Set<T>().AsNoTracking();
+            var query = _dbCxt.Set<TEntity>().AsNoTracking();
             var data = await query.FirstOrDefaultAsync(x => x.Id!.Equals(id));
             return data;
         }
@@ -142,10 +142,10 @@ namespace Data.EFCore.Rpsty
         /// <summary>
         /// 根据Id查询结果对象
         /// </summary>
-        public async Task<TResult?> GetByIdAsync<T, TKey, TResult>(TKey id, Expression<Func<T, TResult>> selectors) where T : BaseCommonEntity<TKey>
+        public async Task<TResult?> GetByIdAsync<TResult>(TKey id, Expression<Func<TEntity, TResult>> selectors)
         {
             _opt.IsReadOnly = true;
-            var query = _dbCxt.Set<T>().AsNoTracking();
+            var query = _dbCxt.Set<TEntity>().AsNoTracking();
             var data = await query.Where(x => x.Id!.Equals(id)).Select(selectors).FirstOrDefaultAsync();
             return data;
         }

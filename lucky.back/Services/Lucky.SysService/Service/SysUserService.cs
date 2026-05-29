@@ -1,11 +1,13 @@
-﻿using LinqKit;
+﻿using Common.CoreLib.Extension.Common;
+using LinqKit;
+using Lucky.BaseModel;
+using Lucky.BaseModel.Enum;
 using Lucky.BaseModel.Model;
 using Lucky.SysModel.Entity;
 //using System.Linq.Expressions;
 using Lucky.SysModel.Model.Input;
 using Lucky.SysModel.Model.Output;
 using Lucky.SysService.Rpsty.IRpsty;
-using Common.CoreLib.Extension.Common;
 using Lucky.SysService.Service.IService;
 
 namespace Lucky.SysService.Service
@@ -15,21 +17,21 @@ namespace Lucky.SysService.Service
     /// </summary>
     public class SysUserService : ISysUserService
     {
-        private readonly ISysRpsty<SysUser> _usrRpsty;
-        private readonly ISysRpsty<SysRole> _roleRpsty;
-        private readonly ISysRpsty<SysMenu> _menuRpsty;
-        private readonly ISysRpsty<SysUserRole> _usrRoleRpsty;
-        private readonly ISysRpsty<SysRoleMenu> _roleMenuRpsty;
+        private readonly ISysRpsty<SysUser, long> _usrRpsty;
+        private readonly ISysRpsty<SysRole, int> _roleRpsty;
+        private readonly ISysRpsty<SysMenu, int> _menuRpsty;
+        private readonly ISysRpsty<SysUserRole, long> _usrRoleRpsty;
+        private readonly ISysRpsty<SysRoleMenu, int> _roleMenuRpsty;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         public SysUserService(
-            ISysRpsty<SysUser> usrRpsty,
-            ISysRpsty<SysRole> roleRpsty,
-            ISysRpsty<SysMenu> menuRpsty,
-            ISysRpsty<SysRoleMenu> roleMenuRpsty,
-            ISysRpsty<SysUserRole> usrRoleRpsty)
+            ISysRpsty<SysUser, long> usrRpsty,
+            ISysRpsty<SysRole, int> roleRpsty,
+            ISysRpsty<SysMenu, int> menuRpsty,
+            ISysRpsty<SysRoleMenu, int> roleMenuRpsty,
+            ISysRpsty<SysUserRole, long> usrRoleRpsty)
         {
             _usrRpsty = usrRpsty;
             _roleRpsty = roleRpsty;
@@ -144,6 +146,88 @@ namespace Lucky.SysService.Service
             return (res.Item1, res.Item2);
         }
 
+        public async Task<SysUserInfoOutput?> GetUserInfo(long id)
+        {
+            //Expression<Func<SysUser, SysUserOutput>> expr = x => new SysUserOutput()  // 1、这是最直接、最可控、最高效的方式
+            //{
+            //    Uid = x.Id,
+            //    Account = x.Account,
+            //    Name = x.RealName
+            //};
+            var expr = SimpleMappingExtensions.AutoMap<SysUser, SysUserInfoOutput>();  // 2、这是最简便的方式
+            var userObj = await _usrRpsty.GetByIdAsync<SysUserInfoOutput>(id, expr);
+            return userObj;
+        }
+
+        /// <summary>
+        /// 新增
+        /// </summary>
+        /// <param name="input"></param>
+        public async Task<bool> Add(SysUserOptInput input, long optId)
+        {
+            var id = IdGreator.GetNxtId();
+
+            var sysObj = new SysUser()
+            {
+                Account = input.Account,
+                RealName = input.Name,
+                Sex = input.SexType.HasValue ? input.SexType.Value : SexType.None,
+                PassWord = GlobalConstant.DFT_PWD,
+                Id = id,
+                CreateTime = DateTime.Now,
+                CreateUid = optId
+            };
+
+            var res = await _usrRpsty.AddAsync(sysObj);
+
+            return res != null;
+        }
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="SysUserOptInput"></param>
+        public async Task<bool> Edit(SysUserOptInput input, long optId)
+        {
+            var entity = await _usrRpsty.GetByIdAsync(input.Id);
+            if (entity == null) return false;
+
+            entity.RealName = input.Name;
+
+            if(input.Status!=null && input.Status.HasValue)
+                entity.Status = input.Status.Value;
+
+            if (input.SexType != null && input.SexType.HasValue)
+                entity.Sex = input.SexType.Value;
+
+            entity.UpdateUid = optId;
+            entity.UpdateTime = DateTime.Now;
+
+            var res = await _usrRpsty.UpdateAsync(entity);
+
+            return res > 0;
+        }
+
+        /// <summary>
+        /// 删除
+        /// 软删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="optId"></param>
+        public async Task<bool> Del(long id, long optId)
+        {
+            var entity = await _usrRpsty.GetByIdAsync(id);
+            if (entity == null) return false;
+
+            entity.IsDel = true;
+            entity.DelTime = DateTime.Now;
+            entity.DelUid = optId;
+
+            var res = await _usrRpsty.UpdateAsync(entity);
+
+            return res > 0;
+        }
+
         /// <summary>
         /// 登录系统
         /// </summary>
@@ -160,7 +244,7 @@ namespace Lucky.SysService.Service
         public async Task<UsrData> GetPermissions(long uid)
         {
             var usrData = new UsrData();
-            var usrInfo = await _usrRpsty.GetByIdAsync<SysUser, long>(uid);
+            var usrInfo = await _usrRpsty.GetByIdAsync(uid);
 
             usrData.layout = 1;
             usrData.uid = uid.ToString();

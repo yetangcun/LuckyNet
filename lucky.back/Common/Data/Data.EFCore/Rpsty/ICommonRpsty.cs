@@ -7,7 +7,7 @@ namespace Data.EFCore.Rpsty
     /// <summary>
     /// 通用仓储接口
     /// </summary>
-    public interface ICommonRpsty<T> where T : class
+    public interface ICommonRpsty<T, TKey> where T : BaseCommonEntity<TKey>
     {
         /// <summary>
         /// 设置数据库只读
@@ -84,12 +84,12 @@ namespace Data.EFCore.Rpsty
         /// <summary>
         /// 根据Id查询实体对象
         /// </summary>
-        Task<TEntity?> GetByIdAsync<TEntity, TKey>(TKey id) where TEntity : BaseCommonEntity<TKey>;
+        Task<T?> GetByIdAsync(TKey id);
 
         /// <summary>
         /// 根据Id查询结果对象
         /// </summary>
-        Task<TResult?> GetByIdAsync<TEntity, TKey, TResult>(TKey id, Expression<Func<TEntity, TResult>> selectors) where TEntity : BaseCommonEntity<TKey>;
+        Task<TResult?> GetByIdAsync<TResult>(TKey id, Expression<Func<T, TResult>> selectors);
 
         /// <summary>
         /// 获取单个字段值

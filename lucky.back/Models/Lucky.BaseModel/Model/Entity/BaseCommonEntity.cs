@@ -17,7 +17,13 @@ namespace Lucky.BaseModel.Model.Entity
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public required T Id { get; set; }
+    }
 
+    /// <summary>
+    /// 通用实体
+    /// </summary>
+    public class CommonCommonEntity<T>: BaseCommonEntity<T>
+    {
         /// <summary>
         /// 是否删除
         /// 0 未删
@@ -31,7 +37,7 @@ namespace Lucky.BaseModel.Model.Entity
     /// <summary>
     /// 基本创建
     /// </summary>
-    public class BaseCreateEntity<T> : BaseCommonEntity<T>
+    public class BaseCreateEntity<T> : CommonCommonEntity<T>
     {
         /// <summary>
         /// 创建时间
@@ -51,7 +57,7 @@ namespace Lucky.BaseModel.Model.Entity
     /// <summary>
     /// 基本删除
     /// </summary>
-    public class BaseDelEntity<T> : BaseCommonEntity<T>
+    public class BaseDelEntity<T> : CommonCommonEntity<T>
     {
         /// <summary>
         /// 删除时间
@@ -73,7 +79,7 @@ namespace Lucky.BaseModel.Model.Entity
     /// <summary>
     /// 基本完整
     /// </summary>
-    public class BaseFullEntity<T> : BaseCommonEntity<T>
+    public class BaseFullEntity<T> : CommonCommonEntity<T>
     {
         /// <summary>
         /// 创建时间

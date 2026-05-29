@@ -140,7 +140,8 @@ namespace lucky.admin.Controllers.sys
         [HttpGet("{id}")]
         public async Task<ResModel<SysUserInfoOutput>> Get(long id)
         {
-            return ResModel<SysUserInfoOutput>.Success(null);
+            var userInfo = await _sysUserService.GetUserInfo(id);
+            return ResModel<SysUserInfoOutput>.Success(userInfo);
         }
 
         /// <summary>
@@ -150,7 +151,9 @@ namespace lucky.admin.Controllers.sys
         [HttpPost]
         public async Task<ResModel<bool>> Add([FromBody] SysUserOptInput input)
         {
-            return ResModel<bool>.Success(true);
+            var uid = HttpContext.GetUid();
+            var res = await _sysUserService.Add(input, uid);
+            return res ? ResModel<bool>.Success(res) : ResModel<bool>.Failed(res);
         }
 
         /// <summary>
@@ -160,7 +163,9 @@ namespace lucky.admin.Controllers.sys
         [HttpDelete("{id}")]
         public async Task<ResModel<bool>> Del(long id)
         {
-            return ResModel<bool>.Success(true);
+            var uid = HttpContext.GetUid();
+            var res = await _sysUserService.Del(id, uid);
+            return res ? ResModel<bool>.Success(res) : ResModel<bool>.Failed(res);
         }
 
         /// <summary>
@@ -170,7 +175,9 @@ namespace lucky.admin.Controllers.sys
         [HttpPut]
         public async Task<ResModel<bool>> Edit([FromBody] SysUserOptInput input)
         {
-            return ResModel<bool>.Success(true);
+            var uid = HttpContext.GetUid();
+            var res = await _sysUserService.Edit(input, uid);
+            return res ? ResModel<bool>.Success(res) : ResModel<bool>.Failed(res);
         }
         #endregion
 

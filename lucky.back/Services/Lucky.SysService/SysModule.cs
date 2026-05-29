@@ -3,13 +3,13 @@ using Tsk.Quartz;
 using Lucky.SysModel;
 using Lucky.SysService.Cxt;
 using Lucky.SysService.Rpsty;
+using Microsoft.Extensions.Options;
 using Lucky.SysService.Rpsty.IRpsty;
 using Lucky.SysService.Service;
 using Lucky.SysService.Service.IService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace Lucky.SysService
 {
@@ -37,8 +37,12 @@ namespace Lucky.SysService
                            t.Namespace?.EndsWith(".Entity") == true).ToList();
             foreach (var entityType in entityTypes)
             {
-                var rpstyInterface = typeof(ISysRpsty<>).MakeGenericType(entityType);
-                var rpstyImp = typeof(SysRpsty<>).MakeGenericType(entityType);
+                var typ = entityType.BaseType;
+                if (typ == null || !typ.GenericTypeArguments.Any()) continue;
+
+                var tpf = typ.GenericTypeArguments[0];
+                var rpstyInterface = typeof(ISysRpsty<,>).MakeGenericType(entityType, tpf);
+                var rpstyImp = typeof(SysRpsty<,>).MakeGenericType(entityType, tpf);
                 services.AddScoped(rpstyInterface, rpstyImp);
             }
             #endregion
