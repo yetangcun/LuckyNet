@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace Lucky.SysService.Rpsty
 {
-    public class SysRpsty<TEntity,TKey> : CommonRpsty<SysCxt, TEntity, SysDbOption, TKey>, ISysRpsty<TEntity, TKey> where TEntity : BaseCommonEntity<TKey>
+    public class SysRpsty<TEntity, TKey> : CommonRpsty<SysCxt, TEntity, SysDbOption, TKey>, ISysRpsty<TEntity, TKey> where TEntity : BaseCommonEntity<TKey>
     {
         /// <summary>
         /// 构造函数

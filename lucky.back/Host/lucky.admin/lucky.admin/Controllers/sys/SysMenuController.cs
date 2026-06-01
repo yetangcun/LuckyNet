@@ -1,6 +1,8 @@
 ﻿using Lucky.BaseModel.Model;
+using Lucky.BaseService.Extension;
 using Lucky.SysModel.Model.Input;
 using Lucky.SysModel.Model.Output;
+using Lucky.SysService.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 //using Microsoft.AspNetCore.Http;
 
@@ -11,24 +13,37 @@ namespace lucky.admin.Controllers.sys
     /// </summary>
     public class SysMenuController : SysBaseController
     {
+        private readonly ISysMenuService _menuService;
+
         /// <summary>
-        /// 分页查询
+        /// 构造函数
         /// </summary>
-        /// <param name="req"></param>
-        [HttpGet("pages")]
-        public async Task<PageRes<List<SysMenuOutput>>> GetPages(SysMenuQueryInput req)
+        /// <param name="menuService"></param>
+        public SysMenuController(ISysMenuService menuService)
         {
-            return PageRes<List<SysMenuOutput>>.Success(0, 0, null);
+            _menuService = menuService;
         }
 
         /// <summary>
         /// 分页查询
         /// </summary>
+        /// <param name="req"></param>
+        [HttpGet("getMenuTree")]
+        public async Task<ResModel<List<SysMenuOutput>>> GetMenuTree([FromQuery] SysMenuQueryInput req)
+        {
+            var res = await _menuService.GetMenuTree(req);
+            return ResModel<List<SysMenuOutput>>.Success(null);
+        }
+
+        /// <summary>
+        /// 根据id查询
+        /// </summary>
         /// <param name="id"></param>
         [HttpGet("{id}")]
-        public async Task<ResModel<SysMenuOutput>> Get(long id)
+        public async Task<ResModel<SysMenuOutput>> Get(int id)
         {
-            return ResModel<SysMenuOutput>.Success(null);
+            var data = await _menuService.Get(id);
+            return ResModel<SysMenuOutput>.Success(data);
         }
 
         /// <summary>
@@ -38,7 +53,9 @@ namespace lucky.admin.Controllers.sys
         [HttpPost]
         public async Task<ResModel<bool>> Add([FromBody] SysMenuOptInput input)
         {
-            return ResModel<bool>.Success(true);
+            var uid = HttpContext.GetUid();
+            var res = await _menuService.Add(input, uid);
+            return res ? ResModel<bool>.Success(true) : ResModel<bool>.Failed(false);
         }
 
         /// <summary>
@@ -46,9 +63,11 @@ namespace lucky.admin.Controllers.sys
         /// </summary>
         /// <param name="id"></param>
         [HttpDelete("{id}")]
-        public async Task<ResModel<bool>> Del(long id)
+        public async Task<ResModel<bool>> Del(int id)
         {
-            return ResModel<bool>.Success(true);
+            var uid = HttpContext.GetUid();
+            var res = await _menuService.Del(id, uid);
+            return res ? ResModel<bool>.Success(true) : ResModel<bool>.Failed(false);
         }
 
         /// <summary>
@@ -58,7 +77,9 @@ namespace lucky.admin.Controllers.sys
         [HttpPut]
         public async Task<ResModel<bool>> Edit([FromBody] SysMenuOptInput input)
         {
-            return ResModel<bool>.Success(true);
+            var uid = HttpContext.GetUid();
+            var res = await _menuService.Edit(input, uid);
+            return res ? ResModel<bool>.Success(true) : ResModel<bool>.Failed(false);
         }
     }
 }
