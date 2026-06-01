@@ -134,7 +134,7 @@ namespace lucky.admin.Controllers.sys
         }
 
         /// <summary>
-        /// 分页查询
+        /// 根据id查询
         /// </summary>
         /// <param name="id"></param>
         [HttpGet("{id}")]

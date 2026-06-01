@@ -1,4 +1,5 @@
 ﻿using Lucky.BaseModel.Model;
+using Lucky.BaseService.Extension;
 using Lucky.SysModel.Model.Input;
 using Lucky.SysModel.Model.Output;
 //using Microsoft.AspNetCore.Http;
@@ -15,14 +16,14 @@ namespace lucky.admin.Controllers.sys
         /// 分页查询
         /// </summary>
         /// <param name="req"></param>
-        [HttpGet("pages")]
-        public async Task<PageRes<List<SysOrgOutput>>> GetPages(SysOrgQueryInput req)
+        [HttpGet("tree")]
+        public async Task<ResModel<List<SysOrgOutput>>> GetOrgTree([FromQuery] SysOrgQueryInput req)
         {
-            return PageRes<List<SysOrgOutput>>.Success(0, 0, null);
+            return ResModel<List<SysOrgOutput>>.Success(null);
         }
 
         /// <summary>
-        /// 分页查询
+        /// 根据id查询
         /// </summary>
         /// <param name="id"></param>
         [HttpGet("{id}")]
@@ -38,6 +39,7 @@ namespace lucky.admin.Controllers.sys
         [HttpPost]
         public async Task<ResModel<bool>> Add([FromBody] SysOrgOptInput input)
         {
+            var uid = HttpContext.GetUid();
             return ResModel<bool>.Success(true);
         }
 
@@ -48,6 +50,7 @@ namespace lucky.admin.Controllers.sys
         [HttpDelete("{id}")]
         public async Task<ResModel<bool>> Del(long id)
         {
+            var uid = HttpContext.GetUid();
             return ResModel<bool>.Success(true);
         }
 
@@ -58,6 +61,7 @@ namespace lucky.admin.Controllers.sys
         [HttpPut]
         public async Task<ResModel<bool>> Edit([FromBody] SysOrgOptInput input)
         {
+            var uid = HttpContext.GetUid();
             return ResModel<bool>.Success(true);
         }
     }
