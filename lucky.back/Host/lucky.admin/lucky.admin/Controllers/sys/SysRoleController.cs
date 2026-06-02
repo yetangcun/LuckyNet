@@ -39,7 +39,10 @@ namespace lucky.admin.Controllers.sys
             var isAdmin = false;
 
             var res = await _roleService.GetPages(req, isAdmin);
-            return PageRes<List<SysRoleOutput>>.Success(0, 0, res);
+
+            var pgs = res.Item1 % req.PageSize == 0 ? (res.Item1 / req.PageSize) : (res.Item1 / req.PageSize + 1);
+
+            return PageRes<List<SysRoleOutput>>.Success(pgs, res.Item1, res.Item2);
         }
 
         /// <summary>

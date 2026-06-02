@@ -155,7 +155,7 @@ namespace Lucky.SysService.Service
             //    Name = x.RealName
             //};
             var expr = SimpleMappingExtensions.AutoMap<SysUser, SysUserInfoOutput>();  // 2、这是最简便的方式
-            var userObj = await _usrRpsty.GetByIdAsync<SysUserInfoOutput>(id, expr);
+            var userObj = await _usrRpsty.GetByIdAsync(id, expr);
             return userObj;
         }
 

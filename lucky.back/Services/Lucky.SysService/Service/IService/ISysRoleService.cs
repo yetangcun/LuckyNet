@@ -9,13 +9,13 @@ namespace Lucky.SysService.Service.IService
         /// 分页查询
         /// </summary>
         /// <param name="input"></param>
-        Task<List<SysRoleOutput>> GetPages(SysRoleQueryInput input, bool isAdmin = false);
+        Task<(int, List<SysRoleOutput>)> GetPages(SysRoleQueryInput input, bool isAdmin = false);
 
         /// <summary>
         /// 根据id查询
         /// </summary>
         /// <param name="id"></param>
-        Task<SysRoleOutput> Get(int id);
+        Task<SysRoleOutput?> Get(int id);
 
         /// <summary>
         /// 新增

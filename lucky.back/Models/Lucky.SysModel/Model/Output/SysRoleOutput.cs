@@ -1,4 +1,7 @@
-﻿namespace Lucky.SysModel.Model.Output
+﻿using Lucky.BaseModel.Enum;
+using System.Text.Json.Serialization;
+
+namespace Lucky.SysModel.Model.Output
 {
     /// <summary>
     /// 角色输出
@@ -14,6 +17,11 @@
         /// 角色名称
         /// </summary>
         public string? Name { get; set; }
+
+        /// <summary>
+        /// 角色类型
+        /// </summary>
+        public RoleType RoleType { get; set; }
 
         /// <summary>
         ///  角色描述
