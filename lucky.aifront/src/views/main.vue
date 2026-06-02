@@ -7,6 +7,7 @@ import type { menuModel } from '@/models/sys/menuModel'
 import { useRouter } from 'vue-router';
 import { systemReq } from '@/utils/reqUtil'
 import SelfMenu from '@/compenents/SelfMenu.vue';
+import { ElMessageBox } from 'element-plus'
 // import { useGlbStateStore } from '@/stores/glbstate'
 
 const router = useRouter()
@@ -27,6 +28,22 @@ const to_pg = (obj: menuModel) => {
   })
   obj.isSelect = true
   router.push(obj.path)
+}
+
+const quit_hdl = () => {
+  ElMessageBox.confirm(
+    '确定退出系统吗?',
+    '退出登录',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  ).then(() => {
+      localStorage.setItem('tkn', '')
+      router.replace('/')
+    })
+    .catch(() => { })
 }
 
 // const glbstate = useGlbStateStore()
@@ -487,10 +504,35 @@ const expandOr = () => {
     </div>
     <div id="pg_r">
       <div id="r_header">
-        <div v-if="md.modules && md.modules.length>0">
-
+        <div style="display: flex; flex: 1;">
+          <div v-if="md.modules && md.modules.length>0"></div>
         </div>
-        <div>
+        <div style="display: flex; padding-right: 40px;">
+          <el-dropdown placement="bottom">
+            <el-avatar :size="50" :src="'https://avatars.githubusercontent.com/u/7288459?v=4'" />
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                   <div class="drp_itm" @click="quit_hdl">
+                      <span class="iconfont icon-logout" style="font-size: 19px;"></span>
+                      <span style="display: flex; padding-left: 10px;">退出</span>
+                   </div>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                   <div class="drp_itm">
+                      <span class="iconfont icon-user2" style="font-size: 23px; margin-left: -3px;"></span>
+                      <span style="display: flex; padding-left: 6px;">个人中心</span>
+                   </div>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                   <div class="drp_itm">
+                      <span class="iconfont icon-shezhi" style="font-size: 18px;"></span>
+                      <span style="display: flex; padding-left: 10px;">系统设置</span>
+                   </div>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
       </div>
       <div id="r_content">
@@ -540,7 +582,7 @@ const expandOr = () => {
 }
 #r_header {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   padding-left: 16px;
   min-height: 67px;
@@ -582,5 +624,11 @@ const expandOr = () => {
   /* color: #49cc90; */
   color: #3964fe;
   padding: 0px 6px 0px 0px;
+}
+
+.drp_itm {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 </style>
