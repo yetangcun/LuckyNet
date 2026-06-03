@@ -595,6 +595,7 @@ const expandOr = () => {
 #r_content {
   display: flex;
   flex: 1;
+  padding: 6px;
 }
 #l_nav {
   display: flex;

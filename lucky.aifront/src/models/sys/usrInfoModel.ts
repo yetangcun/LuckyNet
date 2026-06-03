@@ -6,3 +6,8 @@ export interface usrInfoModel {
   avatar: string,
   layout: number
 }
+
+export interface usrQueryModel {
+  txt: string,
+  orgId: string
+}
