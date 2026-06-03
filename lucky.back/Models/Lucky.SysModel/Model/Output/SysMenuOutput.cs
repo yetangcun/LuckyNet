@@ -25,7 +25,7 @@ namespace Lucky.SysModel.Model.Output
         /// <summary>
         /// 上级id
         /// </summary>
-        public int parentId { get; set; }
+        public int? parentId { get; set; }
 
         /// <summary>
         /// 图标
@@ -45,7 +45,7 @@ namespace Lucky.SysModel.Model.Output
         /// <summary>
         /// 排序
         /// </summary>
-        public int sort { get; set; }
+        public int? sort { get; set; }
 
         /// <summary>
         /// 菜单类型

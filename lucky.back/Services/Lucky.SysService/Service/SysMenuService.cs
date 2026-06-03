@@ -3,10 +3,7 @@ using Lucky.SysModel.Model.Input;
 using Lucky.SysModel.Model.Output;
 using Lucky.SysService.Rpsty.IRpsty;
 using Lucky.SysService.Service.IService;
-using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace Lucky.SysService.Service
 {
@@ -29,10 +26,73 @@ namespace Lucky.SysService.Service
         /// </summary>
         public async Task<List<SysMenuOutput>> GetMenuTree(SysMenuQueryInput input, bool isAdmin = false)
         {
-            
-            return null;
+            var data = await _menuRpsty.GetListAsync(x => !x.IsDel);
+            var lst = new List<SysMenuOutput>();
+
+            var topMenus = data.Where(x => x.ParentId == 0 || x.ParentId == -1 || x.ParentId == null);
+            var lens = topMenus.Count();
+            for (var l = 0; l < lens; l++)
+            {
+                var obj = topMenus.ElementAt(l);
+                var outObj = new SysMenuOutput()
+                {
+                    id = obj.Id,
+                    parentId = obj.ParentId,
+                    name = obj.Name,
+                    code = obj.Code,
+                    url = obj.Path,
+                    icon = obj.Icon,
+                    sort = obj.Sort,
+                    iconSize = obj.IconSize,
+                    menuType = obj.MenuType
+                };
+
+                var childs = data.Where(x => x.ParentId == obj.Id);
+
+                if (childs.Any())
+                    BldMenuTree(outObj, data);
+
+                lst.Add(outObj);
+            }
+
+            return lst;
         }
 
+        private void BldMenuTree(SysMenuOutput res, List<SysMenu> menus)
+        {
+            var data = menus.Where(x => x.ParentId == res.id);
+
+            if (data.Any())
+            {
+                res.childs = new List<SysMenuOutput>();
+
+                var lens = data.Count();
+
+                for(var l = 0; l < lens; l++)
+                {
+                    var obj = data.ElementAt(l);
+                    var tmpObj = new SysMenuOutput()
+                    {
+                        id = obj.Id,
+                        parentId = obj.ParentId,
+                        name = obj.Name,
+                        code = obj.Code,
+                        url = obj.Path,
+                        icon = obj.Icon,
+                        sort = obj.Sort,
+                        iconSize = obj.IconSize,
+                        menuType = obj.MenuType
+                    };
+
+                    var chlds = menus.Where(x=>x.ParentId == obj.Id);
+
+                    if (chlds.Any())
+                        BldMenuTree(tmpObj, menus);
+
+                    res.childs.Add(tmpObj);
+                }
+            }
+        }
 
         /// <summary>
         /// 根据id查询
@@ -44,11 +104,11 @@ namespace Lucky.SysService.Service
                 id = x.Id,
                 name = x.Name,
                 code = x.Code,
-                parentId = x.ParentId.Value,
+                parentId = x.ParentId ?? 0,
                 icon = x.Icon,
                 iconSize = x.IconSize,
                 url = x.Path,
-                sort = x.Sort.Value,
+                sort = x.Sort ?? 0,
                 menuType = x.MenuType
             };
 

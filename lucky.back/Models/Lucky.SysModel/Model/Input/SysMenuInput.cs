@@ -15,7 +15,7 @@ namespace Lucky.SysModel.Model.Input
         /// <summary>
         /// 菜单名
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 
     /// <summary>
