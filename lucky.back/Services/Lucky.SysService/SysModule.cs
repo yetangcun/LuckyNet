@@ -48,6 +48,7 @@ namespace Lucky.SysService
             #endregion
 
             services.AddScoped<ISysUserService, SysUserService>();
+            services.AddScoped<ISysMenuService, SysMenuService>();
 
             services.QuartzModuleLoad(cfg); // 添加Quartz
         }

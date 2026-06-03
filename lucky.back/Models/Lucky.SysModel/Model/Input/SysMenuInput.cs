@@ -24,6 +24,11 @@ namespace Lucky.SysModel.Model.Input
     public class SysMenuOptInput
     {
         /// <summary>
+        /// 主键Id
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// 父id
         /// </summary>
         public int ParentId { get; set; }

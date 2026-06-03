@@ -25,14 +25,14 @@ namespace lucky.admin.Controllers.sys
         }
 
         /// <summary>
-        /// 分页查询
+        /// 查询菜单树列表
         /// </summary>
         /// <param name="req"></param>
         [HttpGet("getMenuTree")]
         public async Task<ResModel<List<SysMenuOutput>>> GetMenuTree([FromQuery] SysMenuQueryInput req)
         {
             var res = await _menuService.GetMenuTree(req);
-            return ResModel<List<SysMenuOutput>>.Success(null);
+            return ResModel<List<SysMenuOutput>>.Success(res);
         }
 
         /// <summary>

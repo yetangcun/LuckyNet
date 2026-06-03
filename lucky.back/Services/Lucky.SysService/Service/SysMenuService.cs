@@ -145,19 +145,44 @@ namespace Lucky.SysService.Service
         /// <summary>
         /// 编辑操作
         /// </summary>
-
         public async Task<bool> Edit(SysMenuOptInput input, long uid)
         {
-            return true;
+            var model = await _menuRpsty.GetByIdAsync(input.Id);
+            if (model != null)
+            {
+                model.Name = input.Name;
+                model.Status = input.Status;
+                model.Sort = input.Sort;
+                model.MenuType = input.MenuType;
+                model.Icon = input.Icon;
+                model.IconSize = input.IconSize.ToString();
+                model.Path = input.Path;
+                model.ParentId = input.ParentId;
+                model.UpdateUid = uid;
+                model.UpdateTime = DateTime.Now;
+
+                var res = await _menuRpsty.UpdateAsync(model);
+
+                return res > 0;
+            }
+            return false;
         }
 
         /// <summary>
         /// 删除操作
         /// </summary>
-
         public async Task<bool> Del(int id, long uid)
         {
-            return true;
+            var model = await _menuRpsty.GetByIdAsync(id);
+            if (model != null)
+            {
+                model.DelUid = uid;
+                model.DelTime = DateTime.Now;
+                model.IsDel = true;
+                await _menuRpsty.UpdateAsync(model);
+                return true;
+            }
+            return false;
         }
     }
 }
