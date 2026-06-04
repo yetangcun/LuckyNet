@@ -47,12 +47,12 @@ body {
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-start;
-  padding: 6px 8px;
+  padding: 2px 8px 6px 8px;
 }
 .pg_grid {
   display: flex;
   flex: 1;
-  padding: 6px 8px;
+  padding: 1px;
   background-color: cornflowerblue;
 }
 .lbStl0 {
@@ -66,9 +66,12 @@ body {
   display: flex;
   flex-wrap: nowrap;
   flex-shrink: unset;
-  padding: 0px 6px 0px 11px;
+  padding: 4px 6px 4px 11px;
 }
 .commonInput {
   width: 168px;
-  padding-right: 6px;
+  padding: 4px 6px 4px 0px;
+}
+.btnStl {
+  padding-top: 2px;
 }

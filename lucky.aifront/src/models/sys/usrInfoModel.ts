@@ -4,7 +4,10 @@ export interface usrInfoModel {
   nickName: string,
   roleName: string,
   avatar: string,
-  layout: number
+  layout: number,
+  org: string,
+  createTime:string,
+  createUser:string
 }
 
 export interface usrQueryModel {
