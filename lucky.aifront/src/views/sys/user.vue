@@ -16,20 +16,37 @@
           <!-- <el-table-column label="Date" width="120">
             <template #default="scope">{{ scope.row.date }}</template>
           </el-table-column> -->
-          <el-table-column property="name" label="姓名" width="120" />
-          <el-table-column property="nickName" label="昵称" width="120" />
+          <el-table-column property="realname" label="姓名" width="120" />
+          <el-table-column property="sex" label="性别" width="88">
+            <template #default="scope">
+              <div style="display: flex; align-items: center">
+                <span v-if="scope.row.sex==1">男</span>
+                <span v-else>女</span>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column property="account" label="昵称" width="120" />
           <el-table-column property="roleName" label="角色" width="120" />
-          <el-table-column property="avatar" label="头像" width="120" show-overflow-tooltip/>
+          <el-table-column property="phone" label="联系方式" width="120" />
+          <el-table-column property="avatar" label="头像" width="166" show-overflow-tooltip/>
           <el-table-column property="org" label="组织机构" width="120" show-overflow-tooltip />
           <el-table-column label="日期" width="137">
             <template #default="scope">{{ scope.row.createTime }}</template>
           </el-table-column>
           <el-table-column property="createUser" label="创建人" width="120"/>
           <el-table-column
-            property="address"
+            property="addr"
             label="联系地址"
             width="240" show-overflow-tooltip
           />
+          <el-table-column label="操作">
+            <template #default="scope">
+              <div>
+                <el-button @cliick="btnEdit(scope.row.id)" type="primary">编辑</el-button>
+                <el-button @cliick="btnDel(scope.row.id)" type="danger">删除</el-button>
+              </div>
+            </template>
+          </el-table-column>
         </el-table>
     </div>
   </div>
@@ -39,7 +56,7 @@
 import { onMounted, reactive } from 'vue';
 import { Search } from '@element-plus/icons-vue'
 import type { selKV } from '@/models/common/selectKV';
-import type { usrQueryModel, usrInfoModel } from '@/models/sys/usrInfoModel'
+import type { usrQueryModel, usrInfoModel, usrOptModel } from '@/models/sys/usrInfoModel'
 
 import { systemReq } from '@/utils/reqUtil';
 
@@ -53,6 +70,7 @@ const state = reactive<{
   loading:boolean,
   query:usrQueryModel,
   selKv: selKV[],
+  opt: usrOptModel,
   tbData: usrInfoModel[]
 }>({
   loading: false,
@@ -66,11 +84,34 @@ const state = reactive<{
       id: ''
     }
   ],
-  tbData: []
+  tbData: [],
+  opt: {
+    id: '',
+
+  }
 })
 
 const getList = () => {
-  systemReq.axiosIns.get('api/sys/SysUser/pages', )
+  systemReq.axiosIns.get('api/sys/SysUser/pages', { params:state.query })
+  .then((res:any) => {
+    console.log(res.Data)
+    state.tbData = res.Data
+  })
+  .catch((err:any)=>{
+    console.log(err)
+  })
+}
+
+const btnAdd = () => {
+
+}
+
+const btnEdit = (id:string) => {
+  console.log(id)
+}
+
+const btnDel = (id:string) => {
+  console.log(id)
 }
 
 onMounted(() => {

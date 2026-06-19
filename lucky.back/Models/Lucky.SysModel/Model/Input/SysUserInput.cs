@@ -42,7 +42,12 @@ namespace Lucky.SysModel.Model.Input
         /// <summary>
         /// 性别
         /// </summary>
-        public SexType? SexType { get; set; }
+        public SexType? Sex { get; set; }
+
+        /// <summary>
+        /// 角色ID
+        /// </summary>
+        public int RoleId { get; set; }
 
         /// <summary>
         /// 姓名

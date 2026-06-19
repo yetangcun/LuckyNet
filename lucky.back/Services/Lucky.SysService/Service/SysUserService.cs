@@ -171,7 +171,7 @@ namespace Lucky.SysService.Service
             {
                 Account = input.Account,
                 RealName = input.Name,
-                Sex = input.SexType.HasValue ? input.SexType.Value : SexType.None,
+                Sex = input.Sex.HasValue ? input.Sex.Value : SexType.None,
                 PassWord = GlobalConstant.DFT_PWD,
                 Id = id,
                 CreateTime = DateTime.Now,
@@ -197,8 +197,8 @@ namespace Lucky.SysService.Service
             if(input.Status!=null && input.Status.HasValue)
                 entity.Status = input.Status.Value;
 
-            if (input.SexType != null && input.SexType.HasValue)
-                entity.Sex = input.SexType.Value;
+            if (input.Sex != null && input.Sex.HasValue)
+                entity.Sex = input.Sex.Value;
 
             entity.UpdateUid = optId;
             entity.UpdateTime = DateTime.Now;

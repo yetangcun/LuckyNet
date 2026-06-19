@@ -1,6 +1,6 @@
 export interface usrInfoModel {
   uid: string,
-  name: string,
+  realname: string,
   nickName: string,
   roleName: string,
   avatar: string,
@@ -23,4 +23,16 @@ export interface usrInfoCache {
 export interface usrQueryModel {
   txt: string,
   orgId: string
+}
+
+
+export interface usrOptModel {
+  id: string,
+  account: string,
+  name: string,
+  roleId: string,
+  orgId: string,
+  avatar: string,
+  status: number,
+  sex: number
 }
