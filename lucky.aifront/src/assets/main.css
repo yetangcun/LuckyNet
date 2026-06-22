@@ -74,5 +74,5 @@ body {
   padding: 4px 6px 4px 0px;
 }
 .btnStl {
-  padding-top: 2px;
+  display: flex;
 }

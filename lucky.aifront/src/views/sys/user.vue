@@ -87,7 +87,7 @@ const state = reactive<{
   tbData: [],
   opt: {
     id: '',
-
+    name: ''
   }
 })
 
