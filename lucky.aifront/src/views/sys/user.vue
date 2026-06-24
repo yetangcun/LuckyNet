@@ -42,19 +42,35 @@
           <el-table-column label="操作">
             <template #default="scope">
               <div>
-                <el-button @cliick="btnEdit(scope.row.id)" type="primary">编辑</el-button>
-                <el-button @cliick="btnDel(scope.row.id)" type="danger">删除</el-button>
+                <el-button @click="btnEdit(scope.row.id)" type="primary">编辑</el-button>
+                <el-button @click="btnDel(scope.row.id)" type="danger">删除</el-button>
               </div>
             </template>
           </el-table-column>
-        </el-table>
+      </el-table>
     </div>
   </div>
+  <el-dialog
+    v-model="state.dlgVisible"
+    :title="state.dlgTitle"
+    width="500"
+    draggable
+    overflow
+  >
+    <span>It's a overflow draggable Dialog</span>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="state.dlgVisible = false">取消</el-button>
+        <el-button type="primary" @click="state.dlgVisible = false">确定</el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script lang="ts" setup>
 import { onMounted, reactive } from 'vue';
 import { Search } from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import type { selKV } from '@/models/common/selectKV';
 import type { usrQueryModel, usrInfoModel, usrOptModel } from '@/models/sys/usrInfoModel'
 
@@ -68,12 +84,16 @@ const props = {
 }
 const state = reactive<{
   loading:boolean,
+  dlgTitle:string,
+  dlgVisible:boolean,
   query:usrQueryModel,
   selKv: selKV[],
   opt: usrOptModel,
   tbData: usrInfoModel[]
 }>({
   loading: false,
+  dlgTitle: '',
+  dlgVisible:false,
   query: {
     txt: '',
     orgId: ''
@@ -103,15 +123,37 @@ const getList = () => {
 }
 
 const btnAdd = () => {
-
+  state.dlgTitle = '新增用户'
+  state.dlgVisible = true
 }
 
 const btnEdit = (id:string) => {
-  console.log(id)
+  state.dlgTitle = '编辑用户'
+  state.dlgVisible = true
+  // console.log(id)
 }
 
 const btnDel = (id:string) => {
-  console.log(id)
+  // console.log(id)
+  ElMessageBox.confirm(
+    '确认删除?',
+    '警告',
+    {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  ).then(() => {
+      ElMessage({
+        type: 'success',
+        message: '删除成功',
+      })
+    }).catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消删除',
+      })
+    })
 }
 
 onMounted(() => {
