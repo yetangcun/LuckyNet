@@ -481,7 +481,7 @@ const expandOr = () => {
 </script>
 
 <template>
-  <div id="pg_top" v-loading="md.loading">
+  <div id="pg_top" v-loading="md.loading" element-loading-text="正在加载...">
     <div id="pg_l" :style="{maxWidth:md.navWdth, minWidth:md.navWdth}">
       <div id="l_header">
           <el-icon :size="46" :color="'white'"><Cpu /> </el-icon>

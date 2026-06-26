@@ -4,10 +4,15 @@
       <el-text class="lbStl">关键字:</el-text>
       <el-input class="commonInput" v-model="state.query.txt" placeholder="名称|账号"></el-input>
       <el-text class="lbStl">组织机构:</el-text>
-      <el-select class="commonInput" v-model="state.query.orgId"
-      :options="state.selKv" :props="props" placeholder="请选择">
-
-      </el-select>
+      <el-tree-select
+        v-model="state.query.orgId"
+        :data="state.selKv"
+        check-strictly
+        placeholder="请选择"
+        class="commonInput"
+        :render-after-expand="false"/>
+      <!-- <el-select class="commonInput" v-model="state.query.orgId"
+      :options="state.selKv" :props="props" placeholder="请选择"/> -->
       <el-button type="primary" :icon="Search" class="btnStl">查询</el-button>
     </div>
     <div class="pg_grid">
@@ -36,7 +41,7 @@
           <el-table-column property="createUser" label="创建人" width="120"/>
           <el-table-column
             property="addr"
-            label="联系地址"
+            label="地址"
             width="240" show-overflow-tooltip
           />
           <el-table-column label="操作">
@@ -57,7 +62,43 @@
     draggable
     overflow
   >
-    <span>It's a overflow draggable Dialog</span>
+    <div style="display: flex; flex: 1; padding: 10px 6px 6px 6px;">
+      <el-form :model="state.opt" label-width="auto" style="max-width: 600px">
+          <el-form-item label="Activity name">
+            <el-input v-model="state.opt.name" />
+          </el-form-item>
+          <el-form-item label="姓名">
+            <el-select v-model="state.opt.region" placeholder="please select your zone">
+              <el-option label="Zone one" value="shanghai" />
+              <el-option label="Zone two" value="beijing" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="昵称">
+            <el-input v-model="state.opt.name" />
+          </el-form-item>
+          <el-form-item label="角色">
+            <el-select v-model="state.opt.region" placeholder="please select your zone">
+              <el-option label="Zone one" value="shanghai" />
+              <el-option label="Zone two" value="beijing" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="组织">
+            <el-tree-select
+              v-model="state.query.orgId"
+              :data="state.selKv"
+              check-strictly
+              placeholder="请选择"
+              class="commonInput"
+              :render-after-expand="false"/>
+          </el-form-item>
+          <el-form-item label="联系方式">
+            <el-input v-model="state.opt.name" />
+          </el-form-item>
+          <el-form-item label="地址">
+            <el-input v-model="state.opt.name" />
+          </el-form-item>
+        </el-form>
+    </div>
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="state.dlgVisible = false">取消</el-button>
@@ -82,6 +123,7 @@ const props = {
   options: 'options',
   disabled: 'disabled',
 }
+
 const state = reactive<{
   loading:boolean,
   dlgTitle:string,
