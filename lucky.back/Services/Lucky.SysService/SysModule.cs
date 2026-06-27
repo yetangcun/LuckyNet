@@ -47,6 +47,7 @@ namespace Lucky.SysService
             }
             #endregion
 
+            services.AddScoped<ISysOrgService, SysOrgService>();
             services.AddScoped<ISysUserService, SysUserService>();
             services.AddScoped<ISysMenuService, SysMenuService>();
             services.AddScoped<ISysRoleService, SysRoleService>();

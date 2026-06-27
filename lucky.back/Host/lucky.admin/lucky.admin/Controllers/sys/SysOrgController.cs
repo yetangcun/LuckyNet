@@ -2,6 +2,8 @@
 using Lucky.BaseService.Extension;
 using Lucky.SysModel.Model.Input;
 using Lucky.SysModel.Model.Output;
+using Lucky.SysService.Service.IService;
+
 //using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,8 +14,20 @@ namespace lucky.admin.Controllers.sys
     /// </summary>
     public class SysOrgController : SysBaseController
     {
+        private readonly ISysOrgService _orgService;
+
         /// <summary>
-        /// 分页查询
+        /// 构造函数
+        /// </summary>
+        /// <param name="orgService"></param>
+        public SysOrgController(
+        ISysOrgService orgService)
+        {
+            _orgService = orgService;
+        }
+
+        /// <summary>
+        /// 查询组织树结构
         /// </summary>
         /// <param name="req"></param>
         [HttpGet("tree")]

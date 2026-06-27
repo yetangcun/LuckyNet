@@ -14,6 +14,7 @@
       <!-- <el-select class="commonInput" v-model="state.query.orgId"
       :options="state.selKv" :props="props" placeholder="请选择"/> -->
       <el-button type="primary" :icon="Search" class="btnStl">查询</el-button>
+      <el-button type="danger" :icon="Plus" class="btnStl">新增</el-button>
     </div>
     <div class="pg_grid">
       <el-table :data="state.tbData" style="display: flex; flex: 1;width: auto; height: 100%; flex-wrap: wrap; flex-shrink: 1;">
@@ -63,32 +64,34 @@
     overflow
   >
     <div style="display: flex; flex: 1; padding: 10px 6px 6px 6px;">
-      <el-form :model="state.opt" label-width="auto" style="max-width: 600px">
-          <el-form-item label="Activity name">
+      <el-form :model="state.opt" label-width="auto" style="width: 100%;">
+          <el-form-item label="姓名" placeholder="请输入姓名" prop="name">
             <el-input v-model="state.opt.name" />
           </el-form-item>
-          <el-form-item label="姓名">
-            <el-select v-model="state.opt.region" placeholder="please select your zone">
-              <el-option label="Zone one" value="shanghai" />
-              <el-option label="Zone two" value="beijing" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="昵称">
+          <el-form-item label="账号" placeholder="请输入账号">
             <el-input v-model="state.opt.name" />
+          </el-form-item>
+          <el-form-item label="昵称" placeholder="请输入昵称">
+            <el-input v-model="state.opt.name" />
+          </el-form-item>
+          <el-form-item label="性别" placeholder="请选择性别">
+            <el-radio-group v-model="state.opt.sex">
+              <el-radio :value="1"> 男 </el-radio>
+              <el-radio :value="2"> 女 </el-radio>
+            </el-radio-group>
           </el-form-item>
           <el-form-item label="角色">
-            <el-select v-model="state.opt.region" placeholder="please select your zone">
+            <el-select v-model="state.opt.region" placeholder="请选择角色">
               <el-option label="Zone one" value="shanghai" />
               <el-option label="Zone two" value="beijing" />
             </el-select>
           </el-form-item>
-          <el-form-item label="组织">
+          <el-form-item label="所属组织" placeholder="请选择组织">
             <el-tree-select
               v-model="state.query.orgId"
               :data="state.selKv"
               check-strictly
               placeholder="请选择"
-              class="commonInput"
               :render-after-expand="false"/>
           </el-form-item>
           <el-form-item label="联系方式">
@@ -110,19 +113,19 @@
 
 <script lang="ts" setup>
 import { onMounted, reactive } from 'vue';
-import { Search } from '@element-plus/icons-vue'
+import { Plus, Search } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { selKV } from '@/models/common/selectKV';
 import type { usrQueryModel, usrInfoModel, usrOptModel } from '@/models/sys/usrInfoModel'
 
 import { systemReq } from '@/utils/reqUtil';
 
-const props = {
-  value: 'id',
-  label: 'label',
-  options: 'options',
-  disabled: 'disabled',
-}
+// const props = {
+//   value: 'id',
+//   label: 'label',
+//   options: 'options',
+//   disabled: 'disabled',
+// }
 
 const state = reactive<{
   loading:boolean,
@@ -149,7 +152,13 @@ const state = reactive<{
   tbData: [],
   opt: {
     id: '',
-    name: ''
+    name: '',
+    roleId: '',
+    account: '',
+    orgId: '',
+    avatar: '',
+    status: 0,
+    sex: 1
   }
 })
 
