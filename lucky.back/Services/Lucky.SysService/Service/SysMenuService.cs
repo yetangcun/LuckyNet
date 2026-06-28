@@ -126,7 +126,7 @@ namespace Lucky.SysService.Service
             var model = new SysMenu()
             {
                 Id = maxId + 1,
-                Name = input.Name,
+                Name = input.Name ?? string.Empty,
                 Code = input.Code,
                 Icon = input.Icon,
                 IconSize = input.IconSize.ToString(),
@@ -150,7 +150,7 @@ namespace Lucky.SysService.Service
             var model = await _menuRpsty.GetByIdAsync(input.Id);
             if (model != null)
             {
-                model.Name = input.Name;
+                model.Name = input.Name ?? string.Empty;
                 model.Status = input.Status;
                 model.Sort = input.Sort;
                 model.MenuType = input.MenuType;

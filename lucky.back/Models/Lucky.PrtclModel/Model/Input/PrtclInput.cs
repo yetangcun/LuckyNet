@@ -21,6 +21,9 @@ namespace Lucky.PrtclModel.Model.Input
         public string? Name { get; set; }
     }
 
+    /// <summary>
+    /// 新增输入
+    /// </summary>
     public class PrtclOptInput
     {
     }

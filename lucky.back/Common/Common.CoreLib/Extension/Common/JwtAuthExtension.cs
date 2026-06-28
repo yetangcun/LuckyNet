@@ -56,9 +56,9 @@ namespace Common.CoreLib.Extension.Common
             #region 有效载荷
 
             var claims = new[] { // new Claim(ClaimTypes.Name, userName),
-                new Claim("nm", userName),
+                new Claim("nm", userName ?? string.Empty),
                 new Claim("rl", "admin"),
-                new Claim("ky", userId)
+                new Claim("ky", userId ?? string.Empty)
             };
 
             #endregion
@@ -70,7 +70,7 @@ namespace Common.CoreLib.Extension.Common
                 expires: DateTime.Now.AddMinutes(_option.Timeout),
                 signingCredentials: _signingCredentials);
             // var tokenHandler = new JwtSecurityTokenHandler();
-            var acceToken = _getTokenHdl.WriteToken(token);
+            var acceToken = _getTokenHdl!.WriteToken(token);
             return acceToken;
         }
 
@@ -82,7 +82,7 @@ namespace Common.CoreLib.Extension.Common
         /// </summary>
         public async Task<(DateTime, string?, string?, bool)> CheckToken(string token)
         {
-            var res = await _getTokenHdl.ValidateTokenAsync(token, validateParameter);
+            var res = await _getTokenHdl!.ValidateTokenAsync(token, validateParameter);
             var timeNow = DateTime.Now;
             if (res.Claims != null) // res.IsValid && 
             {

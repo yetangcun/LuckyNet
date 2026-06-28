@@ -22,7 +22,7 @@ namespace Lucky.SysModel.Model.Input
         /// <summary>
         /// 父级ID
         /// </summary>
-        public string? ParentId { get; set; }
+        public int? ParentId { get; set; }
     }
 
     /// <summary>

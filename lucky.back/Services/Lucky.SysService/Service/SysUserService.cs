@@ -248,7 +248,7 @@ namespace Lucky.SysService.Service
 
             usrData.layout = 1;
             usrData.uid = uid.ToString();
-            usrData.name = usrInfo.RealName;
+            usrData.name = usrInfo!.RealName;
             usrData.avatar = usrInfo.Avatar;
 
             var usrRoles = await _usrRoleRpsty.GetListAsync(x => x.UserId == uid);
@@ -278,12 +278,12 @@ namespace Lucky.SysService.Service
                 {
                     id = item.Id,
                     name = item.Name,
-                    code = item.Code,
+                    code = item.Code ?? string.Empty,
                     path = item.Path,
                     icon = item.Icon,
                     icon_size = item.IconSize,
                     menu_type = item.MenuType,
-                    parent_id = item.ParentId.ToString()
+                    parent_id = item.ParentId?.ToString() ?? string.Empty
                 };
 
                 GetMenuTrees(parentEle, menus);
@@ -308,12 +308,12 @@ namespace Lucky.SysService.Service
                 {
                     id = itm.Id,
                     name = itm.Name,
-                    code = itm.Code,
+                    code = itm.Code ?? string.Empty,
                     path = itm.Path,
                     icon = itm.Icon,
                     icon_size = itm.IconSize,
                     menu_type = itm.MenuType,
-                    parent_id = itm.ParentId.ToString()
+                    parent_id = itm.ParentId?.ToString() ?? string.Empty
                 };
                 if (itm.MenuType != BaseModel.Enum.MenuType.Menu)
                 {

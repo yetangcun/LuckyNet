@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace Lucky.PrtclModel.Model.Output
 {
+    /// <summary>
+    /// 输出模型
+    /// </summary>
     public class PrtclOutput
     {
         /// <summary>

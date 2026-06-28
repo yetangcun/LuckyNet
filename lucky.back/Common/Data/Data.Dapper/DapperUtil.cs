@@ -48,7 +48,7 @@ namespace Data.Dapper
         public int GetMaxId(string tableName, string connectionString, DatabaseType databaseType)
         {
             var dbUtil = GetDbUtil(databaseType);
-            return dbUtil.GetMaxId(tableName, connectionString);
+            return dbUtil!.GetMaxId(tableName, connectionString);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Data.Dapper
         public async Task<T?> GetAsync<T>(string sql, string connectionString, DatabaseType databaseType, object? prms = null) where T : class
         {
             var dbUtil = GetDbUtil(databaseType);
-            return await dbUtil.GetAsync<T>(sql, connectionString, prms);
+            return await dbUtil!.GetAsync<T>(sql, connectionString, prms);
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace Data.Dapper
         {
             var dbUtil = GetDbUtil(databaseType);
             if (dbUtil == null)
-                return default;
+                return default!;
 
             return await dbUtil.GetMulResultAsync<TResult>(sqls, connectionString, mapper);
         }

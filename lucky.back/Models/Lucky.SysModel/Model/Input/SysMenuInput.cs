@@ -41,17 +41,17 @@ namespace Lucky.SysModel.Model.Input
         /// <summary>
         /// 菜单名
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// 唯一编码
         /// </summary>
-        public string Code { get; set; }
+        public string? Code { get; set; }
 
         /// <summary>
         /// 图标
         /// </summary>
-        public string Icon { get; set; }
+        public string? Icon { get; set; }
 
         /// <summary>
         /// 图标大小
@@ -61,7 +61,7 @@ namespace Lucky.SysModel.Model.Input
         /// <summary>
         /// 路径
         /// </summary>
-        public string Path { get; set; }
+        public string? Path { get; set; }
 
         /// <summary>
         /// 排序

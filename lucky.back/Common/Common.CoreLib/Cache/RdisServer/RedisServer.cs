@@ -11,7 +11,7 @@ namespace Alot2.Admin.Common.Cache
         /// <summary>
         /// Redis缓存服务器
         /// </summary>
-        public static CSRedisClient Cache;
+        public static CSRedisClient Cache = null!;
 
         ///// <summary>
         ///// RedisSession服务器

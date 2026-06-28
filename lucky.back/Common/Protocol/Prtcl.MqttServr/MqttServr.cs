@@ -213,7 +213,7 @@ namespace Prtcl.MqttServr
         /// </summary>
         public async Task CleanClientMessages(string clientId)
         {
-            var session = await _mqttServer.GetSessionAsync(clientId);
+            var session = await _mqttServer!.GetSessionAsync(clientId);
             if (session?.PendingApplicationMessagesCount > 0)
             {
                 await session.ClearApplicationMessagesQueueAsync();
@@ -225,9 +225,9 @@ namespace Prtcl.MqttServr
         /// </summary>
         public async Task CleanAllPendingMessages()
         {
-            var sessions = await _mqttServer.GetSessionsAsync();
+            var sessions = await _mqttServer!.GetSessionsAsync();
 
-            if (sessions?.Count <= 1) return;
+            if (sessions == null || sessions.Count <= 1) return;
 
             foreach (var session in sessions)
             {

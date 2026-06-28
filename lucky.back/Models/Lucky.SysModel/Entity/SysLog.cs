@@ -60,18 +60,18 @@ namespace Lucky.SysModel.Entity
         [Column("err_msg")]
         public string? ErrMsg { get; set; }
 
-        /// <summary>
-        /// 创建时间
-        /// </summary>
-        [Comment("创建时间")]
-        [Column("create_time")]
-        public DateTime CreateTime { get; set; } = DateTime.Now;
+        ///// <summary>
+        ///// 创建时间
+        ///// </summary>
+        //[Comment("创建时间")]
+        //[Column("create_time")]
+        //public DateTime CreateTime { get; set; } = DateTime.Now;
 
-        /// <summary>
-        /// 创建人
-        /// </summary>
-        [Comment("创建人")]
-        [Column("create_uid")]
-        public long CreateUid { get; set; }
+        ///// <summary>
+        ///// 创建人
+        ///// </summary>
+        //[Comment("创建人")]
+        //[Column("create_uid")]
+        //public long CreateUid { get; set; }
     }
 }
