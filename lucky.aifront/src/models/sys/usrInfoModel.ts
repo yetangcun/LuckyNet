@@ -34,5 +34,7 @@ export interface usrOptModel {
   orgId: string,
   avatar: string,
   status: number,
-  sex: number
+  sex: number,
+  phone: string,
+  addr: string
 }

@@ -13,11 +13,11 @@
         :render-after-expand="false"/>
       <!-- <el-select class="commonInput" v-model="state.query.orgId"
       :options="state.selKv" :props="props" placeholder="请选择"/> -->
-      <el-button type="primary" :icon="Search" class="btnStl">查询</el-button>
-      <el-button type="danger" :icon="Plus" class="btnStl">新增</el-button>
+      <el-button type="primary" :icon="Search" class="btnStl" @click="getList">查询</el-button>
+      <el-button type="danger" :icon="Plus" class="btnStl" @click="btnAdd">新增</el-button>
     </div>
     <div class="pg_grid">
-      <el-table :data="state.tbData" style="display: flex; flex: 1;width: auto; height: 100%; flex-wrap: wrap; flex-shrink: 1;">
+      <el-table :data="state.tbData" v-loading="state.loading" style="display: flex; flex: 1;width: auto; height: 100%; flex-wrap: wrap; flex-shrink: 1;">
           <el-table-column type="selection" width="55" />
           <!-- <el-table-column label="Date" width="120">
             <template #default="scope">{{ scope.row.date }}</template>
@@ -69,7 +69,7 @@
             <el-input v-model="state.opt.name" />
           </el-form-item>
           <el-form-item label="账号" placeholder="请输入账号">
-            <el-input v-model="state.opt.name" />
+            <el-input v-model="state.opt.account" />
           </el-form-item>
           <el-form-item label="昵称" placeholder="请输入昵称">
             <el-input v-model="state.opt.name" />
@@ -81,24 +81,24 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="角色">
-            <el-select v-model="state.opt.region" placeholder="请选择角色">
+            <el-select v-model="state.opt.roleId" placeholder="请选择角色">
               <el-option label="Zone one" value="shanghai" />
               <el-option label="Zone two" value="beijing" />
             </el-select>
           </el-form-item>
           <el-form-item label="所属组织" placeholder="请选择组织">
             <el-tree-select
-              v-model="state.query.orgId"
+              v-model="state.opt.orgId"
               :data="state.selKv"
               check-strictly
               placeholder="请选择"
               :render-after-expand="false"/>
           </el-form-item>
           <el-form-item label="联系方式">
-            <el-input v-model="state.opt.name" />
+            <el-input v-model="state.opt.phone" />
           </el-form-item>
           <el-form-item label="地址">
-            <el-input v-model="state.opt.name" />
+            <el-input v-model="state.opt.addr" />
           </el-form-item>
         </el-form>
     </div>
@@ -163,12 +163,15 @@ const state = reactive<{
 })
 
 const getList = () => {
+  state.loading = true
   systemReq.axiosIns.get('api/sys/SysUser/pages', { params:state.query })
   .then((res:any) => {
+    state.loading = false
     console.log(res.Data)
     state.tbData = res.Data
   })
   .catch((err:any)=>{
+    state.loading = false
     console.log(err)
   })
 }
@@ -176,16 +179,41 @@ const getList = () => {
 const btnAdd = () => {
   state.dlgTitle = '新增用户'
   state.dlgVisible = true
+  state.opt.id = ''
+  state.opt.name = ''
+  state.opt.account = ''
+  state.opt.roleId = ''
+  state.opt.orgId = ''
+  state.opt.avatar = ''
+  state.opt.status = 0
+  state.opt.sex = 1
+  state.opt.phone = ''
+  state.opt.addr = ''
 }
 
 const btnEdit = (id:string) => {
   state.dlgTitle = '编辑用户'
   state.dlgVisible = true
   // console.log(id)
+  state.opt.id = id
+  systemReq.axiosIns.get(`api/sys/SysUser/${id}`)
+  .then((res:any) => {
+    console.log(res.Data)
+    state.opt.name = res.Data.realname
+    state.opt.account = res.Data.account
+    state.opt.roleId = res.Data.roleId
+    state.opt.orgId = res.Data.orgId
+    state.opt.avatar = res.Data.avatar
+    state.opt.status = res.Data.status
+    state.opt.sex = res.Data.sex
+    state.opt.phone = res.Data.phone
+  })
+  .catch((err:any)=>{
+    console.log(err)
+  })
 }
 
-const btnDel = (id:string) => {
-  // console.log(id)
+const btnDel = (id:string) => { // console.log(id)
   ElMessageBox.confirm(
     '确认删除?',
     '警告',
@@ -195,9 +223,17 @@ const btnDel = (id:string) => {
       type: 'warning',
     }
   ).then(() => {
-      ElMessage({
-        type: 'success',
-        message: '删除成功',
+      systemReq.axiosIns.delete(`api/sys/SysUser/${id}`)
+      .then((res:any) => {
+        console.log(res)
+        getList()
+        ElMessage({
+          type: 'success',
+          message: '删除成功',
+        })
+      })
+      .catch((err:any)=>{
+        console.log(err)
       })
     }).catch(() => {
       ElMessage({
