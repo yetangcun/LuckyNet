@@ -6,7 +6,7 @@
       <el-text class="lbStl">组织机构:</el-text>
       <el-tree-select
         v-model="state.query.orgId"
-        :data="state.selKv"
+        :data="state.orgKv"
         check-strictly
         placeholder="请选择"
         class="commonInput"
@@ -81,15 +81,14 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="角色">
-            <el-select v-model="state.opt.roleId" placeholder="请选择角色">
-              <el-option label="Zone one" value="shanghai" />
-              <el-option label="Zone two" value="beijing" />
+            <el-select v-model="state.opt.roleId"
+            :options="state.roleKv" placeholder="请选择角色">
             </el-select>
           </el-form-item>
           <el-form-item label="所属组织" placeholder="请选择组织">
             <el-tree-select
               v-model="state.opt.orgId"
-              :data="state.selKv"
+              :data="state.orgKv"
               check-strictly
               placeholder="请选择"
               :render-after-expand="false"/>
@@ -115,7 +114,7 @@
 import { onMounted, reactive } from 'vue';
 import { Plus, Search } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import type { selKV } from '@/models/common/selectKV';
+import type { selKV, treeSelKV } from '@/models/common/selectKV';
 import type { usrQueryModel, usrInfoModel, usrOptModel } from '@/models/sys/usrInfoModel'
 
 import { systemReq } from '@/utils/reqUtil';
@@ -132,7 +131,8 @@ const state = reactive<{
   dlgTitle:string,
   dlgVisible:boolean,
   query:usrQueryModel,
-  selKv: selKV[],
+  orgKv: treeSelKV[],
+  roleKv: selKV[],
   opt: usrOptModel,
   tbData: usrInfoModel[]
 }>({
@@ -143,10 +143,16 @@ const state = reactive<{
     txt: '',
     orgId: ''
   },
-  selKv: [
+  orgKv: [
     {
       label: '请选择',
       id: ''
+    }
+  ],
+  roleKv: [
+    {
+      label: '请选择',
+      value: ''
     }
   ],
   tbData: [],
@@ -176,7 +182,29 @@ const getList = () => {
   })
 }
 
-const btnAdd = () => {
+const getRoleKv = async () => { // 获取角色下拉框
+  systemReq.axiosIns.get('api/sys/SysRole/roleSels')
+  .then((res:any) => {
+    console.log(res.Data)
+    state.roleKv = res.Data
+  })
+  .catch((err:any)=>{
+    console.log(err)
+  })
+}
+
+const getOrgKv = async () => {  // 获取组织树
+  systemReq.axiosIns.get('api/sys/SysOrg/treeSels')
+  .then((res:any) => {
+    console.log(res.Data)
+    state.orgKv = res.Data
+  })
+  .catch((err:any)=>{
+    console.log(err)
+  })
+}
+
+const btnAdd = () => { // 新增
   state.dlgTitle = '新增用户'
   state.dlgVisible = true
   state.opt.id = ''
@@ -191,7 +219,7 @@ const btnAdd = () => {
   state.opt.addr = ''
 }
 
-const btnEdit = (id:string) => {
+const btnEdit = (id:string) => {  // 编辑
   state.dlgTitle = '编辑用户'
   state.dlgVisible = true
   // console.log(id)
@@ -205,7 +233,7 @@ const btnEdit = (id:string) => {
     state.opt.orgId = res.Data.orgId
     state.opt.avatar = res.Data.avatar
     state.opt.status = res.Data.status
-    state.opt.sex = res.Data.sex
+    state.opt.sex = res.Data.sex?res.Data.sex:1
     state.opt.phone = res.Data.phone
   })
   .catch((err:any)=>{
@@ -243,8 +271,10 @@ const btnDel = (id:string) => { // console.log(id)
     })
 }
 
-onMounted(() => {
+onMounted(async () => {
   getList()
+  await getRoleKv()
+  await getOrgKv()
 })
 
 </script>

@@ -37,6 +37,16 @@ namespace lucky.admin.Controllers.sys
         }
 
         /// <summary>
+        /// 查询组织树结构
+        /// </summary>
+        /// <param name="req"></param>
+        [HttpGet("treeSels")]
+        public async Task<ResModel<List<TreeSelectKV>>> GetOrgTreeSel([FromQuery] SysOrgQueryInput req)
+        {
+            return ResModel<List<TreeSelectKV>>.Success(null);
+        }
+
+        /// <summary>
         /// 根据id查询
         /// </summary>
         /// <param name="id"></param>

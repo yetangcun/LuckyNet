@@ -131,5 +131,20 @@ namespace Lucky.SysService.Service
 
             return false;
         }
+
+        /// <summary>
+        /// 获取角色下拉列表
+        /// </summary>
+        /// <param name="uid"></param>
+        public async Task<List<SelectKV>?> GetSelList(long uid)
+        {
+            var where = PredicateBuilder.New<SysRole>(x => !x.IsDel);
+            var res = await _roleRpsty.GetListAsync(where, x => new SelectKV()
+            {
+                label = x.Name,
+                value = x.Id.ToString()
+            });
+            return res;
+        }
     }
 }

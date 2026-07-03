@@ -36,4 +36,25 @@
         /// </summary>
         public List<SelectKV>? lst { get; set; }
     }
+
+    /// <summary>
+    /// 下拉框数据
+    /// </summary>
+    public class TreeSelectKV
+    {
+        /// <summary>
+        /// 显示文本
+        /// </summary>
+        public string? label { get; set; }
+
+        /// <summary>
+        /// 背地值
+        /// </summary>
+        public string? value { get; set; }
+
+        /// <summary>
+        /// 子级数据
+        /// </summary>
+        public List<TreeSelectKV>? children { get; set; }
+    }
 }

@@ -1,4 +1,5 @@
-﻿using Lucky.SysModel.Model.Input;
+﻿using Lucky.BaseModel.Model;
+using Lucky.SysModel.Model.Input;
 using Lucky.SysModel.Model.Output;
 
 namespace Lucky.SysService.Service.IService
@@ -36,5 +37,11 @@ namespace Lucky.SysService.Service.IService
         /// </summary>
         /// <param name="id"></param>
         Task<bool> Del(int id, long uid);
+
+        /// <summary>
+        /// 获取下拉列表
+        /// </summary>
+        /// <param name="uid"></param>
+        Task<List<SelectKV>?> GetSelList(long uid);
     }
 }

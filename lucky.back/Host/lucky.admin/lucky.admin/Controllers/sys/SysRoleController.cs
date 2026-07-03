@@ -46,6 +46,19 @@ namespace lucky.admin.Controllers.sys
         }
 
         /// <summary>
+        /// 获取角色下拉列表
+        /// </summary>
+        [HttpGet("roleSels")]
+        public async Task<ResModel<List<SelectKV>>> GetSelList()
+        {
+            var uid = HttpContext.GetUid();
+
+            var res = await _roleService.GetSelList(uid);
+
+            return ResModel<List<SelectKV>>.Success(res);
+        }
+
+        /// <summary>
         /// 根据id查询
         /// </summary>
         /// <param name="id"></param>
