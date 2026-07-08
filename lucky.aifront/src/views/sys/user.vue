@@ -104,7 +104,7 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="state.dlgVisible = false">取消</el-button>
-        <el-button type="primary" @click="state.dlgVisible = false">确定</el-button>
+        <el-button type="primary" @click="btnSave">确定</el-button>
       </div>
     </template>
   </el-dialog>
@@ -146,7 +146,8 @@ const state = reactive<{
   orgKv: [
     {
       label: '请选择',
-      id: ''
+      value: '',
+      children: []
     }
   ],
   roleKv: [
@@ -164,7 +165,9 @@ const state = reactive<{
     orgId: '',
     avatar: '',
     status: 0,
-    sex: 1
+    sex: 1,
+    phone: '',
+    addr: ''
   }
 })
 
@@ -173,7 +176,7 @@ const getList = () => {
   systemReq.axiosIns.get('api/sys/SysUser/pages', { params:state.query })
   .then((res:any) => {
     state.loading = false
-    console.log(res.Data)
+    // console.log(res.Data)
     state.tbData = res.Data
   })
   .catch((err:any)=>{
@@ -207,11 +210,11 @@ const getOrgKv = async () => {  // 获取组织树
 const btnAdd = () => { // 新增
   state.dlgTitle = '新增用户'
   state.dlgVisible = true
-  state.opt.id = ''
+  state.opt.id = null
   state.opt.name = ''
   state.opt.account = ''
   state.opt.roleId = ''
-  state.opt.orgId = ''
+  state.opt.orgId = null
   state.opt.avatar = ''
   state.opt.status = 0
   state.opt.sex = 1
@@ -226,7 +229,7 @@ const btnEdit = (id:string) => {  // 编辑
   state.opt.id = id
   systemReq.axiosIns.get(`api/sys/SysUser/${id}`)
   .then((res:any) => {
-    console.log(res.Data)
+    // console.log(res.Data)
     state.opt.name = res.Data.realname
     state.opt.account = res.Data.account
     state.opt.roleId = res.Data.roleId
@@ -253,7 +256,7 @@ const btnDel = (id:string) => { // console.log(id)
   ).then(() => {
       systemReq.axiosIns.delete(`api/sys/SysUser/${id}`)
       .then((res:any) => {
-        console.log(res)
+        // console.log(res)
         getList()
         ElMessage({
           type: 'success',
@@ -269,6 +272,65 @@ const btnDel = (id:string) => { // console.log(id)
         message: '取消删除',
       })
     })
+}
+
+const btnSave = () => {
+  if(!state.opt.name || !state.opt.account) {
+    ElMessage({
+      type: 'warning',
+      message: '请填写完整信息',
+    })
+    return
+  }
+
+  console.log(state.opt)
+  if (!state.opt.id) {
+    // state.opt.id = '0'
+    systemReq.axiosIns.post('api/sys/SysUser', state.opt)
+    .then((res:any) => {
+      state.dlgVisible = false
+      if (res.Data) {
+        getList()
+        ElMessage({
+          type: 'success',
+          message: '保存成功',
+        })
+        return
+      }
+      else if(res.Msg) {
+        ElMessage({
+          type: 'error',
+          message: res.Msg,
+        })
+      }
+    })
+    .catch((err:any)=>{
+      console.log(err)
+    })
+  }
+  else {
+    systemReq.axiosIns.put(`api/sys/SysUser`, state.opt)
+    .then((res:any) => {
+      state.dlgVisible = false
+      if (res.Data) {
+        getList()
+        ElMessage({
+          type: 'success',
+          message: '保存成功',
+        })
+        return
+      }
+      else if(res.Msg) {
+        ElMessage({
+          type: 'error',
+          message: res.Msg,
+        })
+      }
+    })
+    .catch((err:any)=>{
+      console.log(err)
+    })
+  }
 }
 
 onMounted(async () => {

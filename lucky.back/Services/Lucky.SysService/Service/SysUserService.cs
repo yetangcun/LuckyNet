@@ -189,7 +189,8 @@ namespace Lucky.SysService.Service
         /// <param name="SysUserOptInput"></param>
         public async Task<bool> Edit(SysUserOptInput input, long optId)
         {
-            var entity = await _usrRpsty.GetByIdAsync(input.Id);
+            if (!input.Id.HasValue) return false;
+            var entity = await _usrRpsty.GetByIdAsync(input.Id.Value);
             if (entity == null) return false;
 
             entity.RealName = input.Name;
@@ -199,6 +200,9 @@ namespace Lucky.SysService.Service
 
             if (input.Sex != null && input.Sex.HasValue)
                 entity.Sex = input.Sex.Value;
+
+            if (!string.IsNullOrWhiteSpace(input.Phone))
+                entity.Phone = input.Phone;
 
             entity.UpdateUid = optId;
             entity.UpdateTime = DateTime.Now;

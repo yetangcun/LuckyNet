@@ -32,12 +32,12 @@ namespace Lucky.SysModel.Model.Input
         /// <summary>
         /// 用户id
         /// </summary>
-        public long Id { get; set; }
+        public long? Id { get; set; }
 
         /// <summary>
         /// 用户名
         /// </summary>
-        public required string Account { get; set; }
+        public string? Account { get; set; }
 
         /// <summary>
         /// 性别
@@ -47,7 +47,7 @@ namespace Lucky.SysModel.Model.Input
         /// <summary>
         /// 角色ID
         /// </summary>
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
 
         /// <summary>
         /// 姓名
@@ -63,6 +63,11 @@ namespace Lucky.SysModel.Model.Input
         /// 状态
         /// </summary>
         public int? Status { get; set; }
+
+        /// <summary>
+        /// 手机
+        /// </summary>
+        public string? Phone { get; set; }
     }
 
     /// <summary>
