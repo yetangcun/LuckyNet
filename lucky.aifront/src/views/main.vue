@@ -456,6 +456,8 @@ onMounted(() => { // 初始化加载
             e.childs.forEach((c:menuModel) => {
               if (c.id == currSelMenu) {
                 c.isSelect = true
+                e.isExpand = true
+                md.currNav = e.id
                 return
               }
               else if (c.childs && c.childs.length>0) {
@@ -464,6 +466,7 @@ onMounted(() => { // 初始化加载
                     ch.isSelect = true
                     c.isExpand = true
                     e.isExpand = true
+                    md.currNav = e.id
                     return
                   }
                 })
