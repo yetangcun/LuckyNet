@@ -173,6 +173,8 @@ namespace Lucky.SysService.Service
                 RealName = input.Name,
                 Sex = input.Sex.HasValue ? input.Sex.Value : SexType.None,
                 PassWord = GlobalConstant.DFT_PWD,
+                Phone = input.Phone,
+                Status = input.Status ?? 1,
                 Id = id,
                 CreateTime = DateTime.Now,
                 CreateUid = optId

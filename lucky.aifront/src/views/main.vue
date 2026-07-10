@@ -11,8 +11,7 @@ import { ElMessageBox } from 'element-plus'
 // import { useGlbStateStore } from '@/stores/glbstate'
 
 const router = useRouter()
-const to_pg = (obj: menuModel) => {
-  // console.log('---666666---', obj)
+const to_pg = (obj: menuModel) => { // console.log('---666666---', obj)
   md.menus.forEach((e:menuModel) => {
     if (e.childs && e.childs.length>0) {
       e.childs.forEach((c:menuModel) => {
@@ -28,6 +27,7 @@ const to_pg = (obj: menuModel) => {
   })
   obj.isSelect = true
   router.push(obj.path)
+  localStorage.setItem('currSelMenu', obj.id)
 }
 
 const quit_hdl = () => {
@@ -53,7 +53,7 @@ const lg_title = ref(import.meta.env.VITE_SYS_LOG_TITLE)
 const md = reactive<{
   loading:boolean,
   layout:number,
-  currNav:string,
+  currNav:string,  // 当前选中展开的目录
   modules:menuModel[],
   menus:menuModel[],
   isNavExpand:boolean,
@@ -446,7 +446,32 @@ onMounted(() => { // 初始化加载
   systemReq.axiosIns.get('api/sys/SysUser/Permissions')
   .then((res: any) => {
     // console.log(res)
+
     md.loading = false
+
+    const currSelMenu = localStorage.getItem('currSelMenu')
+    if (currSelMenu) {
+      res.Data.permissions.forEach((e:menuModel) => {
+         if (e.childs && e.childs.length>0) {
+            e.childs.forEach((c:menuModel) => {
+              if (c.id == currSelMenu) {
+                c.isSelect = true
+                return
+              }
+              else if (c.childs && c.childs.length>0) {
+                c.childs.forEach((ch:menuModel) => {
+                  if (ch.id == currSelMenu) {
+                    ch.isSelect = true
+                    c.isExpand = true
+                    e.isExpand = true
+                    return
+                  }
+                })
+              }
+            })
+          }
+      })
+    }
     md.menus = res.Data.permissions
     // console.log(res.Code == 200)
   })

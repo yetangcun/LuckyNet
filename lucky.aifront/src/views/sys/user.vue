@@ -238,6 +238,7 @@ const btnEdit = (id:string) => {  // 编辑
     state.opt.status = res.Data.status
     state.opt.sex = res.Data.sex?res.Data.sex:1
     state.opt.phone = res.Data.phone
+    state.opt.addr = res.Data.addr
   })
   .catch((err:any)=>{
     console.log(err)
