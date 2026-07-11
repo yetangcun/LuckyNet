@@ -4,7 +4,7 @@ using Lucky.SysModel.Model.Input;
 using Lucky.SysModel.Model.Output;
 using Lucky.SysService.Service.IService;
 
-//using Microsoft.AspNetCore.Http;
+// using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace lucky.admin.Controllers.sys
@@ -31,9 +31,10 @@ namespace lucky.admin.Controllers.sys
         /// </summary>
         /// <param name="req"></param>
         [HttpGet("tree")]
-        public async Task<ResModel<List<SysOrgOutput>>> GetOrgTree([FromQuery] SysOrgQueryInput req)
+        public async Task<ResModel<List<SysOrgOutputTree>>> GetOrgTree([FromQuery] SysOrgQueryInput req)
         {
-            return ResModel<List<SysOrgOutput>>.Success(null);
+            var result = await _orgService.GetOrgTree(req);
+            return ResModel<List<SysOrgOutputTree>>.Success(    result);
         }
 
         /// <summary>
@@ -43,7 +44,8 @@ namespace lucky.admin.Controllers.sys
         [HttpGet("treeSels")]
         public async Task<ResModel<List<TreeSelectKV>>> GetOrgTreeSel([FromQuery] SysOrgQueryInput req)
         {
-            return ResModel<List<TreeSelectKV>>.Success(null);
+            var result = await _orgService.GetOrgTreeSel(req);
+            return ResModel<List<TreeSelectKV>>.Success(result);
         }
 
         /// <summary>
@@ -51,9 +53,10 @@ namespace lucky.admin.Controllers.sys
         /// </summary>
         /// <param name="id"></param>
         [HttpGet("{id}")]
-        public async Task<ResModel<SysOrgOutput>> Get(long id)
+        public async Task<ResModel<SysOrgOutput>> Get(int id)
         {
-            return ResModel<SysOrgOutput>.Success(null);
+            var result = await _orgService.Get(id);
+            return ResModel<SysOrgOutput>.Success(result);
         }
 
         /// <summary>
@@ -61,10 +64,11 @@ namespace lucky.admin.Controllers.sys
         /// </summary>
         /// <param name="input"></param>
         [HttpPost]
-        public async Task<ResModel<bool>> Add([FromBody] SysOrgOptInput input)
+        public async Task<ResModel<bool>> Opt([FromBody] SysOrgOptInput input)
         {
             var uid = HttpContext.GetUid();
-            return ResModel<bool>.Success(true);
+            var result = await _orgService.Opt(input, uid);
+            return result ? ResModel<bool>.Success(true) : ResModel<bool>.Failed(false, string.Empty);
         }
 
         /// <summary>
@@ -72,21 +76,11 @@ namespace lucky.admin.Controllers.sys
         /// </summary>
         /// <param name="id"></param>
         [HttpDelete("{id}")]
-        public async Task<ResModel<bool>> Del(long id)
+        public async Task<ResModel<bool>> Del(int id)
         {
             var uid = HttpContext.GetUid();
-            return ResModel<bool>.Success(true);
-        }
-
-        /// <summary>
-        /// 更新
-        /// </summary>
-        /// <param name="input"></param>
-        [HttpPut]
-        public async Task<ResModel<bool>> Edit([FromBody] SysOrgOptInput input)
-        {
-            var uid = HttpContext.GetUid();
-            return ResModel<bool>.Success(true);
+            var res = await _orgService.Del(id, uid);
+            return res ? ResModel<bool>.Success(true) : ResModel<bool>.Failed(false, string.Empty);
         }
     }
 }

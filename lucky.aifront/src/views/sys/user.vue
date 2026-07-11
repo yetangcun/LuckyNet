@@ -81,7 +81,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="角色">
-            <el-select v-model="state.opt.roleId"
+            <el-select v-model="state.opt.roleId" multiple
             :options="state.roleKv" placeholder="请选择角色">
             </el-select>
           </el-form-item>

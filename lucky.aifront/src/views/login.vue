@@ -1,19 +1,21 @@
 <template>
   <div id="page_top">
-    <div id="page_header">
+    <div id="page_header" :style="{ borderBottomColor: selColor , borderBottomWidth: '2px', borderBottomStyle: 'solid' }">
       <div
-        style="
-          display: flex;
-          margin: 0px 0px 0px 11px;
-          color: purple;
-          align-items: center;
-          opacity: 0.8;
-          flex-direction: row;
-          font-style: italic;
+        :style="{
+          display: 'flex',
+          opacity: 0.8,
+          margin: '0px 0px 0px 11px',
+          color: selColor,
+          alignItems: 'center',
+          flexDirection: 'row',
+          fontStyle: 'italic'}
         "
       >
-        <Cpu class="common_large_icon" />
-        <span style="display: flex; font-weight: 600; font-size: 19px"> AI NEXT </span>
+        <el-icon :size="52" :color="selColor">
+          <Cpu class="common_large_icon" />
+        </el-icon>
+        <span :style="{ color: selColor ,display: 'flex', fontWeight: 600, fontSize: '23px' }"> AI NEXT </span>
       </div>
       <div style="display: flex">
         <span
@@ -23,7 +25,7 @@
             height: 27px;
             cursor: pointer;
             border-radius: 4px;
-            border: 2px solid white;
+            border: 2px solid transparent;
           "
           id="span1"
           @click="chgBackColor(1)"
@@ -36,6 +38,7 @@
             cursor: pointer;
             margin: 0px 11px;
             border-radius: 4px;
+            border: 1px solid transparent;
           "
           id="span2"
           @click="chgBackColor(2)"
@@ -47,6 +50,7 @@
             height: 27px;
             cursor: pointer;
             border-radius: 4px;
+            border: 1px solid transparent;
           "
           id="span3"
           @click="chgBackColor(3)"
@@ -59,7 +63,7 @@
           <el-icon :size="88" :color="'white'"><Cpu /> </el-icon>
         </div>
         <div class="common_line">
-          <Avatar class="common_icon" />
+          <Avatar class="common_icon" :style="{color:selColor}" />
           <!-- <user-outlined class="common_icon" /> -->
           <input
             type="text"
@@ -70,7 +74,7 @@
           />
         </div>
         <div class="common_line">
-          <Unlock class="common_icon" />
+          <Unlock class="common_icon" :style="{color:selColor}" />
           <!-- <unlock-outlined class="common_icon" /> -->
           <input
             type="password"
@@ -82,7 +86,7 @@
         </div>
         <div class="btn_line">
           <div style="display: flex; width: 100%; background-color: white; border-radius: 4px">
-            <el-button class="common_btn" @click="loginHandle" :disabled="loading">
+            <el-button class="common_btn" @click="loginHandle" :disabled="loading" :style="{color:selColor}">
               <div style="display: flex">
                 <span
                   style="font-weight: 600; font-size: 23px; font-family: '楷体'"
@@ -111,7 +115,8 @@
       </div>
     </div>
     <div id="page_footer">
-      <label>AI Next Copyright@{{ years }} wholly owned by Wuxiaojun</label>
+      <label>AI Next Copyright@{{ years }} owned by Wuxiaojun</label>
+      <!-- <label>AI Next Copyright@{{ years }} wholly owned by Wuxiaojun</label> -->
     </div>
   </div>
 </template>
@@ -136,6 +141,7 @@ const reqlogin = reactive<reqLogin>({
   passwd: '',
   validateCode: '',
 })
+const selColor = ref('blue')
 
 // const glbStore = useGlbStateStore()
 
@@ -148,23 +154,29 @@ const chgBackColor = (type: number) => {
   if (!formEle) return
   if (!span1Ele || !span2Ele || !span3Ele) return
 
-  span1Ele.style.border = '2px solid transparent'
-  span2Ele.style.border = '2px solid transparent'
-  span3Ele.style.border = '2px solid transparent'
 
   if (type == 1) {
-    span1Ele.style.border = '2px solid white'
+    span2Ele.style.border = '1px solid transparent'
+    span3Ele.style.border = '1px solid transparent'
+    span1Ele.style.border = '2px solid blue'
     formEle.style.backgroundColor = 'blue'
+    selColor.value = 'blue'
     return
   }
   if (type == 2) {
-    span2Ele.style.border = '2px solid white'
+    span1Ele.style.border = '1px solid transparent'
+    span3Ele.style.border = '1px solid transparent'
+    span2Ele.style.border = '2px solid purple'
     formEle.style.backgroundColor = 'purple'
+    selColor.value = 'purple'
     return
   }
   if (type == 3) {
-    span3Ele.style.border = '2px solid white'
+    span1Ele.style.border = '1px solid transparent'
+    span2Ele.style.border = '1px solid transparent'
+    span3Ele.style.border = '2px solid #285616'
     formEle.style.backgroundColor = '#285616'
+    selColor.value = '#285616'
     return
   }
 }
@@ -224,11 +236,13 @@ const loginHandle = () => {
 #page_header {
   display: flex;
   opacity: 0.7;
-  padding: 14px 26px;
+  max-height: 68px;
+  min-height: 68px;
+  padding: 0px 26px;
   align-items: center;
   background-color: #f1f1f1;
   justify-content: space-between;
-  border-bottom: 2px solid rgb(141, 67, 141);
+  /* border-bottom: 2px solid rgb(141, 67, 141); */
 }
 #page_center {
   display: flex;
@@ -254,7 +268,7 @@ const loginHandle = () => {
   align-items: center;
   background-color: white;
   justify-content: flex-start;
-  border-bottom: 1px solid purple;
+  border-bottom: 1px solid gray;
 }
 .title_line {
   display: flex;
@@ -290,7 +304,6 @@ const loginHandle = () => {
   height: 49px;
   flex: 1;
   font-size: 20px;
-  color: purple;
   background-color: white;
   font-family: '微软雅黑';
   justify-content: center;
@@ -298,10 +311,8 @@ const loginHandle = () => {
   border-radius: 4px;
 }
 .common_large_icon {
-  width: 46px;
-  margin: 3px 7px 0px 0px;
+  margin: 2px 7px 0px 0px;
   font-weight: bold;
-  color: purple;
   stroke: dimgray;
   stroke-width: 11;
 }
@@ -309,7 +320,6 @@ const loginHandle = () => {
   width: 32px;
   margin: 3px 1px 0px 4px;
   font-weight: bold;
-  color: purple;
   stroke: dimgray;
   stroke-width: 11;
 }
@@ -318,8 +328,8 @@ const loginHandle = () => {
   padding: 26px;
   opacity: 0.4;
   color: black;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 16px;
+  /* font-weight: bold; */
   box-shadow: 0px 0px 11px #f1f1f1 inset;
   justify-content: center;
   background-color: #f3eeee;

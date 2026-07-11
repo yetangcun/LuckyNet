@@ -1,10 +1,11 @@
 ﻿using LinqKit;
+using Lucky.BaseModel.Model;
 using Lucky.SysModel.Entity;
+using System.Linq.Expressions;
 using Lucky.SysModel.Model.Input;
 using Lucky.SysModel.Model.Output;
 using Lucky.SysService.Rpsty.IRpsty;
 using Lucky.SysService.Service.IService;
-using System.Linq.Expressions;
 
 namespace Lucky.SysService.Service
 {
@@ -19,9 +20,9 @@ namespace Lucky.SysService.Service
             _roleRpsty = roleRpsty;
         }
 
-        public async Task<SysOrg?> Get(int id)
+        public async Task<bool> Del(int id, long uid)
         {
-            return await _roleRpsty.GetByIdAsync(id);
+            throw new NotImplementedException();
         }
 
         public async Task<List<SysOrgOutput>> GetList(SysOrgQueryInput input)
@@ -54,7 +55,7 @@ namespace Lucky.SysService.Service
             return await _roleRpsty.GetListAsync(where, expr);
         }
 
-        public async Task<List<SysOrgOutputTree>> GetTreeList(SysOrgQueryInput input)
+        public async Task<List<SysOrgOutputTree>> GetOrgTree(SysOrgQueryInput input)
         {
             var where = PredicateBuilder.New<SysOrg>(x => !x.IsDel); // 初始化为 true
             if (!string.IsNullOrEmpty(input.Name))
@@ -109,6 +110,17 @@ namespace Lucky.SysService.Service
             return lst;
         }
 
+        public async Task<List<TreeSelectKV>> GetOrgTreeSel(SysOrgQueryInput req)
+        {
+            var lst = new List<TreeSelectKV>();
+            return lst;
+        }
+
+        public async Task<bool> Opt(SysOrgOptInput input, long uid)
+        {
+            throw new NotImplementedException();
+        }
+
         private void BuildTree(SysOrgOutputTree node, List<SysOrgOutput> data)
         {
             var children = data.Where(x => x.Pid == node.Id).ToList();
@@ -129,6 +141,11 @@ namespace Lucky.SysService.Service
                     BuildTree(childNode, data);
                 node.Childs!.Add(childNode);
             }
+        }
+
+        public async Task<SysOrgOutput> Get(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
