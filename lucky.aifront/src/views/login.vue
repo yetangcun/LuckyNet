@@ -12,10 +12,10 @@
           fontStyle: 'italic'}
         "
       >
-        <el-icon :size="52" :color="selColor">
+        <el-icon :size="61" :color="selColor">
           <Cpu class="common_large_icon" />
         </el-icon>
-        <span :style="{ color: selColor ,display: 'flex', fontWeight: 600, fontSize: '23px' }"> AI NEXT </span>
+        <span :style="{ color: selColor ,display: 'flex', fontSize: '29px', textShadow: `0 0 32px ${selColor}` }"> AI NEXT </span>
       </div>
       <div style="display: flex">
         <span
@@ -114,8 +114,8 @@
         </div>
       </div>
     </div>
-    <div id="page_footer">
-      <label>AI Next Copyright@{{ years }} owned by Wuxiaojun</label>
+    <div id="page_footer" :style="{boxShadow:`0px 0px 12px 0px ${selColor}`}">
+      <label :style="{color:selColor}">AI Next Copyright@{{ years }} owned by Wuxiaojun</label>
       <!-- <label>AI Next Copyright@{{ years }} wholly owned by Wuxiaojun</label> -->
     </div>
   </div>
@@ -311,7 +311,7 @@ const loginHandle = () => {
   border-radius: 4px;
 }
 .common_large_icon {
-  margin: 2px 7px 0px 0px;
+  margin: 1px 7px 0px 0px;
   font-weight: bold;
   stroke: dimgray;
   stroke-width: 11;
@@ -328,7 +328,7 @@ const loginHandle = () => {
   padding: 26px;
   opacity: 0.4;
   color: black;
-  font-size: 16px;
+  font-size: 18px;
   /* font-weight: bold; */
   box-shadow: 0px 0px 11px #f1f1f1 inset;
   justify-content: center;

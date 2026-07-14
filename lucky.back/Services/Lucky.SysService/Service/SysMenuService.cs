@@ -64,7 +64,7 @@ namespace Lucky.SysService.Service
 
             if (data.Any())
             {
-                res.childs = new List<SysMenuOutput>();
+                res.children = new List<SysMenuOutput>();
 
                 var lens = data.Count();
 
@@ -89,7 +89,7 @@ namespace Lucky.SysService.Service
                     if (chlds.Any())
                         BldMenuTree(tmpObj, menus);
 
-                    res.childs.Add(tmpObj);
+                    res.children.Add(tmpObj);
                 }
             }
         }

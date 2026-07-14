@@ -48,6 +48,11 @@ namespace Lucky.SysModel.Model.Output
         public int? sort { get; set; }
 
         /// <summary>
+        /// 状态 
+        /// </summary>
+        public int? status { get; set; }
+
+        /// <summary>
         /// 菜单类型
         /// </summary>
         public MenuType menuType { get; set; }
@@ -55,6 +60,6 @@ namespace Lucky.SysModel.Model.Output
         /// <summary>
         /// 子菜单列表
         /// </summary>
-        public List<SysMenuOutput>? childs { get; set; }
+        public List<SysMenuOutput>? children { get; set; }
     }
 }

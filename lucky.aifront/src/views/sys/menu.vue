@@ -2,53 +2,60 @@
   <div class="pg_top">
     <div class="pg_query">
       <el-text class="lbStl">关键字:</el-text>
-      <el-input class="commonInput" v-model="state.query.txt" placeholder="名称|账号"></el-input>
-      <el-text class="lbStl">组织机构:</el-text>
+      <el-input class="commonInput" v-model="state.query.name" placeholder="名称|编码"></el-input>
+      <!-- <el-text class="lbStl">组织机构:</el-text>
       <el-tree-select
         v-model="state.query.orgId"
         :data="state.selKv"
         check-strictly
         placeholder="请选择"
         class="commonInput"
-        :render-after-expand="false"/>
+        :render-after-expand="false"/> -->
       <!-- <el-select class="commonInput" v-model="state.query.orgId"
       :options="state.selKv" :props="props" placeholder="请选择"/> -->
-      <el-button type="primary" :icon="Search" class="btnStl">查询</el-button>
+      <el-button type="primary" :icon="Search" class="btnStl" @click="getList">查询</el-button>
+      <el-button type="danger" :icon="Plus" class="btnStl" @click="btnAdd">新增</el-button>
     </div>
     <div class="pg_grid">
-      <el-table :data="state.tbData" style="display: flex; flex: 1;width: auto; height: 100%; flex-wrap: wrap; flex-shrink: 1;">
+      <el-table :data="state.tbData" row-key="id" default-expand-all
+                style="display: flex; flex: 1;width: auto; height: 100%; flex-wrap: wrap; flex-shrink: 1;">
           <el-table-column type="selection" width="55" />
           <!-- <el-table-column label="Date" width="120">
             <template #default="scope">{{ scope.row.date }}</template>
           </el-table-column> -->
-          <el-table-column property="realname" label="姓名" width="120" />
-          <el-table-column property="sex" label="性别" width="88">
+          <!-- <el-table-column property="id" label="ID" width="120" /> -->
+          <el-table-column property="name" label="名称" width="257" />
+          <el-table-column property="code" label="编码" width="80" />
+          <el-table-column property="menuType" label="菜单类型" width="100">
+            <template #default="scope">
+              <div style="display: flex; align-items: center">
+                <span v-if="scope.row.menuType==1">模块</span>
+                <span v-else-if="scope.row.menuType==2">分组</span>
+                <span v-else-if="scope.row.menuType==3">功能</span>
+                <span v-else-if="scope.row.menuType==4">按钮</span>
+                <span v-else-if="scope.row.menuType==5">链接</span>
+              </div>
+            </template>
+          </el-table-column>
+            <el-table-column property="icon" label="图标" width="168" show-overflow-tooltip/>
+          <el-table-column property="iconSize" label="图标大小" width="111"/>
+          <el-table-column property="url" label="路由地址" width="156"/>
+          <el-table-column property="sort" label="排序" width="80"/>
+          <el-table-column property="status" label="状态" width="80"/>
+          <!-- <el-table-column property="sex" label="性别" width="88">
             <template #default="scope">
               <div style="display: flex; align-items: center">
                 <span v-if="scope.row.sex==1">男</span>
                 <span v-else>女</span>
               </div>
             </template>
-          </el-table-column>
-          <el-table-column property="account" label="昵称" width="120" />
-          <el-table-column property="roleName" label="角色" width="120" />
-          <el-table-column property="phone" label="联系方式" width="120" />
-          <el-table-column property="avatar" label="头像" width="166" show-overflow-tooltip/>
-          <el-table-column property="org" label="组织机构" width="120" show-overflow-tooltip />
-          <el-table-column label="日期" width="137">
-            <template #default="scope">{{ scope.row.createTime }}</template>
-          </el-table-column>
-          <el-table-column property="createUser" label="创建人" width="120"/>
-          <el-table-column
-            property="addr"
-            label="地址"
-            width="240" show-overflow-tooltip
-          />
+          </el-table-column> -->
           <el-table-column label="操作">
             <template #default="scope">
               <div>
                 <el-button @click="btnEdit(scope.row.id)" type="primary">编辑</el-button>
                 <el-button @click="btnDel(scope.row.id)" type="danger">删除</el-button>
+                <el-button @click="btnEnable(scope.row.id)" type="warning">禁用</el-button>
               </div>
             </template>
           </el-table-column>
@@ -74,50 +81,56 @@
 
 <script lang="ts" setup>
 import { onMounted, reactive } from 'vue';
-import { Search } from '@element-plus/icons-vue'
+import { Search, Plus } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { selKV } from '@/models/common/selectKV';
-import type { usrQueryModel, usrInfoModel, usrOptModel } from '@/models/sys/usrInfoModel'
+import type { menuModel, menuQueryModel, menuOptModel } from '@/models/sys/menuModel';
 
 import { systemReq } from '@/utils/reqUtil';
 
-const props = {
-  value: 'id',
-  label: 'label',
-  options: 'options',
-  disabled: 'disabled',
-}
+// const props = {
+//   value: 'id',
+//   label: 'label',
+//   options: 'options',
+//   disabled: 'disabled',
+// }
+
 const state = reactive<{
   loading:boolean,
   dlgTitle:string,
   dlgVisible:boolean,
-  query:usrQueryModel,
+  query:menuQueryModel,
   selKv: selKV[],
-  opt: usrOptModel,
-  tbData: usrInfoModel[]
+  opt: menuOptModel,
+  tbData: menuModel[]
 }>({
   loading: false,
   dlgTitle: '',
   dlgVisible:false,
   query: {
-    txt: '',
-    orgId: ''
+    name: ''
   },
   selKv: [
     {
       label: '请选择',
-      id: ''
+      value: ''
     }
   ],
   tbData: [],
   opt: {
     id: '',
-    name: ''
+    name: '',
+    parentId: '',
+    menuType: 0,
+    code: '',
+    path: '',
+    icon: '',
+    iconSize: ''
   }
 })
 
 const getList = () => {
-  systemReq.axiosIns.get('api/sys/SysUser/pages', { params:state.query })
+  systemReq.axiosIns.get('api/sys/SysMenu/getMenuTree', { params:state.query })
   .then((res:any) => {
     console.log(res.Data)
     state.tbData = res.Data
@@ -136,6 +149,24 @@ const btnEdit = (id:string) => {
   state.dlgTitle = '编辑用户'
   state.dlgVisible = true
   // console.log(id)
+}
+
+const btnEnable = (id:string) => {
+  console.log(id)
+  ElMessageBox.confirm(
+    '确认禁用?',
+    '警告',
+    {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  ).then(() => {
+      ElMessage({
+        type: 'success',
+        message: '禁用成功',
+      })
+  })
 }
 
 const btnDel = (id:string) => {
