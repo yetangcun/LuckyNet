@@ -73,6 +73,7 @@ namespace Lucky.SysModel.Entity
 
         /// <summary>
         /// 状态
+        /// 0:禁用 1:启用 2隐藏 3:删除
         /// </summary>
         [Column("status")]
         public int Status { get; set; }

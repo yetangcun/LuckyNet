@@ -43,6 +43,7 @@ namespace Lucky.SysService.Service
                     url = obj.Path,
                     icon = obj.Icon,
                     sort = obj.Sort,
+                    status = obj.Status,
                     iconSize = obj.IconSize,
                     menuType = obj.MenuType
                 };
@@ -80,6 +81,7 @@ namespace Lucky.SysService.Service
                         url = obj.Path,
                         icon = obj.Icon,
                         sort = obj.Sort,
+                        status = obj.Status,
                         iconSize = obj.IconSize,
                         menuType = obj.MenuType
                     };
@@ -108,6 +110,7 @@ namespace Lucky.SysService.Service
                 icon = x.Icon,
                 iconSize = x.IconSize,
                 url = x.Path,
+                status = x.Status,
                 sort = x.Sort ?? 0,
                 menuType = x.MenuType
             };

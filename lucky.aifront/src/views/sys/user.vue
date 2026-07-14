@@ -99,7 +99,7 @@
           <el-form-item label="地址">
             <el-input v-model="state.opt.addr" />
           </el-form-item>
-        </el-form>
+      </el-form>
     </div>
     <template #footer>
       <div class="dialog-footer">
