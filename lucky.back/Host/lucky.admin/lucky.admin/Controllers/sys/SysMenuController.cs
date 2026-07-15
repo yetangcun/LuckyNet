@@ -36,6 +36,16 @@ namespace lucky.admin.Controllers.sys
         }
 
         /// <summary>
+        /// 查询菜单下拉树列表
+        /// </summary>
+        [HttpGet("getMenuSelTree")]
+        public async Task<ResModel<List<TreeSelectKV>>> GetMenuSelTree()
+        {
+            var res = await _menuService.GetMenuSelTree();
+            return ResModel<List<TreeSelectKV>>.Success(res);
+        }
+
+        /// <summary>
         /// 根据id查询
         /// </summary>
         /// <param name="id"></param>

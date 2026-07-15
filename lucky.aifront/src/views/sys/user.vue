@@ -188,7 +188,7 @@ const getList = () => {
 const getRoleKv = async () => { // 获取角色下拉框
   systemReq.axiosIns.get('api/sys/SysRole/roleSels')
   .then((res:any) => {
-    console.log(res.Data)
+    // console.log(res.Data)
     state.roleKv = res.Data
   })
   .catch((err:any)=>{
@@ -199,7 +199,7 @@ const getRoleKv = async () => { // 获取角色下拉框
 const getOrgKv = async () => {  // 获取组织树
   systemReq.axiosIns.get('api/sys/SysOrg/treeSels')
   .then((res:any) => {
-    console.log(res.Data)
+    // console.log(res.Data)
     state.orgKv = res.Data
   })
   .catch((err:any)=>{
@@ -284,7 +284,6 @@ const btnSave = () => {
     return
   }
 
-  console.log(state.opt)
   if (!state.opt.id) {
     // state.opt.id = '0'
     systemReq.axiosIns.post('api/sys/SysUser', state.opt)

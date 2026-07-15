@@ -67,7 +67,7 @@ namespace Lucky.SysModel.Model.Output
         /// <summary>
         /// 地址
         /// </summary>
-        public string? path { get; set; }
+        public string? url { get; set; }
 
         /// <summary>
         /// 图标
@@ -77,12 +77,12 @@ namespace Lucky.SysModel.Model.Output
         /// <summary>
         /// 图标大小
         /// </summary>
-        public string? icon_size { get; set; }
+        public string? iconSize { get; set; }
 
         /// <summary>
         /// 菜单类型
         /// </summary>
-        public MenuType menu_type { get; set; }
+        public MenuType menuType { get; set; }
 
         /// <summary>
         /// 是否选中
@@ -97,6 +97,6 @@ namespace Lucky.SysModel.Model.Output
         /// <summary>
         /// 子级
         /// </summary>
-        public List<SysUserPermissionOutput>? childs { get; set; }
+        public List<SysUserPermissionOutput>? children { get; set; }
     }
 }

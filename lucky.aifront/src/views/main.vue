@@ -11,22 +11,23 @@ import { ElMessageBox } from 'element-plus'
 // import { useGlbStateStore } from '@/stores/glbstate'
 
 const router = useRouter()
-const to_pg = (obj: menuModel) => { // console.log('---666666---', obj)
+const to_pg = (obj: menuModel) => {
   md.menus.forEach((e:menuModel) => {
-    if (e.childs && e.childs.length>0) {
-      e.childs.forEach((c:menuModel) => {
-        if (c.menu_type == 3)
+    if (e.children && e.children.length>0) {
+      e.children.forEach((c:menuModel) => {
+        if (c.menuType == 3)
           c.isSelect = false
-        else if (c.childs && c.childs.length > 0) {
-          c.childs.forEach((ch:menuModel) => {
-            if (ch.menu_type == 3) ch.isSelect = false
+        else if (c.children && c.children.length > 0) {
+          c.children.forEach((ch:menuModel) => {
+            if (ch.menuType == 3) ch.isSelect = false
           })
         }
       })
     }
   })
   obj.isSelect = true
-  router.push(obj.path)
+  // console.log(obj.url)
+  router.push(obj.url)
   localStorage.setItem('currSelMenu', obj.id)
 }
 
@@ -444,24 +445,21 @@ const md = reactive<{
 onMounted(() => { // 初始化加载
   md.loading = true
   systemReq.axiosIns.get('api/sys/SysUser/Permissions')
-  .then((res: any) => {
-    // console.log(res)
-
+  .then((res: any) => { // console.log(res)
     md.loading = false
-
     const currSelMenu = localStorage.getItem('currSelMenu')
     if (currSelMenu) {
       res.Data.permissions.forEach((e:menuModel) => {
-         if (e.childs && e.childs.length>0) {
-            e.childs.forEach((c:menuModel) => {
+         if (e.children && e.children.length>0) {
+            e.children.forEach((c:menuModel) => {
               if (c.id == currSelMenu) {
                 c.isSelect = true
                 e.isExpand = true
                 md.currNav = e.id
                 return
               }
-              else if (c.childs && c.childs.length>0) {
-                c.childs.forEach((ch:menuModel) => {
+              else if (c.children && c.children.length>0) {
+                c.children.forEach((ch:menuModel) => {
                   if (ch.id == currSelMenu) {
                     ch.isSelect = true
                     c.isExpand = true
@@ -476,7 +474,6 @@ onMounted(() => { // 初始化加载
       })
     }
     md.menus = res.Data.permissions
-    // console.log(res.Code == 200)
   })
   .catch(ex=>{
     console.log(ex.message)
@@ -504,8 +501,6 @@ const expandOr = () => {
   md.navWdth = md.isNavExpand?'199px':'66px'
 }
 
-// console.log(lg_title)
-
 </script>
 
 <template>
@@ -514,14 +509,10 @@ const expandOr = () => {
       <div id="l_header">
           <el-icon :size="46" :color="'white'"><Cpu /> </el-icon>
           <span v-show="md.isNavExpand">・</span>
-          <!-- <span style="font-size: 23px; font-style: italic;">AI NEXT</span> -->
           <span v-show="md.isNavExpand" style="font-size: 23px; font-style: italic;">{{lg_title}}</span>
       </div>
       <div id="l_nav">
-        <self-menu :menus="md.menus" :is-expand="md.isNavExpand" @to-pg="to_pg"></self-menu>
-        <!-- <div v-for="vl in md.menus" :key="vl.code">
-
-        </div> -->
+        <self-menu :menus="md.menus" :is-expand="md.isNavExpand" @to-pg="to_pg"/>
       </div>
       <div id="l_footer">
         <el-icon :size="26" :color="'white'" style="cursor: pointer;" @click="expandOr">

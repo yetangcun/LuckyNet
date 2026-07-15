@@ -9,3 +9,8 @@ export interface treeSelKV {
   children:treeSelKV[]
 }
 
+export interface selNumKV {
+  label:string,
+  value:number
+}
+

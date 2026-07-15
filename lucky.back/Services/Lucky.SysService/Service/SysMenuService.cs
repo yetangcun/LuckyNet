@@ -1,4 +1,5 @@
-﻿using Lucky.SysModel.Entity;
+﻿using Lucky.BaseModel.Model;
+using Lucky.SysModel.Entity;
 using Lucky.SysModel.Model.Input;
 using Lucky.SysModel.Model.Output;
 using Lucky.SysService.Rpsty.IRpsty;
@@ -22,11 +23,71 @@ namespace Lucky.SysService.Service
         }
 
         /// <summary>
+        /// 获取下拉菜单树
+        /// </summary>
+        public async Task<List<TreeSelectKV>> GetMenuSelTree()
+        {
+            var data = await _menuRpsty.GetListAsync(x => !x.IsDel);
+            var lst = new List<TreeSelectKV>();
+
+            var topMenus = data.Where(x => x.ParentId == 0 || x.ParentId == -1 || x.ParentId == null);
+            var lens = topMenus.Count();
+            for (var l = 0; l < lens; l++)
+            {
+                var obj = topMenus.ElementAt(l);
+                var outObj = new TreeSelectKV()
+                {
+                    label = obj.Name,
+                    value = obj.Id.ToString(),
+                    children = new List<TreeSelectKV>()
+                };
+                var childs = data.Where(x => x.ParentId == obj.Id);
+                if (childs.Any())
+                {
+                    BldMenuTree(outObj, data);
+                }
+                lst.Add(outObj);
+            }
+            return lst;
+        }
+
+        private void BldMenuTree(TreeSelectKV res, List<SysMenu> menus)
+        {
+            var data = menus.Where(x => x.ParentId.ToString() == res.value);
+
+            if (data.Any())
+            {
+                res.children = new List<TreeSelectKV>();
+
+                var lens = data.Count();
+
+                for (var l = 0; l < lens; l++)
+                {
+                    var obj = data.ElementAt(l);
+                    var tmpObj = new TreeSelectKV()
+                    {
+                        label = obj.Name,
+                        value = obj.Id.ToString(),
+                        children = new List<TreeSelectKV>()
+                    };
+
+                    var chlds = menus.Where(x => x.ParentId == obj.Id);
+
+                    if (chlds.Any())
+                        BldMenuTree(tmpObj, menus);
+
+                    res.children.Add(tmpObj);
+                }
+            }
+        }
+
+        /// <summary>
         /// 查询菜单树
         /// </summary>
         public async Task<List<SysMenuOutput>> GetMenuTree(SysMenuQueryInput input, bool isAdmin = false)
         {
-            var data = await _menuRpsty.GetListAsync(x => !x.IsDel);
+            var isNull = !string.IsNullOrEmpty(input.Name);
+            var data = await _menuRpsty.GetListAsync(x => !x.IsDel && (isNull ? (x.Name.Contains(input.Name) || x.Code.Contains(input.Name)) : true));
             var lst = new List<SysMenuOutput>();
 
             var topMenus = data.Where(x => x.ParentId == 0 || x.ParentId == -1 || x.ParentId == null);
@@ -134,7 +195,7 @@ namespace Lucky.SysService.Service
                 Icon = input.Icon,
                 IconSize = input.IconSize.ToString(),
                 ParentId = input.ParentId,
-                Path = input.Path,
+                Path = input.Url,
                 Sort = input.Sort,
                 MenuType = input.MenuType,
                 Status = input.Status,
@@ -150,7 +211,7 @@ namespace Lucky.SysService.Service
         /// </summary>
         public async Task<bool> Edit(SysMenuOptInput input, long uid)
         {
-            var model = await _menuRpsty.GetByIdAsync(input.Id);
+            var model = await _menuRpsty.GetByIdAsync(input.Id ?? 0);
             if (model != null)
             {
                 model.Name = input.Name ?? string.Empty;
@@ -159,7 +220,7 @@ namespace Lucky.SysService.Service
                 model.MenuType = input.MenuType;
                 model.Icon = input.Icon;
                 model.IconSize = input.IconSize.ToString();
-                model.Path = input.Path;
+                model.Path = input.Url;
                 model.ParentId = input.ParentId;
                 model.UpdateUid = uid;
                 model.UpdateTime = DateTime.Now;

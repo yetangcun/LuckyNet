@@ -285,10 +285,10 @@ namespace Lucky.SysService.Service
                     id = item.Id,
                     name = item.Name,
                     code = item.Code ?? string.Empty,
-                    path = item.Path,
+                    url = item.Path,
                     icon = item.Icon,
-                    icon_size = item.IconSize,
-                    menu_type = item.MenuType,
+                    iconSize = item.IconSize,
+                    menuType = item.MenuType,
                     parent_id = item.ParentId?.ToString() ?? string.Empty
                 };
 
@@ -304,7 +304,7 @@ namespace Lucky.SysService.Service
         {
             if (menus == null || menus.Count() < 1) return;
 
-            if (pEle.childs == null) pEle.childs = new List<SysUserPermissionOutput>();
+            if (pEle.children == null) pEle.children = new List<SysUserPermissionOutput>();
 
             var childs = menus.Where(m=>m.ParentId == pEle.id).OrderBy(o => o.Sort);
 
@@ -315,10 +315,10 @@ namespace Lucky.SysService.Service
                     id = itm.Id,
                     name = itm.Name,
                     code = itm.Code ?? string.Empty,
-                    path = itm.Path,
+                    url = itm.Path,
                     icon = itm.Icon,
-                    icon_size = itm.IconSize,
-                    menu_type = itm.MenuType,
+                    iconSize = itm.IconSize,
+                    menuType = itm.MenuType,
                     parent_id = itm.ParentId?.ToString() ?? string.Empty
                 };
                 if (itm.MenuType != BaseModel.Enum.MenuType.Menu)
@@ -326,7 +326,7 @@ namespace Lucky.SysService.Service
                     var chlds = menus.Where(m => m.ParentId == itm.Id);
                     GetMenuTrees(tmp, menus);
                 }
-                pEle.childs.Add(tmp);
+                pEle.children.Add(tmp);
             }
         }
     }

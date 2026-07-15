@@ -8,11 +8,6 @@ namespace Lucky.SysModel.Model.Input
     public class SysMenuQueryInput
     {
         /// <summary>
-        /// 父id
-        /// </summary>
-        public int ParentId { get; set; }
-
-        /// <summary>
         /// 菜单名
         /// </summary>
         public string? Name { get; set; }
@@ -26,7 +21,7 @@ namespace Lucky.SysModel.Model.Input
         /// <summary>
         /// 主键Id
         /// </summary>
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         /// <summary>
         /// 父id
@@ -61,7 +56,7 @@ namespace Lucky.SysModel.Model.Input
         /// <summary>
         /// 路径
         /// </summary>
-        public string? Path { get; set; }
+        public string? Url { get; set; }
 
         /// <summary>
         /// 排序

@@ -1,4 +1,5 @@
-﻿using Lucky.SysModel.Model.Input;
+﻿using Lucky.BaseModel.Model;
+using Lucky.SysModel.Model.Input;
 using Lucky.SysModel.Model.Output;
 
 namespace Lucky.SysService.Service.IService
@@ -11,6 +12,11 @@ namespace Lucky.SysService.Service.IService
         /// <param name="input"></param>
         /// <param name="isAdmin"></param>
         Task<List<SysMenuOutput>> GetMenuTree(SysMenuQueryInput input, bool isAdmin = false);
+
+        /// <summary>
+        /// 获取下拉菜单树
+        /// </summary>
+        Task<List<TreeSelectKV>> GetMenuSelTree();
 
         /// <summary>
         /// 根据id查询

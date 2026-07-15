@@ -2,7 +2,7 @@
   <div class="pg_top">
     <div class="pg_query">
       <el-text class="lbStl">关键字:</el-text>
-      <el-input class="commonInput" v-model="state.query.name" placeholder="名称|编码"></el-input>
+      <el-input class="commonInput" v-model="state.query.name" placeholder="名称|编码" clearable/>
       <!-- <el-text class="lbStl">组织机构:</el-text>
       <el-tree-select
         v-model="state.query.orgId"
@@ -87,13 +87,20 @@
       <el-input v-model="state.opt.icon" />
     </el-form-item>
     <el-form-item label="图标大小" placeholder="请输入图标大小">
-      <el-input v-model="state.opt.iconSize" />
-    </el-form-item>
-    <el-form-item label="路由地址" placeholder="请输入图标路径">
-      <el-input v-model="state.opt.path" />
+      <el-input v-model="state.opt.iconSize" type="number" />
     </el-form-item>
     <el-form-item label="路由地址" placeholder="请输入路由地址">
-      <el-input v-model="state.opt.path" />
+      <el-input v-model="state.opt.url" />
+    </el-form-item>
+    <el-form-item label="父级" placeholder="请选择父级">
+      <el-tree-select
+        v-model="state.opt.parentId"
+        :data="state.selTreeData"
+        check-strictly
+        :render-after-expand="false"
+        placeholder="请选择父级菜单"
+      >
+      </el-tree-select>
     </el-form-item>
     <el-form-item label="菜单类型" placeholder="请选择菜单类型">
       <el-select :options="state.menuTypeKv" v-model="state.opt.menuType" placeholder="请选择"/>
@@ -108,7 +115,7 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="state.dlgVisible = false">取消</el-button>
-        <el-button type="primary" @click="state.dlgVisible = false">确定</el-button>
+        <el-button type="primary" @click="btnSave">确定</el-button>
       </div>
     </template>
   </el-dialog>
@@ -118,7 +125,7 @@
 import { onMounted, reactive } from 'vue';
 import { Search, Plus } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import type { selKV } from '@/models/common/selectKV';
+import type { selNumKV, treeSelKV } from '@/models/common/selectKV';
 import type { menuModel, menuQueryModel, menuOptModel } from '@/models/sys/menuModel';
 
 import { systemReq } from '@/utils/reqUtil';
@@ -135,51 +142,53 @@ const state = reactive<{
   dlgTitle:string,
   dlgVisible:boolean,
   query:menuQueryModel,
-  menuTypeKv: selKV[],
-  statusKv: selKV[],
+  menuTypeKv: selNumKV[],
+  statusKv: selNumKV[],
   opt: menuOptModel,
   tbData: menuModel[]
+  selTreeData: treeSelKV[],
 }>({
   loading: false,
   dlgTitle: '',
   dlgVisible:false,
+  selTreeData: [],
   query: {
     name: ''
   },
   menuTypeKv: [
     {
       label: '请选择',
-      value: ''
+      value: -1
     },
     {
       label: '模块',
-      value: '1'
+      value: 1
     },
     {
       label: '分组',
-      value: '2'
+      value: 2
     },
     {
       label: '功能',
-      value: '3'
+      value: 3
     }
   ],
   statusKv: [
     {
       label: '请选择',
-      value: ''
+      value: -1
     },
     {
       label: '正常',
-      value: '1'
+      value: 1
     },
     {
       label: '禁用',
-      value: '0'
+      value: 0
     },
     {
       label: '隐藏',
-      value: '2'
+      value: 2
     }
   ],
   tbData: [],
@@ -187,12 +196,12 @@ const state = reactive<{
     id: '',
     name: '',
     parentId: '',
-    menuType: '',
+    menuType: -1,
     code: '',
-    path: '',
+    url: '',
     icon: '',
     iconSize: '',
-    status: '',
+    status: -1,
     sort: 0
   }
 })
@@ -200,7 +209,7 @@ const state = reactive<{
 const getList = () => {
   systemReq.axiosIns.get('api/sys/SysMenu/getMenuTree', { params:state.query })
   .then((res:any) => {
-    console.log(res.Data)
+    // console.log(res.Data)
     state.tbData = res.Data
   })
   .catch((err:any)=>{
@@ -211,12 +220,57 @@ const getList = () => {
 const btnAdd = () => {
   state.dlgTitle = '新增菜单'
   state.dlgVisible = true
+  state.opt = {
+    id: '',
+    name: '',
+    parentId: '',
+    menuType: -1,
+    code: '',
+    url: '',
+    icon: '',
+    iconSize: '',
+    status: -1,
+    sort: 0
+  }
 }
 
 const btnEdit = (id:string) => {
   state.dlgTitle = '编辑菜单'
   state.dlgVisible = true
-  console.log(id)
+  systemReq.axiosIns.get(`api/sys/SysMenu/${id}`)
+  .then((res:any) => {
+    state.opt = res.Data
+    state.opt.parentId = res.Data.parentId.toString()
+  })
+  .catch((err:any)=>{
+    console.log(err)
+  })
+}
+
+const btnSave = () => {
+  // console.log(state.opt)
+  state.dlgVisible = false
+  if (!state.opt.id) {
+    state.opt.id = '0'
+    systemReq.axiosIns.post('api/sys/SysMenu', state.opt)
+    .then((res:any) => {
+      // console.log(res.Data)
+      getList()
+    })
+    .catch((err:any)=>{
+      console.log(err)
+    })
+  }
+  else {
+    systemReq.axiosIns.put('api/sys/SysMenu', state.opt)
+    .then((res:any) => {
+      // console.log(res.Data)
+      getList()
+    })
+    .catch((err:any)=>{
+      console.log(err)
+    })
+  }
 }
 
 const btnDel = (id:string) => {
@@ -242,8 +296,22 @@ const btnDel = (id:string) => {
     })
 }
 
+const getSelTree = () => {
+  if (!state.selTreeData || state.selTreeData.length <1) {
+    systemReq.axiosIns.get('api/sys/SysMenu/getMenuSelTree')
+    .then((res:any) => {
+      // console.log(res.Data)
+      state.selTreeData = res.Data
+    })
+    .catch((err:any)=>{
+      console.log(err)
+    })
+  }
+}
+
 onMounted(() => {
   getList()
+  getSelTree()
 })
 
 </script>
