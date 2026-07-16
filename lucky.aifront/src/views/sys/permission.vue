@@ -345,7 +345,7 @@ const btnRelate = () => {
       console.log(res.Data)
       ElMessage({
         type: 'success',
-        message: '关联成功',
+        message: '设置成功',
       })
     })
     .catch((err:any)=>{
