@@ -76,42 +76,42 @@
     draggable
     overflow
   >
-  <el-form ref="form" :model="state.opt" label-width="auto" style="width: 100%;">
-    <el-form-item label="名称" placeholder="请输入名称">
-      <el-input v-model="state.opt.name" />
-    </el-form-item>
-    <el-form-item label="编码" placeholder="请输入编码">
-      <el-input v-model="state.opt.code" />
-    </el-form-item>
-    <el-form-item label="图标" placeholder="请输入图标">
-      <el-input v-model="state.opt.icon" />
-    </el-form-item>
-    <el-form-item label="图标大小" placeholder="请输入图标大小">
-      <el-input v-model="state.opt.iconSize" type="number" />
-    </el-form-item>
-    <el-form-item label="路由地址" placeholder="请输入路由地址">
-      <el-input v-model="state.opt.url" />
-    </el-form-item>
-    <el-form-item label="父级" placeholder="请选择父级">
-      <el-tree-select
-        v-model="state.opt.parentId"
-        :data="state.selTreeData"
-        check-strictly
-        :render-after-expand="false"
-        placeholder="请选择父级菜单"
-      >
-      </el-tree-select>
-    </el-form-item>
-    <el-form-item label="菜单类型" placeholder="请选择菜单类型">
-      <el-select :options="state.menuTypeKv" v-model="state.opt.menuType" placeholder="请选择"/>
-    </el-form-item>
-    <el-form-item label="状态" placeholder="请选择状态">
-      <el-select :options="state.statusKv" v-model="state.opt.status" placeholder="请选择"/>
-    </el-form-item>
-    <el-form-item label="排序" placeholder="请输入排序">
-      <el-input v-model="state.opt.sort" />
-    </el-form-item>
-  </el-form>
+    <el-form ref="form" :model="state.opt" label-width="auto" style="width: 100%;">
+      <el-form-item label="名称" placeholder="请输入名称">
+        <el-input v-model="state.opt.name" />
+      </el-form-item>
+      <el-form-item label="编码" placeholder="请输入编码">
+        <el-input v-model="state.opt.code" />
+      </el-form-item>
+      <el-form-item label="图标" placeholder="请输入图标">
+        <el-input v-model="state.opt.icon" />
+      </el-form-item>
+      <el-form-item label="图标大小" placeholder="请输入图标大小">
+        <el-input v-model="state.opt.iconSize" type="number" />
+      </el-form-item>
+      <el-form-item label="路由地址" placeholder="请输入路由地址">
+        <el-input v-model="state.opt.url" />
+      </el-form-item>
+      <el-form-item label="父级" placeholder="请选择父级">
+        <el-tree-select
+          v-model="state.opt.parentId"
+          :data="state.selTreeData"
+          check-strictly
+          :render-after-expand="false"
+          placeholder="请选择父级菜单"
+        >
+        </el-tree-select>
+      </el-form-item>
+      <el-form-item label="菜单类型" placeholder="请选择菜单类型">
+        <el-select :options="state.menuTypeKv" v-model="state.opt.menuType" placeholder="请选择"/>
+      </el-form-item>
+      <el-form-item label="状态" placeholder="请选择状态">
+        <el-select :options="state.statusKv" v-model="state.opt.status" placeholder="请选择"/>
+      </el-form-item>
+      <el-form-item label="排序" placeholder="请输入排序">
+        <el-input v-model="state.opt.sort" />
+      </el-form-item>
+    </el-form>
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="state.dlgVisible = false">取消</el-button>

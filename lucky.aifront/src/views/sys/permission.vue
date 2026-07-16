@@ -3,12 +3,13 @@
       <div style="display: flex; flex-direction: column; border-right: 1px solid #eee;">
           <div style="display: flex; max-height: 60px; min-height: 60px; justify-content: space-between; align-items: center; padding: 0px 10px; border-bottom: 1px solid #eee;">
             <label style="margin-right: 16px;">菜单树</label>
-            <el-button type="primary" :icon="Finished" class="btnStl">保存</el-button>
+            <el-button type="primary" :icon="Finished" class="btnStl" @click="btnRelate">保存</el-button>
           </div>
           <el-tree
+            ref="treeRef"
             :data="state.pData"
             show-checkbox
-            node-key="id"
+            node-key="value"
             default-expand-all
             :props="dftProps"
           />
@@ -21,39 +22,46 @@
         align-items: center;
         justify-content: flex-start;">
           <el-text class="lbStl">关键字:</el-text>
-          <el-input class="commonInput" v-model="state.query.txt" placeholder="名称|账号"></el-input>
-          <el-button type="primary" :icon="Search" class="btnStl">查询</el-button>
+          <el-input class="commonInput" v-model="state.query.name" placeholder="名称|标识"></el-input>
+          <el-button type="primary" :icon="Search" class="btnStl" @click="getList">查询</el-button>
           <el-button type="danger" :icon="Plus" @click="btnAdd" class="btnStl">新增</el-button>
         </div>
         <div style="display: flex; flex: 1; border-top: 1px solid #eee;">
-          <el-table :data="state.tbData" style="display: flex; flex: 1; width: auto; height: 100%; flex-wrap: wrap; flex-shrink: 1;">
+          <el-table :data="state.tbData" row-key="id" style="display: flex; flex: 1; width: auto; height: 100%; flex-wrap: wrap; flex-shrink: 1;">
               <el-table-column type="selection" width="55" />
               <!-- <el-table-column label="Date" width="120">
                 <template #default="scope">{{ scope.row.date }}</template>
               </el-table-column> -->
-              <el-table-column property="realname" label="姓名" width="120" />
-              <el-table-column property="sex" label="性别" width="88">
+              <el-table-column property="name" label="名称" width="120" />
+              <!-- <el-table-column property="sex" label="英文名" width="88">
                 <template #default="scope">
                   <div style="display: flex; align-items: center">
                     <span v-if="scope.row.sex==1">男</span>
                     <span v-else>女</span>
                   </div>
                 </template>
+              </el-table-column> -->
+              <el-table-column property="word" label="标识" width="120" show-overflow-tooltip />
+              <el-table-column property="roleType" label="类型" width="120">
+                <template #default="scope">
+                  <div style="display: flex; align-items: center">
+                    <span v-if="scope.row.roleType==1">管理员</span>
+                    <span v-else-if="scope.row.roleType==2">普通用户</span>
+                    <span v-else-if="scope.row.roleType==3">超级管理员</span>
+                  </div>
+                </template>
               </el-table-column>
-              <el-table-column property="account" label="昵称" width="120" />
-              <el-table-column property="roleName" label="角色" width="120" />
-              <el-table-column property="phone" label="联系方式" width="120" />
-              <el-table-column property="avatar" label="头像" width="166" show-overflow-tooltip/>
-              <el-table-column property="org" label="组织机构" width="120" show-overflow-tooltip />
-              <el-table-column label="日期" width="137">
-                <template #default="scope">{{ scope.row.createTime }}</template>
+              <el-table-column property="status" label="状态" width="120">
+                <template #default="scope">
+                  <div style="display: flex; align-items: center">
+                    <span v-if="scope.row.status==1">正常</span>
+                    <span v-else-if="scope.row.status==0">禁用</span>
+                  </div>
+                </template>
               </el-table-column>
-              <el-table-column property="createUser" label="创建人" width="120"/>
-              <el-table-column
-                property="addr"
-                label="地址"
-                width="240" show-overflow-tooltip
-              />
+              <el-table-column property="sort" label="排序" width="86"/>
+              <el-table-column property="remark" label="备注" width="120" show-overflow-tooltip />
+
               <el-table-column label="操作">
                 <template #default="scope">
                   <div>
@@ -73,22 +81,46 @@
     draggable
     overflow
   >
-    <span>It's a overflow draggable Dialog</span>
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="state.dlgVisible = false">取消</el-button>
-        <el-button type="primary" @click="state.dlgVisible = false">确定</el-button>
-      </div>
-    </template>
+      <el-form ref="formRef" :model="state.opt" label-width="80px">
+        <el-form-item label="名称">
+          <el-input v-model="state.opt.name" placeholder="请输入名称"></el-input>
+        </el-form-item>
+        <el-form-item label="昵称">
+          <el-input v-model="state.opt.word" placeholder="请输入昵称"></el-input>
+        </el-form-item>
+        <el-form-item label="类型">
+          <el-select v-model="state.opt.roleType" placeholder="请选择类型">
+            <el-option v-for="item in state.roleType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-select v-model="state.opt.status" placeholder="请选择状态">
+            <el-option v-for="item in state.status" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="排序">
+          <el-input v-model="state.opt.sort" placeholder="请输入排序"></el-input>
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input v-model="state.opt.remark" placeholder="请输入备注"></el-input>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="btnCancel">取消</el-button>
+          <el-button type="primary" @click="btnSave">确定</el-button>
+        </div>
+      </template>
   </el-dialog>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { Search, Plus, Finished } from '@element-plus/icons-vue'
 import { ElButton, ElMessage, ElMessageBox } from 'element-plus'
-import type { selKV } from '@/models/common/selectKV';
-import type { usrQueryModel, usrInfoModel, usrOptModel } from '@/models/sys/usrInfoModel'
+import type { TreeInstance} from 'element-plus'
+import type { selNumKV } from '@/models/common/selectKV'
+import type { PermissionQueryModel, PermissionModel, PermissionOptModel } from '@/models/sys/permissionModel'
 
 import { systemReq } from '@/utils/reqUtil';
 
@@ -97,68 +129,103 @@ const dftProps = {
   label: 'label'
 }
 
+const treeRef = ref<TreeInstance>()
+
 const state = reactive<{
   loading:boolean,
   dlgTitle:string,
   dlgVisible:boolean,
-  query:usrQueryModel,
-  selKv: selKV[],
-  opt: usrOptModel,
+  query:PermissionQueryModel,
+  opt: PermissionOptModel,
   pData: any[],
-  tbData: usrInfoModel[]
+  selRoleId: string,
+  tbData: PermissionModel[],
+  roleType: selNumKV[],
+  status: selNumKV[]
 }>({
   loading: false,
   dlgTitle: '',
   dlgVisible:false,
+  selRoleId: '',
   query: {
-    txt: '',
-    orgId: ''
+    name: ''
   },
+  status: [
+    {
+      label: '请选择',
+      value: -1
+    },
+    {
+      label: '启用',
+      value: 1
+    },
+    {
+      label: '禁用',
+      value: 0
+    }
+  ],
+  roleType: [
+    {
+      label: '请选择',
+      value: -1
+    },
+    {
+      label: '管理员',
+      value: 1
+    },
+    {
+      label: '普通用户',
+      value: 2
+    },
+    {
+      label: '超级管理员',
+      value: 3
+    }
+  ],
   pData:[
     {
-      id: 1,
+      value: 1,
       label: '系统管理',
       children: [
         {
-          id: 2,
+          value: 2,
           label: '用户管理'
         },
         {
-          id: 3,
+          value: 3,
           label: '角色管理'
         }
       ]
     },
     {
-      id: 4,
+      value: 4,
       label: '业务管理',
       children: [
         {
-          id: 5,
+          value: 5,
           label: '订单管理'
         },
         {
-          id: 6,
+          value: 6,
           label: '商品管理'
         }
       ]
     }
   ],
-  selKv: [
-    {
-      label: '请选择',
-      id: ''
-    }
-  ],
   tbData: [],
   opt: {
     id: '',
-    name: ''
+    name: '',
+    word: '',
+    roleType: -1,
+    status: -1,
+    sort: 0,
+    remark: ''
   }
 })
 
 const getList = () => {
-  systemReq.axiosIns.get('api/sys/SysUser/pages', { params:state.query })
+  systemReq.axiosIns.get('api/sys/SysRole/pages', { params:state.query })
   .then((res:any) => {
     console.log(res.Data)
     state.tbData = res.Data
@@ -169,14 +236,31 @@ const getList = () => {
 }
 
 const btnAdd = () => {
-  state.dlgTitle = '新增用户'
+  state.dlgTitle = '新增角色'
   state.dlgVisible = true
+  state.opt = {
+    id: '',
+    name: '',
+    word: '',
+    roleType: -1,
+    status: 1,
+    sort: 0,
+    remark: ''
+  }
 }
 
 const btnEdit = (id:string) => {
-  state.dlgTitle = '编辑用户'
+  state.dlgTitle = '编辑角色'
   state.dlgVisible = true
   // console.log(id)
+  systemReq.axiosIns.get(`api/sys/SysRole/${id}`)
+  .then((res:any) => {
+    console.log(res.Data)
+    state.opt = res.Data
+  })
+  .catch((err:any)=>{
+    console.log(err)
+  })
 }
 
 const btnDel = (id:string) => {
@@ -190,6 +274,14 @@ const btnDel = (id:string) => {
       type: 'warning',
     }
   ).then(() => {
+      systemReq.axiosIns.delete(`api/sys/SysRole/${id}`)
+      .then((res:any) => {
+        console.log(res.Data)
+        getList()
+      })
+      .catch((err:any)=>{
+        console.log(err)
+      })
       ElMessage({
         type: 'success',
         message: '删除成功',
@@ -202,7 +294,53 @@ const btnDel = (id:string) => {
     })
 }
 
+const btnCancel = () => {
+  state.dlgVisible = false
+}
+
+const btnSave = () => {
+  state.dlgVisible = false
+  if (!state.opt.id) {
+    state.opt.id = '0'
+    systemReq.axiosIns.post('api/sys/SysRole', state.opt)
+    .then((res:any) => {
+      console.log(res.Data)
+      getList()
+    })
+    .catch((err:any)=>{
+      console.log(err)
+    })
+  }
+  else {
+    systemReq.axiosIns.put('api/sys/SysRole', state.opt)
+    .then((res:any) => {
+      console.log(res.Data)
+      getList()
+    })
+    .catch((err:any)=>{
+      console.log(err)
+    })
+  }
+}
+
+const btnRelate = () => {
+  const selKeys = treeRef.value?.getCheckedKeys()
+  console.log(selKeys)
+}
+
+const getMenuTree = () => {
+  systemReq.axiosIns.get('api/sys/SysMenu/getMenuSelTree')
+  .then((res:any) => {
+    console.log(res.Data)
+    state.pData = res.Data
+  })
+  .catch((err:any)=>{
+    console.log(err)
+  })
+}
+
 onMounted(() => {
+  getMenuTree()
   getList()
 })
 

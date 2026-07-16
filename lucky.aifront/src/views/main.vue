@@ -448,6 +448,7 @@ onMounted(() => { // 初始化加载
   .then((res: any) => { // console.log(res)
     md.loading = false
     const currSelMenu = localStorage.getItem('currSelMenu')
+    let currUrl = ''
     if (currSelMenu) {
       res.Data.permissions.forEach((e:menuModel) => {
          if (e.children && e.children.length>0) {
@@ -456,6 +457,7 @@ onMounted(() => { // 初始化加载
                 c.isSelect = true
                 e.isExpand = true
                 md.currNav = e.id
+                currUrl = c.url
                 return
               }
               else if (c.children && c.children.length>0) {
@@ -465,6 +467,7 @@ onMounted(() => { // 初始化加载
                     c.isExpand = true
                     e.isExpand = true
                     md.currNav = e.id
+                    currUrl = ch.url
                     return
                   }
                 })
@@ -474,6 +477,8 @@ onMounted(() => { // 初始化加载
       })
     }
     md.menus = res.Data.permissions
+    if (currUrl)
+      router.push(currUrl)
   })
   .catch(ex=>{
     console.log(ex.message)

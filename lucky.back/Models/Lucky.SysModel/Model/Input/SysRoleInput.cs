@@ -35,6 +35,11 @@ namespace Lucky.SysModel.Model.Input
         public required string Name { get; set; }
 
         /// <summary>
+        /// 角色标识
+        /// </summary>
+        public string? Word { get; set; }
+
+        /// <summary>
         /// 角色类型
         /// </summary>
         public RoleType? RoleType { get; set; }
@@ -44,5 +49,15 @@ namespace Lucky.SysModel.Model.Input
         /// 备注
         /// </summary>
         public string? Remark { get; set; }
+
+        /// <summary>
+        /// 状态
+        /// </summary>
+        public int? Status { get; set; }
+
+        /// <summary>
+        /// 排序
+        /// </summary>
+        public int? Sort { get; set; }
     }
 }

@@ -46,10 +46,13 @@ namespace Lucky.SysService.Service
 
             Expression<Func<SysRole, SysRoleOutput>> expr = x => new SysRoleOutput()  // 1、这是最直接、最可控、最高效的方式
             {
-                Id = x.Id,
-                RoleType = x.RoleType,
-                Name = x.Name,
-                Remark = x.Remark
+                id = x.Id,
+                roleType = x.RoleType,
+                name = x.Name,
+                word = x.Word,
+                sort = x.Sort,
+                status = x.Status,
+                remark = x.Remark
             };
             var res = await _roleRpsty.GetPagesAsync(where, expr, pgInfo);
             return res;
@@ -63,10 +66,13 @@ namespace Lucky.SysService.Service
         {
             Expression<Func<SysRole, SysRoleOutput>> expr = x => new SysRoleOutput()  // 1、这是最直接、最可控、最高效的方式
             {
-                Id = x.Id,
-                RoleType = x.RoleType,
-                Name = x.Name,
-                Remark = x.Remark
+                id = x.Id,
+                roleType = x.RoleType,
+                name = x.Name,
+                sort = x.Sort,
+                word = x.Word,
+                status = x.Status,
+                remark = x.Remark
             };
             var data = await _roleRpsty.GetByIdAsync(id, expr);
             return data;
@@ -82,8 +88,13 @@ namespace Lucky.SysService.Service
             {
                 Id = maxId + 1,
                 Name = input.Name,
+                Word = input.Word,
+                Sort = input.Sort??0,
+                Status = input.Status??1,
                 RoleType = input.RoleType == null ? RoleType.General : input.RoleType.Value,
-                Remark = input.Remark
+                Remark = input.Remark,
+                CreateTime = DateTime.Now,
+                CreateUid = uid
             };
 
             var res = await _roleRpsty.AddAsync(model);
@@ -102,7 +113,10 @@ namespace Lucky.SysService.Service
 
             old.RoleType = input.RoleType!.Value;
             old.Name = input.Name;
+            old.Word = input.Word;
             old.Remark = input.Remark;
+            old.Sort = input.Sort??0;
+            old.Status = input.Status??1;
             old.UpdateTime = DateTime.Now;
             old.UpdateUid = uid;
 
