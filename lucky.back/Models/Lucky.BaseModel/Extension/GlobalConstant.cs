@@ -36,5 +36,10 @@
         public const string AES_IV = "8888888888888888";  // 16位
         #endregion
 
+        /// <summary>
+        /// 线程锁
+        /// </summary>
+        public static Semaphore Glb_semaphore = new Semaphore(1, 1);
+
     }
 }

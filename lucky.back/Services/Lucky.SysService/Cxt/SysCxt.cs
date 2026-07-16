@@ -74,13 +74,21 @@ namespace Lucky.SysService.Cxt
                 entity.ToTable("sys_user").HasQueryFilter(r => !r.IsDel);
             });
 
-            modelBuilder.Entity<SysRole>().ToTable("sys_role").HasQueryFilter(r => !r.IsDel);
+            //modelBuilder.Entity<SysRole>().ToTable("sys_role").HasQueryFilter(r => !r.IsDel);
 
-            modelBuilder.Entity<SysOrg>().ToTable("sys_org").HasQueryFilter(r => !r.IsDel);
+            //modelBuilder.Entity<SysOrg>().ToTable("sys_org").HasQueryFilter(r => !r.IsDel);
 
-            modelBuilder.Entity<SysMenu>().ToTable("sys_menu").HasQueryFilter(r => !r.IsDel);
+            //modelBuilder.Entity<SysMenu>().ToTable("sys_menu").HasQueryFilter(r => !r.IsDel);
 
-            modelBuilder.Entity<SysConfig>().ToTable("sys_config").HasQueryFilter(r => !r.IsDel);
+            //modelBuilder.Entity<SysConfig>().ToTable("sys_config").HasQueryFilter(r => !r.IsDel);
+
+            modelBuilder.Entity<SysRole>().ToTable("sys_role");
+
+            modelBuilder.Entity<SysOrg>().ToTable("sys_org");
+
+            modelBuilder.Entity<SysMenu>().ToTable("sys_menu");
+
+            modelBuilder.Entity<SysConfig>().ToTable("sys_config");
 
             modelBuilder.Entity<SysLog>().ToTable("sys_log");
 

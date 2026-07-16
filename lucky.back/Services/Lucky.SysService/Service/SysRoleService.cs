@@ -1,12 +1,13 @@
 ﻿using LinqKit;
+using Lucky.BaseModel;
 using Lucky.BaseModel.Enum;
 using Lucky.BaseModel.Model;
 using Lucky.SysModel.Entity;
-using System.Linq.Expressions;
 using Lucky.SysModel.Model.Input;
 using Lucky.SysModel.Model.Output;
 using Lucky.SysService.Rpsty.IRpsty;
 using Lucky.SysService.Service.IService;
+using System.Linq.Expressions;
 
 namespace Lucky.SysService.Service
 {
@@ -14,14 +15,17 @@ namespace Lucky.SysService.Service
     {
         private readonly ISysRpsty<SysRole, int> _roleRpsty;
         private readonly ISysRpsty<SysRoleMenu, int> _roleMenuRpsty;
+        private readonly ISysRpsty<SysMenu, int> _menuRpsty;
 
         public SysRoleService(
             ISysRpsty<SysRole, int> roleRpsty,
-            ISysRpsty<SysRoleMenu, int> roleMenuRpsty
+            ISysRpsty<SysRoleMenu, int> roleMenuRpsty,
+            ISysRpsty<SysMenu, int> menuRpsty
             )
         {
             _roleRpsty = roleRpsty;
             _roleMenuRpsty = roleMenuRpsty;
+            _menuRpsty = menuRpsty;
         }
 
         /// <summary>
@@ -83,7 +87,7 @@ namespace Lucky.SysService.Service
         /// </summary>
         public async Task<bool> Add(SysRoleOptInput input, long uid)
         {
-            var maxId = await _roleRpsty.MaxAsync<int>(null, x => x.Id);
+            var maxId = await _roleRpsty.MaxAsync(x => true, x => x.Id);
             var model = new SysRole()
             {
                 Id = maxId + 1,
@@ -159,6 +163,67 @@ namespace Lucky.SysService.Service
                 value = x.Id.ToString()
             });
             return res;
+        }
+
+        /// <summary>
+        /// 获取角色菜单
+        /// </summary>
+        public async Task<List<int>?> GetRoleMenus(int roleId)
+        {
+            var role = await _roleRpsty.GetByIdAsync(roleId);
+            if (role != null && role.RoleType == RoleType.Super)
+            {
+                var menuIds = await _menuRpsty.GetListAsync(x => !x.IsDel, x => new
+                {
+                    id = x.Id
+                });
+
+                return menuIds.Select(x => x.id).ToList();
+            }
+            var where = PredicateBuilder.New<SysRoleMenu>(x => x.RoleId == roleId);
+            var res = await _roleMenuRpsty.GetListAsync(where, x => x.MenuId);
+            return res;
+        }
+
+        /// <summary>
+        /// 设置角色菜单
+        /// </summary>
+        public async Task<bool> SetRoleMenus(SetRoleMenusInput input, long uid)
+        {
+            var role = await _roleRpsty.GetByIdAsync(input.roleId);
+            if (role != null && role.RoleType == RoleType.Super)
+                return true;
+
+            if (input.roleId <= 0 || input.menuIds == null) return false;
+            var where = PredicateBuilder.New<SysRoleMenu>(x => x.RoleId == input.roleId);
+            var olds = await _roleMenuRpsty.GetListAsync(where);
+            await _roleMenuRpsty.DeleteRangeAsync(olds);
+
+            var menus = await _menuRpsty.GetListAsync(x => input.menuIds.Contains(x.Id) && x.MenuType == MenuType.Menu);
+            var menuIds = menus.Select(x => x.Id).ToList();
+
+            #region 补充信号量、防并发
+            GlobalConstant.Glb_semaphore.WaitOne();
+            try
+            {
+                var maxId = await _roleMenuRpsty.MaxAsync<int>(null, x => x.Id) + 1;
+                var adds = menuIds.Select(x => new SysRoleMenu()
+                {
+                    Id = maxId++,
+                    RoleId = input.roleId,
+                    MenuId = x
+                }).ToList();
+                var res = await _roleMenuRpsty.AddRangeAsync(adds);
+                GlobalConstant.Glb_semaphore.Release();
+                return res > 0;
+            }
+            catch (Exception)
+            {
+                GlobalConstant.Glb_semaphore.Release();
+                return false;
+            }
+
+            #endregion
         }
     }
 }

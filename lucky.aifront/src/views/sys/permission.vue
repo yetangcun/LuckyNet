@@ -27,7 +27,8 @@
           <el-button type="danger" :icon="Plus" @click="btnAdd" class="btnStl">新增</el-button>
         </div>
         <div style="display: flex; flex: 1; border-top: 1px solid #eee;">
-          <el-table :data="state.tbData" row-key="id" style="display: flex; flex: 1; width: auto; height: 100%; flex-wrap: wrap; flex-shrink: 1;">
+          <el-table :data="state.tbData" row-key="id" @row-click="handleSelectionChange"
+                    style="display: flex; flex: 1; width: auto; height: 100%; flex-wrap: wrap; flex-shrink: 1;">
               <el-table-column type="selection" width="55" />
               <!-- <el-table-column label="Date" width="120">
                 <template #default="scope">{{ scope.row.date }}</template>
@@ -227,7 +228,7 @@ const state = reactive<{
 const getList = () => {
   systemReq.axiosIns.get('api/sys/SysRole/pages', { params:state.query })
   .then((res:any) => {
-    console.log(res.Data)
+    // console.log(res.Data)
     state.tbData = res.Data
   })
   .catch((err:any)=>{
@@ -247,6 +248,18 @@ const btnAdd = () => {
     sort: 0,
     remark: ''
   }
+}
+
+const handleSelectionChange = (val:PermissionModel) => {
+  state.selRoleId = val.id
+  systemReq.axiosIns.get(`api/sys/SysRole/getRoleMenus/${state.selRoleId}`)
+  .then((res:any) => {
+    // console.log(res.Data)
+    treeRef.value?.setCheckedKeys(res.Data)
+  })
+  .catch((err:any)=>{
+    console.log(err)
+  })
 }
 
 const btnEdit = (id:string) => {
@@ -326,6 +339,19 @@ const btnSave = () => {
 const btnRelate = () => {
   const selKeys = treeRef.value?.getCheckedKeys()
   console.log(selKeys)
+  if (selKeys && state.selRoleId) {
+    systemReq.axiosIns.post(`api/sys/SysRole/setRoleMenus`, {roleId: state.selRoleId, menuIds: selKeys})
+    .then((res:any) => {
+      console.log(res.Data)
+      ElMessage({
+        type: 'success',
+        message: '关联成功',
+      })
+    })
+    .catch((err:any)=>{
+      console.log(err)
+    })
+  }
 }
 
 const getMenuTree = () => {

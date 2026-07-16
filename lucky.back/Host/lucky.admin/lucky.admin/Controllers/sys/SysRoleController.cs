@@ -107,6 +107,27 @@ namespace lucky.admin.Controllers.sys
         #endregion
 
         #region 角色菜单
+        /// <summary>
+        /// 获取角色菜单
+        /// </summary>
+        /// <param name="roleId"></param>
+        [HttpGet("getRoleMenus/{roleId}")]
+        public async Task<ResModel<List<int>>> GetRoleMenus(int roleId)
+        {
+            var res = await _roleService.GetRoleMenus(roleId);
+            return ResModel<List<int>>.Success(res);
+        }
+
+        /// <summary>
+        /// 设置角色菜单
+        /// </summary>
+        [HttpPost("setRoleMenus")]
+        public async Task<ResModel<bool>> SetRoleMenus([FromBody] SetRoleMenusInput input)
+        {
+            var uid = HttpContext.GetUid();
+            var res = await _roleService.SetRoleMenus(input, uid);
+            return res ? ResModel<bool>.Success(true) : ResModel<bool>.Failed(false);
+        }
         #endregion
     }
 }

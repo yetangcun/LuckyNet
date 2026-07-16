@@ -60,4 +60,20 @@ namespace Lucky.SysModel.Model.Input
         /// </summary>
         public int? Sort { get; set; }
     }
+
+    /// <summary>
+    /// 设置角色菜单入参
+    /// </summary>
+    public class SetRoleMenusInput
+    {
+        /// <summary>
+        /// 角色id
+        /// </summary>
+        public int roleId { get; set; }
+
+        /// <summary>
+        /// 菜单id
+        /// </summary>
+        public List<int>? menuIds { get; set; }
+    }
 }

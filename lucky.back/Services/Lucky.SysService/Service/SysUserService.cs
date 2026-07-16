@@ -262,13 +262,22 @@ namespace Lucky.SysService.Service
                 return usrData;
 
             var roleIds = usrRoles.Select(x => x.RoleId);
-            var roleMenus = await _roleMenuRpsty.GetListAsync(x => roleIds.Contains(x.RoleId));
-
-            if (roleMenus.Any())
+            var superRole = await _roleRpsty.GetListAsync(x => roleIds.Contains(x.Id) && x.RoleType == RoleType.Super); // 是否超级管理员
+            if (superRole.Any())
             {
-                var menuIds = roleMenus.Select(x => x.MenuId);
-                var menus = await _menuRpsty.GetListAsync(x => menuIds.Contains(x.Id));
+                var menus = await _menuRpsty.GetListAsync(x => !x.IsDel);
                 usrData.permissions = GetMenuTree(menus);
+            }
+            else
+            {
+                var roleMenus = await _roleMenuRpsty.GetListAsync(x => roleIds.Contains(x.RoleId));
+                if (roleMenus.Any())
+                {
+                    var menuIds = roleMenus.Select(x => x.MenuId);
+                    var menus = await _menuRpsty.GetListAsync(x => menuIds.Contains(x.Id));
+                    usrData.permissions = GetMenuTree(menus);
+                }
+
             }
 
             return usrData;

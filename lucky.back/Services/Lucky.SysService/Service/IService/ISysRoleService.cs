@@ -43,5 +43,17 @@ namespace Lucky.SysService.Service.IService
         /// </summary>
         /// <param name="uid"></param>
         Task<List<SelectKV>?> GetSelList(long uid);
+
+        /// <summary>
+        /// 获取角色权限
+        /// </summary>
+        /// <param name="roleId"></param>
+        Task<List<int>?> GetRoleMenus(int roleId);
+
+        /// <summary>
+        /// 设置角色权限
+        /// </summary>
+        /// <param name="input"></param>
+        Task<bool> SetRoleMenus(SetRoleMenusInput input, long uid);
     }
 }
