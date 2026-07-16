@@ -11,11 +11,11 @@ namespace Lucky.SysService.Service
     public class SysMenuService : ISysMenuService
     {
         private readonly ISysRpsty<SysMenu, int> _menuRpsty;
-        private readonly ISysRpsty<SysRoleMenu, int> _roleMenuRpsty;
+        private readonly ISysRpsty<SysRoleMenu, int?> _roleMenuRpsty;
 
         public SysMenuService(
             ISysRpsty<SysMenu, int> menuRpsty,
-            ISysRpsty<SysRoleMenu, int> roleMenuRpsty
+            ISysRpsty<SysRoleMenu, int?> roleMenuRpsty
             )
         {
             _menuRpsty = menuRpsty;

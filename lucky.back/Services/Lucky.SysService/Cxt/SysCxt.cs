@@ -94,7 +94,11 @@ namespace Lucky.SysService.Cxt
 
             modelBuilder.Entity<SysUserRole>().ToTable("sys_user_role").HasKey(e => new { e.RoleId, e.UserId });
 
-            modelBuilder.Entity<SysRoleMenu>().ToTable("sys_role_menu").HasKey(e => new { e.RoleId, e.MenuId });
+            modelBuilder.Entity<SysRoleMenu>(x =>
+            {
+                x.ToTable("sys_role_menu").HasKey(e => new { e.RoleId, e.MenuId });
+                x.Property(e => e.Id).ValueGeneratedOnAdd();
+            });
 
             modelBuilder.Entity<SysUserMenu>().ToTable("sys_user_menu").HasKey(e => new { e.UserId, e.MenuId });
 

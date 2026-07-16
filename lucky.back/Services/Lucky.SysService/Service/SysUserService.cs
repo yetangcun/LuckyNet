@@ -21,7 +21,7 @@ namespace Lucky.SysService.Service
         private readonly ISysRpsty<SysRole, int> _roleRpsty;
         private readonly ISysRpsty<SysMenu, int> _menuRpsty;
         private readonly ISysRpsty<SysUserRole, long> _usrRoleRpsty;
-        private readonly ISysRpsty<SysRoleMenu, int> _roleMenuRpsty;
+        private readonly ISysRpsty<SysRoleMenu, int?> _roleMenuRpsty;
 
         /// <summary>
         /// 构造函数
@@ -30,7 +30,7 @@ namespace Lucky.SysService.Service
             ISysRpsty<SysUser, long> usrRpsty,
             ISysRpsty<SysRole, int> roleRpsty,
             ISysRpsty<SysMenu, int> menuRpsty,
-            ISysRpsty<SysRoleMenu, int> roleMenuRpsty,
+            ISysRpsty<SysRoleMenu, int?> roleMenuRpsty,
             ISysRpsty<SysUserRole, long> usrRoleRpsty)
         {
             _usrRpsty = usrRpsty;

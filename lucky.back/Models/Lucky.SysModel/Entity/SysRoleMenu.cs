@@ -7,7 +7,7 @@ namespace Lucky.SysModel.Entity
     /// 角色菜单
     /// </summary>
     [Table("sys_role_menu")]
-    public class SysRoleMenu : BaseCommonEntity<int>
+    public class SysRoleMenu : BaseCommonEntity<int?>
     {
         /// <summary>
         /// 角色Id

@@ -14,12 +14,12 @@ namespace Lucky.SysService.Service
     public class SysRoleService : ISysRoleService
     {
         private readonly ISysRpsty<SysRole, int> _roleRpsty;
-        private readonly ISysRpsty<SysRoleMenu, int> _roleMenuRpsty;
+        private readonly ISysRpsty<SysRoleMenu, int?> _roleMenuRpsty;
         private readonly ISysRpsty<SysMenu, int> _menuRpsty;
 
         public SysRoleService(
             ISysRpsty<SysRole, int> roleRpsty,
-            ISysRpsty<SysRoleMenu, int> roleMenuRpsty,
+            ISysRpsty<SysRoleMenu, int?> roleMenuRpsty,
             ISysRpsty<SysMenu, int> menuRpsty
             )
         {
@@ -203,23 +203,24 @@ namespace Lucky.SysService.Service
             var menuIds = menus.Select(x => x.Id).ToList();
 
             #region 补充信号量、防并发
-            GlobalConstant.Glb_semaphore.WaitOne();
+
             try
             {
-                var maxId = await _roleMenuRpsty.MaxAsync<int>(null, x => x.Id) + 1;
+                // var maxId = await _roleMenuRpsty.MaxAsync<int>(null, x => x.Id.Value) + 1;
                 var adds = menuIds.Select(x => new SysRoleMenu()
                 {
-                    Id = maxId++,
                     RoleId = input.roleId,
-                    MenuId = x
+                    MenuId = x,
+                    Id = null
                 }).ToList();
                 var res = await _roleMenuRpsty.AddRangeAsync(adds);
-                GlobalConstant.Glb_semaphore.Release();
+
                 return res > 0;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                GlobalConstant.Glb_semaphore.Release();
+                var msg = ex.Message;
+
                 return false;
             }
 
