@@ -217,6 +217,7 @@ namespace Lucky.SysService.Service
                 model.Name = input.Name ?? string.Empty;
                 model.Status = input.Status;
                 model.Sort = input.Sort;
+                model.Code = input.Code;
                 model.MenuType = input.MenuType;
                 model.Icon = input.Icon;
                 model.IconSize = input.IconSize.ToString();

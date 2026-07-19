@@ -45,8 +45,8 @@
             <template #default="scope">
               <div style="display: flex; align-items: center">
                 <span v-if="scope.row.status==1">正常</span>
-                <span v-else-if="scope.row.status==0">禁用</span>
-                <span v-else-if="scope.row.status==2">隐藏</span>
+                <span v-else-if="scope.row.status==0" style="color: orangered;">禁用</span>
+                <span v-else-if="scope.row.status==2" style="color: lightgray;">隐藏</span>
               </div>
             </template>
           </el-table-column>
@@ -229,7 +229,7 @@ const btnAdd = () => {
     url: '',
     icon: '',
     iconSize: '',
-    status: -1,
+    status: 1,
     sort: 0
   }
 }
@@ -250,6 +250,9 @@ const btnEdit = (id:string) => {
 const btnSave = () => {
   // console.log(state.opt)
   state.dlgVisible = false
+  if (!state.opt.parentId) {
+    state.opt.parentId = '0'
+  }
   if (!state.opt.id) {
     state.opt.id = '0'
     systemReq.axiosIns.post('api/sys/SysMenu', state.opt)
