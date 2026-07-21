@@ -16,7 +16,6 @@ var bld = WebApplication.CreateBuilder(args);
 bld.Services.AddControllers(c =>
 {
     c.Filters.Add<GlbFilter>();
-    //c.Filters.Add<GlbFlt>();
     c.RespectBrowserAcceptHeader = true;
 }).AddJsonOptions(opts =>  // ≈‰÷√–Ú¡–ªØ System.Text.Json
 {
