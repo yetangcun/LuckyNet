@@ -47,7 +47,7 @@ namespace Lucky.SysModel.Model.Input
         /// <summary>
         /// 角色ID
         /// </summary>
-        public int? RoleId { get; set; }
+        public string? RoleId { get; set; }
 
         /// <summary>
         /// 姓名

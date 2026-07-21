@@ -1,5 +1,4 @@
-﻿using Lucky.BaseModel.Enum;
-using Lucky.BaseModel.Model.Entity;
+﻿using Lucky.BaseModel.Model.Entity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,7 +9,7 @@ namespace Lucky.SysModel.Entity
     /// 系统日志
     /// </summary>
     [Table("sys_log")]
-    public class SysLog : BaseFullEntity<long>
+    public class SysLog : BaseCreateEntity<long>
     {
         /// <summary>
         /// 接口地址
@@ -32,8 +31,8 @@ namespace Lucky.SysModel.Entity
         /// 操作类型
         /// </summary>
         [Comment("操作类型")]
-        [Column("opt_type")]
-        public HttpOptType OptType { get; set; }
+        [Column("req_type")]
+        public string? ReqType { get; set; }
 
         /// <summary>
         /// 请求IP
@@ -59,6 +58,13 @@ namespace Lucky.SysModel.Entity
         [Comment("错误信息")]
         [Column("err_msg")]
         public string? ErrMsg { get; set; }
+
+        /// <summary>
+        /// 执行时间
+        /// </summary>
+        [Comment("执行时间")]
+        [Column("exec_time")]
+        public decimal ExecTime { get; set; }
 
         ///// <summary>
         ///// 创建时间

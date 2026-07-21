@@ -81,7 +81,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="角色">
-            <el-select v-model="state.opt.roleId" multiple
+            <el-select v-model="state.opt.roleIds" multiple
             :options="state.roleKv" placeholder="请选择角色">
             </el-select>
           </el-form-item>
@@ -161,6 +161,7 @@ const state = reactive<{
     id: '',
     name: '',
     roleId: '',
+    roleIds: [],
     account: '',
     orgId: '',
     avatar: '',
@@ -214,6 +215,7 @@ const btnAdd = () => { // 新增
   state.opt.name = ''
   state.opt.account = ''
   state.opt.roleId = ''
+  state.opt.roleIds = []
   state.opt.orgId = null
   state.opt.avatar = ''
   state.opt.status = 0
@@ -232,7 +234,7 @@ const btnEdit = (id:string) => {  // 编辑
     // console.log(res.Data)
     state.opt.name = res.Data.realname
     state.opt.account = res.Data.account
-    state.opt.roleId = res.Data.roleId
+    state.opt.roleIds = res.Data.roleIds
     state.opt.orgId = res.Data.orgId
     state.opt.avatar = res.Data.avatar
     state.opt.status = res.Data.status
@@ -283,6 +285,16 @@ const btnSave = () => {
     })
     return
   }
+
+  if (!state.opt.roleIds || state.opt.roleIds.length <= 0) {
+    ElMessage({
+      type: 'warning',
+      message: '请选择角色',
+    })
+    return
+  }
+
+  state.opt.roleId = state.opt.roleIds.join(',')
 
   if (!state.opt.id) {
     // state.opt.id = '0'

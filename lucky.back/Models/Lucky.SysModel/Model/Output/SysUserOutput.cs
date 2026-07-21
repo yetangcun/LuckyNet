@@ -78,6 +78,11 @@ namespace Lucky.SysModel.Model.Output
         /// </summary>
         public string? avatar { get; set; }
 
+        /// <summary>
+        /// 角色ID
+        /// </summary>
+        public string[]? roleIds { get; set; }
+
     }
 
     /// <summary>

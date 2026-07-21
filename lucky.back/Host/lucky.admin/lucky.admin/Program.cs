@@ -1,12 +1,13 @@
+using Common.CoreLib.Extension.Common;
+using lucky.admin.Extensions;
+using lucky.admin.Extensions.Filters;
+using lucky.admin.Extensions.Middleware;
+using Lucky.PrtclService;
+using Lucky.SysService;
+using Microsoft.AspNetCore.HttpOverrides;
 using Serilog;
 using System.Net;
-using Lucky.SysService;
-using Lucky.PrtclService;
-using lucky.admin.Extensions;
 using System.Text.Encodings.Web;
-using lucky.admin.Extensions.Filters;
-using Common.CoreLib.Extension.Common;
-using Microsoft.AspNetCore.HttpOverrides;
 //using lucky.admin.Extensions.Middleware;
 
 var bld = WebApplication.CreateBuilder(args);
@@ -15,6 +16,7 @@ var bld = WebApplication.CreateBuilder(args);
 bld.Services.AddControllers(c =>
 {
     c.Filters.Add<GlbFilter>();
+    //c.Filters.Add<GlbFlt>();
     c.RespectBrowserAcceptHeader = true;
 }).AddJsonOptions(opts =>  // 配置序列化 System.Text.Json
 {
@@ -90,6 +92,8 @@ if (app.Environment.IsDevelopment())
 }
 
 // app.UseStaticFiles(); // 启用静态文件, 静态文件直接返回，不进入路由
+
+app.UseMiddleware<EnableRequestBodyReUseMiddleware>(); // 启用请求体缓存
 
 app.UseForwardedHeaders(); // 开启反向代理
 

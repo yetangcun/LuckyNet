@@ -156,6 +156,11 @@ namespace Lucky.SysService.Service
             //};
             var expr = SimpleMappingExtensions.AutoMap<SysUser, SysUserInfoOutput>();  // 2、这是最简便的方式
             var userObj = await _usrRpsty.GetByIdAsync(id, expr);
+            if (userObj != null)
+            {
+                var usrRoleLst = await _usrRoleRpsty.GetListAsync(x => x.UserId == id, x => x.RoleId);
+                userObj.roleIds = usrRoleLst.Select(x => x.ToString()).ToArray();
+            }
             return userObj;
         }
 
@@ -179,6 +184,22 @@ namespace Lucky.SysService.Service
                 CreateTime = DateTime.Now,
                 CreateUid = optId
             };
+
+            if (!string.IsNullOrWhiteSpace(input.RoleId))
+            {
+                var oldRoles = await _usrRoleRpsty.GetListAsync(x => x.UserId == input.Id.Value);
+                var roleIds = input.RoleId.Split(',').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => int.Parse(x));
+                if (oldRoles != null && (oldRoles.Count() != roleIds.Count() || oldRoles.Any(x => !roleIds.Contains(x.RoleId))))
+                {
+                    var lst = roleIds.Select(x => new SysUserRole()
+                    {
+                        Id = IdGreator.GetNxtId(),
+                        UserId = id,
+                        RoleId = x
+                    }).ToList();
+                    await _usrRoleRpsty.AddRangeAsync(lst);
+                }
+            }
 
             var res = await _usrRpsty.AddAsync(sysObj);
 
@@ -209,6 +230,23 @@ namespace Lucky.SysService.Service
             entity.UpdateUid = optId;
             entity.UpdateTime = DateTime.Now;
 
+            if (!string.IsNullOrWhiteSpace(input.RoleId))
+            {
+                var oldRoles = await _usrRoleRpsty.GetListAsync(x => x.UserId == input.Id.Value);
+                var roleIds = input.RoleId.Split(',').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => int.Parse(x));
+                if (oldRoles != null && (oldRoles.Count() != roleIds.Count() || oldRoles.Any(x => !roleIds.Contains(x.RoleId))))
+                {
+                    await _usrRoleRpsty.DeleteRangeAsync(oldRoles);
+                    var lst = roleIds.Select(x => new SysUserRole()
+                    {
+                        Id = IdGreator.GetNxtId(),
+                        UserId = input.Id.Value,
+                        RoleId = x
+                    }).ToList();
+                    await _usrRoleRpsty.AddRangeAsync(lst);
+                }
+            }
+
             var res = await _usrRpsty.UpdateAsync(entity);
 
             return res > 0;
@@ -228,6 +266,12 @@ namespace Lucky.SysService.Service
             entity.IsDel = true;
             entity.DelTime = DateTime.Now;
             entity.DelUid = optId;
+
+            var usrRoles = await _usrRoleRpsty.GetListAsync(x => x.UserId == id);
+            if (usrRoles != null && usrRoles.Count > 0)
+            {
+                await _usrRoleRpsty.DeleteRangeAsync(usrRoles);
+            }
 
             var res = await _usrRpsty.UpdateAsync(entity);
 
@@ -274,8 +318,12 @@ namespace Lucky.SysService.Service
                 if (roleMenus.Any())
                 {
                     var menuIds = roleMenus.Select(x => x.MenuId);
-                    var menus = await _menuRpsty.GetListAsync(x => menuIds.Contains(x.Id));
-                    usrData.permissions = GetMenuTree(menus);
+                    var menus = await _menuRpsty.GetListAsync(x => !x.IsDel && !x.IsHidden);
+                    var childs = menus.Where(x => menuIds.Contains(x.Id)).OrderBy(o => o.Sort).ToList();
+                    var parentIds = childs.Where(x => x.ParentId != 0 && x.ParentId != null && x.ParentId != -1).Select(x => x.ParentId).Distinct();
+                    var parentMenus = menus.Where(x => parentIds.Contains(x.Id)).ToList();
+                    childs.AddRange(parentMenus);
+                    usrData.permissions = GetMenuTree(childs);
                 }
 
             }
