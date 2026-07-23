@@ -45,8 +45,8 @@ namespace Lucky.BaseService.Extension
         /// <param name="context"></param>
         public static long GetUid(this HttpContext context)
         {
-            var uid = context.Items[GlobalConstant.U_ID]!.ToString();
-            return !string.IsNullOrEmpty(uid) ? long.Parse(uid) : 0;
+            long.TryParse(context.Items[GlobalConstant.U_ID]!.ToString(), out long uid);
+            return uid;
         }
 
         /// <summary>

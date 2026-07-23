@@ -1,12 +1,14 @@
-﻿using Prtcl.Grpc;
-using Lucky.SysService;
+﻿using Alot2.Admin.Common.Cache;
+using Common.CoreLib.Extension.Common;
+using Common.CoreLib.Model.Option;
+using GrpcTransCore.Services;
+using lucky.admin.Extensions.Handler;
 using Lucky.BaseService;
 using Lucky.PrtclService;
+using Lucky.SysService;
+using Prtcl.Grpc;
 using Prtcl.Grpc.extension;
-using GrpcTransCore.Services;
-using Alot2.Admin.Common.Cache;
-using Common.CoreLib.Model.Option;
-using lucky.admin.Extensions.Handler;
+using System.Diagnostics;
 
 namespace lucky.admin.Extensions
 {
@@ -22,6 +24,10 @@ namespace lucky.admin.Extensions
         {
             services.Configure<GrpcConfig>(cfg.GetSection("GrpcCfg"));
             services.AddSingleton<IGrpcCommonHandler, GrpcDefaultHandler>();
+
+            services.Configure<ChannelOption>(cfg.GetSection("ChannelOption"));
+            services.AddSingleton<ChannelExtension>();
+
             services.BaseInitLoad(cfg);
         }
 
@@ -57,6 +63,14 @@ namespace lucky.admin.Extensions
             var grpcCfg = cfg.GetSection("GrpcCfg").Get<GrpcConfig>();
             var logger = app.ApplicationServices.GetService<Serilog.ILogger>();
             GrpcServrHdl.GrpcServerStart("0.0.0.0", grpcCfg.ListenPort, grpcHdl, logger); // 启动gRPC服务
+
+            // 添加程序退出处理逻辑
+            var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
+            lifetime.ApplicationStopping.Register(() =>
+            {
+                var channelExt = app.ApplicationServices.GetRequiredService<ChannelExtension>();
+                channelExt.CompleteAll(); // 统一通知所有通道不再接收新数据
+            });
         }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Text;
+using System.Threading.Channels;
 
 namespace lucky.admin.Extensions.Filters
 {
@@ -17,14 +18,16 @@ namespace lucky.admin.Extensions.Filters
 
         private readonly JwtAuthExtension _jwt;
         private readonly ILogger<GlbFilter> _logger;
+        private readonly Channel<SysLog> _channel;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        public GlbFilter(JwtAuthExtension jwt, ILogger<GlbFilter> logger)
+        public GlbFilter(JwtAuthExtension jwt, ILogger<GlbFilter> logger, ChannelExtension channel)
         {
             _jwt = jwt;
             _logger = logger;
+            _channel = channel.GetOrCreate<SysLog>("SysLogChannel");
         }
 
 
@@ -67,7 +70,8 @@ namespace lucky.admin.Extensions.Filters
                 }
             }
 
-            var res = await next(); await Record(context, res);
+            var res = await next(); 
+            await Record(context, res);
         }
 
         private async Task Record(ActionExecutingContext context, ActionExecutedContext? res)
@@ -91,7 +95,7 @@ namespace lucky.admin.Extensions.Filters
             var isNull = res == null;
             var statusCode = isNull ? 401 : res.HttpContext.Response.StatusCode;
             var isSuccess = isNull ? false : res.Exception == null || res.ExceptionHandled;
-            var errorMessage = isNull ? "UnAuth" : res.Exception?.Message ?? (isSuccess ? null : "Unknown error");
+            var errorMsg = isNull ? "UnAuth" : res.Exception?.Message ?? (isSuccess ? null : "Unknown error");
 
             // 构造日志模型
             long.TryParse(uid?.ToString(), out long _uid);
@@ -105,20 +109,20 @@ namespace lucky.admin.Extensions.Filters
                 ReqUrl = reqPath,
                 ReqType = reqMethod,
                 Status = isSuccess ? 1 : 0,
-                ErrMsg = errorMessage,
+                ErrMsg = errorMsg,
                 ExecTime = Convert.ToDecimal(duration.TotalMilliseconds),
             };
+            try
+            {
+                await _channel.Writer.WriteAsync(logModel);  // 写入日志
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "日志写入通道失败");
+            }
 
             if (!isSuccess)
-                _logger.LogError(
-                    new EventId(statusCode),
-                    new Exception(errorMessage),
-                    "{Method} {Path} failed: {Error}, {times}",
-                    reqMethod,
-                    reqPath,
-                    errorMessage,
-                    duration
-                );
+                _logger.LogError($"【{reqMethod}】-【{reqPath}】：{errorMsg},{duration}");
 
             //if (isSuccess)
             //{
@@ -142,6 +146,28 @@ namespace lucky.admin.Extensions.Filters
             //        duration
             //    );
             //}
+
+            #region 模拟消费
+            //var tsk = new Task(async () =>
+            //{
+            //    var lst = new List<SysLog>();
+            //    var counts = 0;
+            //    while (_channel.Reader.Count > 0)
+            //    {
+            //        var log = await _channel.Reader.ReadAsync();
+            //        if (log != null) lst.Add(log);
+
+            //        if (lst.Count >= 100 || _channel.Reader.Count < 1)
+            //        {
+            //            lst.Clear();
+            //            counts = 0;
+            //        }
+            //        counts++;
+            //    }
+            //    var nums = _channel.Reader.Count;
+            //});
+            //tsk.Start();
+            #endregion
         }
 
 
@@ -150,18 +176,16 @@ namespace lucky.admin.Extensions.Filters
         /// </summary>
         private async Task<string?> ReadRequestData(ActionExecutingContext context)
         {
-            // 1. 如果是 POST/PUT/PATCH，读取 Body
+            // 如果是 POST/PUT/PATCH，读取 Body
             string method = context.HttpContext.Request.Method;
-            if ((HttpMethods.IsPost(method) ||
-                HttpMethods.IsPut(method) ||
-                HttpMethods.IsPatch(method)) && context.ActionArguments!=null)
+            if ((HttpMethods.IsPost(method) || HttpMethods.IsPut(method)) && context.ActionArguments != null)  // || HttpMethods.IsPatch(method)
             {
                 var body = context.ActionArguments;
 
-                // 1. 获取当前 Action 的参数描述信息
+                // 获取当前 Action 的参数描述信息
                 var parameterDescriptors = context.ActionDescriptor.Parameters;
 
-                // 2. 创建一个新字典，只存放非 [FromServices] 的参数
+                // 创建一个新字典，只存放非 [FromServices] 的参数
                 var filteredArguments = new Dictionary<string, object?>();
 
                 foreach (var arg in context.ActionArguments)
@@ -169,7 +193,7 @@ namespace lucky.admin.Extensions.Filters
                     // 根据参数名匹配对应的描述信息
                     var paramDesc = parameterDescriptors.FirstOrDefault(p => p.Name == arg.Key);
 
-                    // 3. 判断绑定源是否为 Services（即 [FromServices] 注入的参数）
+                    // 判断绑定源是否为 Services（即 [FromServices] 注入的参数）
                     bool isFromServices = paramDesc?.BindingInfo?.BindingSource == BindingSource.Services;
 
                     // 如果不是 [FromServices]，则加入过滤后的字典
@@ -199,26 +223,19 @@ namespace lucky.admin.Extensions.Filters
         {
             try
             {
-                // 方式一：直接输出原始 Query 字符串
-                //var rawQuery = request.QueryString.ToString();
-                //if (!string.IsNullOrEmpty(rawQuery))
-                //{
-                //    return Truncate(rawQuery, 4096);
-                //}
-
-                // 方式二（推荐）：将 Query 转为 JSON 对象，更结构化
+                // 将 Query 转为 JSON，结构化
                 var queryDict = request.Query
                     .ToDictionary(
                         kv => kv.Key,
                         kv => kv.Value.ToString()
                     );
 
-                return System.Text.Json.JsonSerializer.Serialize(queryDict);
+                return queryDict.ToJson();
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "Failed to read query string");
-                return "[ReadFailed]";
+                _logger.LogError($"Read query failed:{ex.Message}--{ex.StackTrace}--{ex.InnerException}");
+                return "";
             }
         }
     }
