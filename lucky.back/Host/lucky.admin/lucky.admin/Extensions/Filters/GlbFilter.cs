@@ -49,7 +49,7 @@ namespace lucky.admin.Extensions.Filters
                 {
                     context.HttpContext.Response.StatusCode = 401;
                     context.Result = new JsonResult(ResModel<string>.Failed("UnAuth", "未授权", 401));
-                    await Record(context, null);
+                    await GlbLog(context, null);
                     return;
                 }
 
@@ -58,7 +58,7 @@ namespace lucky.admin.Extensions.Filters
                 if (!results.Item4)
                 {
                     context.Result = new JsonResult(ResModel<string>.Failed("UnAuth", "未授权", 401));
-                    await Record(context, null);
+                    await GlbLog(context, null);
                     return;
                 }
 
@@ -71,10 +71,10 @@ namespace lucky.admin.Extensions.Filters
             }
 
             var res = await next(); 
-            await Record(context, res);
+            await GlbLog(context, res);
         }
 
-        private async Task Record(ActionExecutingContext context, ActionExecutedContext? res)
+        private async Task GlbLog(ActionExecutingContext context, ActionExecutedContext? res)
         {
             // 记录日志
             var reqPath = context.HttpContext.Request.Path;
@@ -95,7 +95,8 @@ namespace lucky.admin.Extensions.Filters
             var isNull = res == null;
             var statusCode = isNull ? 401 : res.HttpContext.Response.StatusCode;
             var isSuccess = isNull ? false : res.Exception == null || res.ExceptionHandled;
-            var errorMsg = isNull ? "UnAuth" : res.Exception?.Message ?? (isSuccess ? null : "Unknown error");
+            var errorMsg = isNull ? "UnAuth" : (isSuccess ? null : res.Exception?.Message);
+            //var errorMsg = isNull ? "UnAuth" : res.Exception?.Message ?? (isSuccess ? null : "Unknown error");
 
             // 构造日志模型
             long.TryParse(uid?.ToString(), out long _uid);

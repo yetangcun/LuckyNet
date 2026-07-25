@@ -42,6 +42,8 @@ class axiosReq {
                 message: '登录超时,请重新登录!',
               })
             }
+            localStorage.removeItem('tkn')
+            localStorage.removeItem('currSelMenu')
             return
           }
 

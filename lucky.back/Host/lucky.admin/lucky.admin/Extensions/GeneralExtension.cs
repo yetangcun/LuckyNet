@@ -8,7 +8,6 @@ using Lucky.PrtclService;
 using Lucky.SysService;
 using Prtcl.Grpc;
 using Prtcl.Grpc.extension;
-using System.Diagnostics;
 
 namespace lucky.admin.Extensions
 {

@@ -87,8 +87,8 @@ namespace Common.CoreLib.Extension.Common
             if (res.Claims != null) // res.IsValid && 
             {
                 var timeStamp = res.Claims.FirstOrDefault(c => c.Key == "exp").Value?.ToString();
-                var uid = res.Claims.FirstOrDefault(c => c.Key == "ky").Value?.ToString();
                 var username = res.Claims.FirstOrDefault(c => c.Key == "nm").Value?.ToString();
+                var uid = res.Claims.FirstOrDefault(c => c.Key == "ky").Value?.ToString();
 
                 if (timeStamp != null)
                 {
