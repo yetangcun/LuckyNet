@@ -42,7 +42,7 @@ namespace lucky.admin.Extensions.Filters
         {
             // ============ Executing 阶段 ============
             context.HttpContext.Items["ReqStartTime"] = DateTime.UtcNow;
-
+            string? logType = null;
             if (!_whites.Any(path => context.HttpContext.Request.Path.Value.IndexOf(path) != -1)) // 需要过滤
             {
                 if (!context.HttpContext.Request.Headers.Authorization.Any())
@@ -69,16 +69,20 @@ namespace lucky.admin.Extensions.Filters
                     context.HttpContext.Response.Headers.Append("fresh_token", tken);
                 }
             }
+            else
+            {
+                logType = "LOGIN";
+            }
 
             var res = await next(); 
-            await GlbLog(context, res);
+            await GlbLog(context, res, logType);
         }
 
-        private async Task GlbLog(ActionExecutingContext context, ActionExecutedContext? res)
+        private async Task GlbLog(ActionExecutingContext context, ActionExecutedContext? res, string? logType = null)
         {
             // 记录日志
             var reqPath = context.HttpContext.Request.Path;
-            var reqMethod = context.HttpContext.Request.Method;
+            var reqMethod = logType?? context.HttpContext.Request.Method;
             var reqIp = context.HttpContext.Connection.RemoteIpAddress.ToString();
 
             // 读取请求信息（此时 Body 仍可读取，因为已在 Executing 中开启缓冲）
@@ -100,10 +104,11 @@ namespace lucky.admin.Extensions.Filters
 
             // 构造日志模型
             long.TryParse(uid?.ToString(), out long _uid);
+            var addTime = DateTime.UtcNow.ToUniversalTime();
             var logModel = new SysLog()
             {
                 Id = IdGreator.GetNxtId(),
-                CreateTime = DateTime.Now,
+                CreateTime = addTime,
                 CreateUid = _uid,
                 ReqIp = reqIp,
                 ReqParams = reqBody,

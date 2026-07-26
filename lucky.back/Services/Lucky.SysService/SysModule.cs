@@ -51,6 +51,7 @@ namespace Lucky.SysService
             services.AddScoped<ISysUserService, SysUserService>();
             services.AddScoped<ISysMenuService, SysMenuService>();
             services.AddScoped<ISysRoleService, SysRoleService>();
+            services.AddScoped<ISysLogService, SysLogService>();
 
             services.QuartzModuleLoad(cfg); // 添加Quartz
         }

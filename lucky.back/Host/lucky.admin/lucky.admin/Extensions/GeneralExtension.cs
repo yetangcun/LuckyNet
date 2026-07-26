@@ -6,6 +6,7 @@ using lucky.admin.Extensions.Handler;
 using Lucky.BaseService;
 using Lucky.PrtclService;
 using Lucky.SysService;
+using Lucky.SysService.Cxt;
 using Prtcl.Grpc;
 using Prtcl.Grpc.extension;
 
@@ -26,6 +27,7 @@ namespace lucky.admin.Extensions
 
             services.Configure<ChannelOption>(cfg.GetSection("ChannelOption"));
             services.AddSingleton<ChannelExtension>();
+            services.AddSingleton<ChannelDftHandler>();
 
             services.BaseInitLoad(cfg);
         }
@@ -70,6 +72,16 @@ namespace lucky.admin.Extensions
                 var channelExt = app.ApplicationServices.GetRequiredService<ChannelExtension>();
                 channelExt.CompleteAll(); // 统一通知所有通道不再接收新数据
             });
+
+            // 启动默认通道
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var channelExt = scope.ServiceProvider.GetService<ChannelDftHandler>();
+                if (channelExt != null)
+                {
+                    channelExt.Start().GetAwaiter().GetResult(); // 启动默认通道
+                }
+            }
         }
     }
 }

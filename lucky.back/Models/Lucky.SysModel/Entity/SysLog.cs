@@ -9,7 +9,7 @@ namespace Lucky.SysModel.Entity
     /// 系统日志
     /// </summary>
     [Table("sys_log")]
-    public class SysLog : BaseCreateEntity<long>
+    public class SysLog : BaseCommonEntity<long>
     {
         /// <summary>
         /// 接口地址
@@ -66,18 +66,18 @@ namespace Lucky.SysModel.Entity
         [Column("exec_time")]
         public decimal ExecTime { get; set; }
 
-        ///// <summary>
-        ///// 创建时间
-        ///// </summary>
-        //[Comment("创建时间")]
-        //[Column("create_time")]
-        //public DateTime CreateTime { get; set; } = DateTime.Now;
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        [Comment("创建时间")]
+        [Column("create_time")]
+        public DateTime CreateTime { get; set; } = DateTime.Now;
 
-        ///// <summary>
-        ///// 创建人
-        ///// </summary>
-        //[Comment("创建人")]
-        //[Column("create_uid")]
-        //public long CreateUid { get; set; }
+        /// <summary>
+        /// 创建人
+        /// </summary>
+        [Comment("创建人")]
+        [Column("create_uid")]
+        public long CreateUid { get; set; }
     }
 }
