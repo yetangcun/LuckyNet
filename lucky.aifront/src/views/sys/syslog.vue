@@ -20,7 +20,7 @@
             <!-- <el-table-column label="Date" width="120">
               <template #default="scope">{{ scope.row.date }}</template>
             </el-table-column> -->
-            <el-table-column property="reqUrl" label="地址" width="227" />
+            <el-table-column property="reqUrl" label="地址" width="257" />
             <el-table-column property="status" label="状态" width="88">
               <template #default="scope">
                 <div style="display: flex; align-items: center">
