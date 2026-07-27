@@ -1,20 +1,22 @@
 <template>
-  <div style="display: flex; flex: 1; border: 1px solid #eee;">
+  <div style="display: flex; flex: 1; border: 1px solid #eee; width: 100%; height: 100%;">
       <div style="display: flex; flex-direction: column; border-right: 1px solid #eee;">
-          <div style="display: flex; max-height: 60px; min-height: 60px; justify-content: space-between; align-items: center; padding: 0px 10px; border-bottom: 1px solid #eee;">
+          <div style="display: flex; max-height: 60px; min-height: 60px; justify-content: space-between; align-items: center; padding: 0px 10px; border-bottom: 1px solid #eee; min-width: 169px;">
             <label style="margin-right: 16px;">菜单树</label>
             <el-button type="primary" :icon="Finished" class="btnStl" @click="btnRelate">保存</el-button>
           </div>
-          <el-tree
-            ref="treeRef"
-            :data="state.pData"
-            show-checkbox
-            node-key="value"
-            default-expand-all
-            :props="dftProps"
-          />
+          <div style="display: flex; flex: 1; min-height: 0; overflow: auto;">
+            <el-tree
+              ref="treeRef"
+              :data="state.pData"
+              show-checkbox
+              node-key="value"
+              default-expand-all
+              :props="dftProps"
+            />
+          </div>
       </div>
-      <div style="display: flex; flex:1;flex-direction: column;">
+      <div style="display: flex; flex:1;flex-direction: column; min-width: 0;">
         <div  style="display: flex;
         max-height: 60px;
         min-height: 60px;
@@ -26,52 +28,53 @@
           <el-button type="primary" :icon="Search" class="btnStl" @click="getList">查询</el-button>
           <el-button type="danger" :icon="Plus" @click="btnAdd" class="btnStl">新增</el-button>
         </div>
-        <div style="display: flex; flex: 1; border-top: 1px solid #eee; flex-direction: column;">
-          <el-table :data="state.tbData" row-key="id" @row-click="handleSelectionChange"
-                    style="display: flex; flex: 1; width: auto; height: 100%; flex-wrap: wrap; flex-shrink: 1;">
-              <el-table-column type="selection" width="55" />
-              <!-- <el-table-column label="Date" width="120">
-                <template #default="scope">{{ scope.row.date }}</template>
-              </el-table-column> -->
-              <el-table-column property="name" label="名称" width="120" />
-              <!-- <el-table-column property="sex" label="英文名" width="88">
-                <template #default="scope">
-                  <div style="display: flex; align-items: center">
-                    <span v-if="scope.row.sex==1">男</span>
-                    <span v-else>女</span>
-                  </div>
-                </template>
-              </el-table-column> -->
-              <el-table-column property="word" label="标识" width="120" show-overflow-tooltip />
-              <el-table-column property="roleType" label="类型" width="120">
-                <template #default="scope">
-                  <div style="display: flex; align-items: center">
-                    <span v-if="scope.row.roleType==1">管理员</span>
-                    <span v-else-if="scope.row.roleType==2">普通用户</span>
-                    <span v-else-if="scope.row.roleType==3">超级管理员</span>
-                  </div>
-                </template>
-              </el-table-column>
-              <el-table-column property="status" label="状态" width="120">
-                <template #default="scope">
-                  <div style="display: flex; align-items: center">
-                    <span v-if="scope.row.status==1">正常</span>
-                    <span v-else-if="scope.row.status==0">禁用</span>
-                  </div>
-                </template>
-              </el-table-column>
-              <el-table-column property="sort" label="排序" width="86"/>
-              <el-table-column property="remark" label="备注" width="120" show-overflow-tooltip />
+        <div style="display: flex; flex: 1; border-top: 1px solid #eee; flex-direction: column; min-height: 0;">
+          <div class="grid_div">
+            <el-table :data="state.tbData" row-key="id" @row-click="handleSelectionChange" height="100%">
+                <el-table-column type="selection" width="55" />
+                <!-- <el-table-column label="Date" width="120">
+                  <template #default="scope">{{ scope.row.date }}</template>
+                </el-table-column> -->
+                <el-table-column property="name" label="名称" width="120" />
+                <!-- <el-table-column property="sex" label="英文名" width="88">
+                  <template #default="scope">
+                    <div style="display: flex; align-items: center">
+                      <span v-if="scope.row.sex==1">男</span>
+                      <span v-else>女</span>
+                    </div>
+                  </template>
+                </el-table-column> -->
+                <el-table-column property="word" label="标识" width="120" show-overflow-tooltip />
+                <el-table-column property="roleType" label="类型" width="120">
+                  <template #default="scope">
+                    <div style="display: flex; align-items: center">
+                      <span v-if="scope.row.roleType==1">管理员</span>
+                      <span v-else-if="scope.row.roleType==2">普通用户</span>
+                      <span v-else-if="scope.row.roleType==3">超级管理员</span>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column property="status" label="状态" width="120">
+                  <template #default="scope">
+                    <div style="display: flex; align-items: center">
+                      <span v-if="scope.row.status==1">正常</span>
+                      <span v-else-if="scope.row.status==0">禁用</span>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column property="sort" label="排序" width="86"/>
+                <el-table-column property="remark" label="备注" width="120" show-overflow-tooltip />
 
-              <el-table-column label="操作">
-                <template #default="scope">
-                  <div>
-                    <el-button @click="btnEdit(scope.row.id)" type="primary">编辑</el-button>
-                    <el-button @click="btnDel(scope.row.id)" type="danger">删除</el-button>
-                  </div>
-                </template>
-              </el-table-column>
-          </el-table>
+                <el-table-column label="操作" min-width="176">
+                  <template #default="scope">
+                    <div>
+                      <el-button @click="btnEdit(scope.row.id)" type="primary">编辑</el-button>
+                      <el-button @click="btnDel(scope.row.id)" type="danger">删除</el-button>
+                    </div>
+                  </template>
+                </el-table-column>
+            </el-table>
+          </div>
           <el-pagination
           :size="'default'"
           :background="true"

@@ -587,12 +587,15 @@ const expandOr = () => {
   flex-direction: column;
   background-color: #3964fe;
 }
+
 #pg_r {
   display: flex;
   flex: 1;
+  min-width: 0;   /* 关键666 */
   flex-direction: column;
   background-color: transparent;
 }
+
 #l_header {
   display: flex;
   align-items: center;
@@ -620,6 +623,9 @@ const expandOr = () => {
   display: flex;
   flex: 1;
   padding: 6px;
+  min-height: 0px;  /* 关键666 */
+  overflow: hidden;
+  flex-direction: column;
 }
 #l_nav {
   display: flex;

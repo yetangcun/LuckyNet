@@ -17,56 +17,57 @@
       <el-button type="danger" :icon="Plus" class="btnStl" @click="btnAdd">新增</el-button>
     </div>
     <div class="pg_grid">
-      <el-table :data="state.tbData" row-key="id" default-expand-all
-                style="display: flex; flex: 1;width: auto; height: 100%; flex-wrap: wrap; flex-shrink: 1;">
-          <el-table-column type="selection" width="55" />
-          <!-- <el-table-column label="Date" width="120">
-            <template #default="scope">{{ scope.row.date }}</template>
-          </el-table-column> -->
-          <!-- <el-table-column property="id" label="ID" width="120" /> -->
-          <el-table-column property="name" label="名称" width="257" />
-          <el-table-column property="code" label="编码" width="80" />
-          <el-table-column property="menuType" label="菜单类型" width="100">
-            <template #default="scope">
-              <div style="display: flex; align-items: center">
-                <span v-if="scope.row.menuType==1">模块</span>
-                <span v-else-if="scope.row.menuType==2">分组</span>
-                <span v-else-if="scope.row.menuType==3">功能</span>
-                <span v-else-if="scope.row.menuType==4">按钮</span>
-                <span v-else-if="scope.row.menuType==5">链接</span>
-              </div>
-            </template>
-          </el-table-column>
-            <el-table-column property="icon" label="图标" width="168" show-overflow-tooltip/>
-          <el-table-column property="iconSize" label="图标大小" width="111"/>
-          <el-table-column property="url" label="路由地址" width="156"/>
-          <el-table-column property="sort" label="排序" width="80"/>
-          <el-table-column property="status" label="状态" width="80">
-            <template #default="scope">
-              <div style="display: flex; align-items: center">
-                <span v-if="scope.row.status==1">正常</span>
-                <span v-else-if="scope.row.status==0" style="color: orangered;">禁用</span>
-                <span v-else-if="scope.row.status==2" style="color: lightgray;">隐藏</span>
-              </div>
-            </template>
-          </el-table-column>
-          <!-- <el-table-column property="sex" label="性别" width="88">
-            <template #default="scope">
-              <div style="display: flex; align-items: center">
-                <span v-if="scope.row.sex==1">男</span>
-                <span v-else>女</span>
-              </div>
-            </template>
-          </el-table-column> -->
-          <el-table-column label="操作">
-            <template #default="scope">
-              <div>
-                <el-button @click="btnEdit(scope.row.id)" type="primary">编辑</el-button>
-                <el-button @click="btnDel(scope.row.id)" type="danger">删除</el-button>
-              </div>
-            </template>
-          </el-table-column>
-      </el-table>
+      <div class="grid_div">
+        <el-table row-key="id" :data="state.tbData" default-expand-all height="100%">
+            <el-table-column type="selection" width="55" />
+            <!-- <el-table-column label="Date" width="120">
+              <template #default="scope">{{ scope.row.date }}</template>
+            </el-table-column> -->
+            <!-- <el-table-column property="id" label="ID" width="120" /> -->
+            <el-table-column property="name" label="名称" width="257" />
+            <el-table-column property="code" label="编码" width="80" />
+            <el-table-column property="menuType" label="菜单类型" width="100">
+              <template #default="scope">
+                <div style="display: flex; align-items: center">
+                  <span v-if="scope.row.menuType==1">模块</span>
+                  <span v-else-if="scope.row.menuType==2">分组</span>
+                  <span v-else-if="scope.row.menuType==3">功能</span>
+                  <span v-else-if="scope.row.menuType==4">按钮</span>
+                  <span v-else-if="scope.row.menuType==5">链接</span>
+                </div>
+              </template>
+            </el-table-column>
+              <el-table-column property="icon" label="图标" width="168" show-overflow-tooltip/>
+            <el-table-column property="iconSize" label="图标大小" width="111"/>
+            <el-table-column property="url" label="路由地址" width="156"/>
+            <el-table-column property="sort" label="排序" width="80"/>
+            <el-table-column property="status" label="状态" width="80">
+              <template #default="scope">
+                <div style="display: flex; align-items: center">
+                  <span v-if="scope.row.status==1">正常</span>
+                  <span v-else-if="scope.row.status==0" style="color: orangered;">禁用</span>
+                  <span v-else-if="scope.row.status==2" style="color: lightgray;">隐藏</span>
+                </div>
+              </template>
+            </el-table-column>
+            <!-- <el-table-column property="sex" label="性别" width="88">
+              <template #default="scope">
+                <div style="display: flex; align-items: center">
+                  <span v-if="scope.row.sex==1">男</span>
+                  <span v-else>女</span>
+                </div>
+              </template>
+            </el-table-column> -->
+            <el-table-column label="操作" min-width="176">
+              <template #default="scope">
+                <div>
+                  <el-button @click="btnEdit(scope.row.id)" type="primary">编辑</el-button>
+                  <el-button @click="btnDel(scope.row.id)" type="danger">删除</el-button>
+                </div>
+              </template>
+            </el-table-column>
+        </el-table>
+      </div>
     </div>
   </div>
   <el-dialog

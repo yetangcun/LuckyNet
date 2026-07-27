@@ -40,7 +40,7 @@ body {
   width: 100%;
   height: 100%;
   flex-direction: column;
-  justify-content: flex-start;
+  /* justify-content: flex-start; */
 }
 .pg_query {
   display: flex;
@@ -53,6 +53,7 @@ body {
   display: flex;
   flex: 1;
   padding: 1px;
+  min-height: 0;    /* ⚠️ 关键666 */
   flex-direction: column;
   background-color: #f4f4f4;
   box-shadow: 0px 0px 14px 0px lightgray inset;
@@ -76,4 +77,12 @@ body {
 }
 .btnStl {
   display: flex;
+}
+
+
+.grid_div {
+   display: flex;
+   flex: 1;
+   min-height: 0;   /* ⚠️ 同样关键 */
+   overflow: hidden;
 }

@@ -17,43 +17,45 @@
       <el-button type="danger" :icon="Plus" class="btnStl" @click="btnAdd">新增</el-button>
     </div>
     <div class="pg_grid">
-      <el-table :data="state.tbData" v-loading="state.loading" style="display: flex; flex: 1;width: auto; height: 100%; flex-wrap: wrap; flex-shrink: 1;">
-          <el-table-column type="selection" width="55" />
-          <!-- <el-table-column label="Date" width="120">
-            <template #default="scope">{{ scope.row.date }}</template>
-          </el-table-column> -->
-          <el-table-column property="realname" label="姓名" width="120" />
-          <el-table-column property="sex" label="性别" width="88">
-            <template #default="scope">
-              <div style="display: flex; align-items: center">
-                <span v-if="scope.row.sex==1">男</span>
-                <span v-else>女</span>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column property="account" label="昵称" width="120" />
-          <el-table-column property="roleName" label="角色" width="120" />
-          <el-table-column property="phone" label="联系方式" width="120" />
-          <el-table-column property="avatar" label="头像" width="166" show-overflow-tooltip/>
-          <el-table-column property="org" label="组织机构" width="120" show-overflow-tooltip />
-          <el-table-column label="日期" width="137">
-            <template #default="scope">{{ scope.row.createTime }}</template>
-          </el-table-column>
-          <el-table-column property="createUser" label="创建人" width="120"/>
-          <el-table-column
-            property="addr"
-            label="地址"
-            width="240" show-overflow-tooltip
-          />
-          <el-table-column label="操作">
-            <template #default="scope">
-              <div>
-                <el-button @click="btnEdit(scope.row.id)" type="primary">编辑</el-button>
-                <el-button @click="btnDel(scope.row.id)" type="danger">删除</el-button>
-              </div>
-            </template>
-          </el-table-column>
-      </el-table>
+      <div class="grid_div">
+        <el-table :data="state.tbData" v-loading="state.loading" height="100%">
+            <el-table-column type="selection" width="55" />
+            <!-- <el-table-column label="Date" width="120">
+              <template #default="scope">{{ scope.row.date }}</template>
+            </el-table-column> -->
+            <el-table-column property="realname" label="姓名" width="120" />
+            <el-table-column property="sex" label="性别" width="88">
+              <template #default="scope">
+                <div style="display: flex; align-items: center">
+                  <span v-if="scope.row.sex==1">男</span>
+                  <span v-else>女</span>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column property="account" label="昵称" width="120" />
+            <el-table-column property="roleName" label="角色" width="120" />
+            <el-table-column property="phone" label="联系方式" width="120" />
+            <el-table-column property="avatar" label="头像" width="166" show-overflow-tooltip/>
+            <el-table-column property="org" label="组织机构" width="120" show-overflow-tooltip />
+            <el-table-column label="日期" width="137">
+              <template #default="scope">{{ scope.row.createTime }}</template>
+            </el-table-column>
+            <el-table-column property="createUser" label="创建人" width="120"/>
+            <el-table-column
+              property="addr"
+              label="地址"
+              width="240" show-overflow-tooltip
+            />
+            <el-table-column label="操作" min-width="176">
+              <template #default="scope">
+                <div>
+                  <el-button @click="btnEdit(scope.row.id)" type="primary">编辑</el-button>
+                  <el-button @click="btnDel(scope.row.id)" type="danger">删除</el-button>
+                </div>
+              </template>
+            </el-table-column>
+        </el-table>
+      </div>
       <el-pagination
       v-model:current-page="state.query.pageIndex"
       v-model:page-size="state.query.pageSize"

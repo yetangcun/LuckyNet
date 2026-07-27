@@ -14,35 +14,36 @@
       <el-button type="primary" :icon="Search" class="btnStl" @click="getList">查询</el-button>
     </div>
     <div class="pg_grid">
-      <el-table :data="state.tbData" v-loading="state.loading"
-                style="display: flex; flex: 1;width: auto; height: auto; flex-wrap: wrap; flex-shrink: 1;">
-          <el-table-column type="selection" width="55" />
-          <!-- <el-table-column label="Date" width="120">
-            <template #default="scope">{{ scope.row.date }}</template>
-          </el-table-column> -->
-          <el-table-column property="reqUrl" label="地址" width="227" />
-          <el-table-column property="status" label="状态" width="88">
-            <template #default="scope">
-              <div style="display: flex; align-items: center">
-                <span v-if="scope.row.status==1" style="color: green;">成功</span>
-                <span v-else style="color: orangered;">失败</span>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column property="reqIp" label="客户端IP" width="166" show-overflow-tooltip/>
-          <el-table-column property="reqParam" label="请求参数" width="257" show-overflow-tooltip/>
-          <el-table-column property="reqType" label="请求方式" width="88" />
-          <el-table-column property="logMsg" label="异常提示" width="199" show-overflow-tooltip />" />
-          <el-table-column property="reqUser" label="用户" width="166" />
-          <el-table-column property="reqTime" label="操作时间" width="166" show-overflow-tooltip />
-          <el-table-column label="操作">
-            <template #default="scope">
-              <div>
-                <el-button @click="btnScan(scope.row.id)" type="primary">详情</el-button>
-              </div>
-            </template>
-          </el-table-column>
-      </el-table>
+      <div class="grid_div">
+        <el-table :data="state.tbData" v-loading="state.loading" height="100%">
+            <el-table-column type="selection" width="55" />
+            <!-- <el-table-column label="Date" width="120">
+              <template #default="scope">{{ scope.row.date }}</template>
+            </el-table-column> -->
+            <el-table-column property="reqUrl" label="地址" width="227" />
+            <el-table-column property="status" label="状态" width="88">
+              <template #default="scope">
+                <div style="display: flex; align-items: center">
+                  <span v-if="scope.row.status==1" style="color: green;">成功</span>
+                  <span v-else style="color: orangered;">失败</span>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column property="reqIp" label="客户端IP" width="166" show-overflow-tooltip/>
+            <el-table-column property="reqParam" label="请求参数" width="257" show-overflow-tooltip/>
+            <el-table-column property="reqType" label="请求方式" width="88" />
+            <el-table-column property="logMsg" label="异常提示" width="199" show-overflow-tooltip />
+            <el-table-column property="reqUser" label="用户" width="166" />
+            <el-table-column property="reqTime" label="操作时间" width="166" show-overflow-tooltip />
+            <el-table-column label="操作" min-width="156">
+              <template #default="scope">
+                <div>
+                  <el-button @click="btnScan(scope.row.id)" type="primary">详情</el-button>
+                </div>
+              </template>
+            </el-table-column>
+        </el-table>
+      </div>
       <el-pagination
       v-model:current-page="state.query.pageIndex"
       v-model:page-size="state.query.pageSize"
@@ -51,10 +52,10 @@
       :total="state.query.total"
       @size-change="hdlSizeChange"
       :page-sizes="[20, 50, 100, 300, 500, 1000]"
-      style="display: flex; justify-content: flex-end; margin: 10px 10px 10px 1px;"
       layout="total, sizes, prev, pager, next"
+      style="display: flex; justify-content: flex-end; align-items: center; margin: 10px;"
       @current-change="hdlCurrentChange"
-    />
+      />
     </div>
   </div>
 </template>
@@ -180,5 +181,7 @@ onMounted(async () => {
   height: 100%;
 }
 */
+
+/* 表格包裹层：自动填充剩余空间 */
 
 </style>
