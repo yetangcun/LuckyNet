@@ -1,5 +1,7 @@
-export interface logQueryModel {
-  pageNum: number
+import type { pageInfo } from '@/models/common/pageInfo'
+
+export interface logQueryModel extends pageInfo {
+  pageIndex: number
   pageSize: number
   reqType: string
   status: number

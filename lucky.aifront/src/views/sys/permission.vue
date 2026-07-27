@@ -26,7 +26,7 @@
           <el-button type="primary" :icon="Search" class="btnStl" @click="getList">查询</el-button>
           <el-button type="danger" :icon="Plus" @click="btnAdd" class="btnStl">新增</el-button>
         </div>
-        <div style="display: flex; flex: 1; border-top: 1px solid #eee;">
+        <div style="display: flex; flex: 1; border-top: 1px solid #eee; flex-direction: column;">
           <el-table :data="state.tbData" row-key="id" @row-click="handleSelectionChange"
                     style="display: flex; flex: 1; width: auto; height: 100%; flex-wrap: wrap; flex-shrink: 1;">
               <el-table-column type="selection" width="55" />
@@ -72,6 +72,18 @@
                 </template>
               </el-table-column>
           </el-table>
+          <el-pagination
+          :size="'default'"
+          :background="true"
+          :total="state.query.total"
+          @size-change="hdlSizeChange"
+          v-model:current-page="state.query.pageIndex"
+          v-model:page-size="state.query.pageSize"
+          :page-sizes="[20, 50, 100, 300, 500, 1000]"
+          style="display: flex; justify-content: flex-end; margin: 10px 10px 10px 1px;"
+          layout="total, sizes, prev, pager, next"
+          @current-change="hdlCurrentChange"
+        />
         </div>
       </div>
   </div>
@@ -149,7 +161,10 @@ const state = reactive<{
   dlgVisible:false,
   selRoleId: '',
   query: {
-    name: ''
+    name: '',
+    pageIndex: 1,
+    pageSize: 20,
+    total: 0
   },
   status: [
     {
@@ -229,6 +244,7 @@ const getList = () => {
   systemReq.axiosIns.get('api/sys/SysRole/pages', { params:state.query })
   .then((res:any) => {
     // console.log(res.Data)
+    state.query.total = res.Total
     state.tbData = res.Data
   })
   .catch((err:any)=>{
@@ -309,6 +325,16 @@ const btnDel = (id:string) => {
 
 const btnCancel = () => {
   state.dlgVisible = false
+}
+
+const hdlSizeChange = (val:number) => {
+  state.query.pageSize = val
+  getList()
+}
+
+const hdlCurrentChange = (val:number) => {
+  state.query.pageIndex = val
+  getList()
 }
 
 const btnSave = () => {

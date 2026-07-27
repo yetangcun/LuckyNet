@@ -1,3 +1,5 @@
+import type { pageInfo } from '@/models/common/pageInfo'
+
 export interface usrInfoModel {
   uid: string,
   realname: string,
@@ -20,7 +22,7 @@ export interface usrInfoCache {
   org: string
 }
 
-export interface usrQueryModel {
+export interface usrQueryModel extends pageInfo {
   txt: string,
   orgId: string
 }

@@ -54,6 +54,18 @@
             </template>
           </el-table-column>
       </el-table>
+      <el-pagination
+      v-model:current-page="state.query.pageIndex"
+      v-model:page-size="state.query.pageSize"
+      :size="'default'"
+      :background="true"
+      :total="state.query.total"
+      @size-change="hdlSizeChange"
+      :page-sizes="[20, 50, 100, 300, 500, 1000]"
+      style="display: flex; justify-content: flex-end; margin: 10px 10px 10px 1px;"
+      layout="total, sizes, prev, pager, next"
+      @current-change="hdlCurrentChange"
+    />
     </div>
   </div>
   <el-dialog
@@ -141,7 +153,10 @@ const state = reactive<{
   dlgVisible:false,
   query: {
     txt: '',
-    orgId: ''
+    orgId: '',
+    pageIndex: 1,
+    pageSize: 20,
+    total: 0
   },
   orgKv: [
     {
@@ -178,6 +193,7 @@ const getList = () => {
   .then((res:any) => {
     state.loading = false
     // console.log(res.Data)
+    state.query.total = res.Total
     state.tbData = res.Data
   })
   .catch((err:any)=>{
@@ -206,6 +222,17 @@ const getOrgKv = async () => {  // 获取组织树
   .catch((err:any)=>{
     console.log(err)
   })
+}
+
+const hdlSizeChange = (val:number) => {
+  state.query.pageSize = val
+  getList()
+}
+
+const hdlCurrentChange = (val:number) => {
+  console.log('val: '+val)
+  state.query.pageIndex = val
+  getList()
 }
 
 const btnAdd = () => { // 新增

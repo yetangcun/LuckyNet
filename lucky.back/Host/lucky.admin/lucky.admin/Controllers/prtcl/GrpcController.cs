@@ -33,7 +33,7 @@ namespace lucky.admin.Controllers.prtcl
             {
                 pages++;
             }
-            return PageRes<List<PrtclOutput>?>.Success(res.Item1, pages, res.Item2);
+            return PageRes<List<PrtclOutput>?>.Success(res.Item1, res.Item2);
         }
     }
 }

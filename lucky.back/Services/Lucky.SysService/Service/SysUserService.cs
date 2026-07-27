@@ -174,7 +174,7 @@ namespace Lucky.SysService.Service
 
             var sysObj = new SysUser()
             {
-                Account = input.Account,
+                Account = input.Account!,
                 RealName = input.Name,
                 Sex = input.Sex.HasValue ? input.Sex.Value : SexType.None,
                 PassWord = GlobalConstant.DFT_PWD,
@@ -185,12 +185,13 @@ namespace Lucky.SysService.Service
                 CreateUid = optId
             };
 
-            if (!string.IsNullOrWhiteSpace(input.RoleId))
+            var res = await _usrRpsty.AddAsync(sysObj);
+
+            if (res != null)
             {
-                var oldRoles = await _usrRoleRpsty.GetListAsync(x => x.UserId == input.Id.Value);
-                var roleIds = input.RoleId.Split(',').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => int.Parse(x));
-                if (oldRoles != null && (oldRoles.Count() != roleIds.Count() || oldRoles.Any(x => !roleIds.Contains(x.RoleId))))
+                if (!string.IsNullOrWhiteSpace(input.RoleId))
                 {
+                    var roleIds = input.RoleId.Split(',').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => int.Parse(x));
                     var lst = roleIds.Select(x => new SysUserRole()
                     {
                         Id = IdGreator.GetNxtId(),
@@ -199,11 +200,10 @@ namespace Lucky.SysService.Service
                     }).ToList();
                     await _usrRoleRpsty.AddRangeAsync(lst);
                 }
+                return true;
             }
 
-            var res = await _usrRpsty.AddAsync(sysObj);
-
-            return res != null;
+            return false;
         }
 
         /// <summary>

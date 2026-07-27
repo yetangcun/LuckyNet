@@ -5,15 +5,26 @@
     /// </summary>
     public class PageRes<T>
     {
+        ///// <summary>
+        ///// 构造函数
+        ///// </summary>
+        //public PageRes(int totals, int pages, T? data, string? msg, int code) // , bool isSucc
+        //{
+        //    Total = totals;
+        //    //Page = pages;
+        //    Data = data;
+        //    //IsSucc = isSucc;
+        //    Msg = msg;
+        //    Code = code;
+        //}
+
         /// <summary>
         /// 构造函数
         /// </summary>
-        public PageRes(int totals, int pages, T? data, string? msg, int code) // , bool isSucc
+        public PageRes(int totals, T? data, string? msg, int code) // , bool isSucc
         {
             Total = totals;
-            Page = pages;
             Data = data;
-            //IsSucc = isSucc;
             Msg = msg;
             Code = code;
         }
@@ -23,10 +34,10 @@
         /// </summary>
         public int Total { get; set; }
 
-        /// <summary>
-        /// 总页数
-        /// </summary>
-        public int Page { get; set; }
+        ///// <summary>
+        ///// 总页数
+        ///// </summary>
+        //public int Page { get; set; }
 
         /// <summary>
         /// 结果对象
@@ -53,19 +64,36 @@
         /// <summary>
         /// 创建失败结果
         /// </summary>
-        public static PageRes<T> Failed(int total, int page, T? data, string? msg = "failed", int code = 500)
+        public static PageRes<T> Failed(int total, T? data, string? msg = "failed", int code = 500)
         {
-            return new PageRes<T>(total, page, data, msg, code);
+            return new PageRes<T>(total, data, msg, code);
         }
 
         /// <summary>
         /// 创建成功结果
         /// </summary>
-        public static PageRes<T> Success(int total, int page, T data, string? msg = "success", int code = 200)
+        public static PageRes<T> Success(int total, T data, string? msg = "success", int code = 200)
         {
             // var data = new { result = datas, totalNum = total, totalPage = page };
-            return new PageRes<T>(total, page, data, msg, code);
+            return new PageRes<T>(total, data, msg, code);
         }
+
+        ///// <summary>
+        ///// 创建失败结果
+        ///// </summary>
+        //public static PageRes<T> Failed(int total, int page, T? data, string? msg = "failed", int code = 500)
+        //{
+        //    return new PageRes<T>(total, page, data, msg, code);
+        //}
+
+        ///// <summary>
+        ///// 创建成功结果
+        ///// </summary>
+        //public static PageRes<T> Success(int total, T data, int page = 0, string? msg = "success", int code = 200)
+        //{
+        //    // var data = new { result = datas, totalNum = total, totalPage = page };
+        //    return new PageRes<T>(total, page, data, msg, code);
+        //}
     }
 
     //public class ResponCommon<T>

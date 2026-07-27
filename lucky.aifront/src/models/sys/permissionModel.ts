@@ -1,3 +1,5 @@
+import type {pageInfo} from "../common/pageInfo";
+
 export interface PermissionModel {
   id: string,
   name: string,
@@ -8,7 +10,7 @@ export interface PermissionModel {
   remark: string,
 }
 
-export interface PermissionQueryModel {
+export interface PermissionQueryModel extends pageInfo {
   name: string,
 }
 

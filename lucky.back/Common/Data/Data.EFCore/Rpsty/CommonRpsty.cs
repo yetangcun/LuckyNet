@@ -414,7 +414,8 @@ namespace Data.EFCore.Rpsty
                     for (var i = 0; i < lens; i++)
                     {
                         var itm = arrs[i].Trim();
-                        var prop = clsType.GetProperty(itm, BindingFlags.Public | BindingFlags.IgnoreCase);  // ✅ 新增：验证字段是否存在
+                        //var prop = clsType.GetProperty(itm, BindingFlags.Public | BindingFlags.IgnoreCase);  // ✅ 新增：验证字段是否存在
+                        var prop = clsType.GetProperty(itm);  // ✅ 新增：验证字段是否存在
                         if (prop == null)
                             continue;
 
@@ -429,7 +430,8 @@ namespace Data.EFCore.Rpsty
                     for (var i = 0; i < lens; i++)
                     {
                         var itm = arrs[i];
-                        var prop = clsType.GetProperty(itm, BindingFlags.Public | BindingFlags.IgnoreCase);  // ✅ 新增：验证字段是否存在
+                        //var prop = clsType.GetProperty(itm, BindingFlags.Public | BindingFlags.IgnoreCase);  // ✅ 新增：验证字段是否存在
+                        var prop = clsType.GetProperty(itm);  // ✅ 新增：验证字段是否存在
                         if (prop == null)
                             continue;
 

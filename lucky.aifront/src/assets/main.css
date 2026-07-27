@@ -53,6 +53,7 @@ body {
   display: flex;
   flex: 1;
   padding: 1px;
+  flex-direction: column;
   background-color: #f4f4f4;
   box-shadow: 0px 0px 14px 0px lightgray inset;
 }

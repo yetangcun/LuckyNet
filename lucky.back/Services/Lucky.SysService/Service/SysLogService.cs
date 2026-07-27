@@ -29,13 +29,13 @@ namespace Lucky.SysService.Service
         {
             var where = PredicateBuilder.New<SysLog>(x => true); // 初始化为 true
             if (!string.IsNullOrWhiteSpace(req.reqPath))
-                where.And(x => x.ReqUrl.Contains(req.reqPath));
+                where.And(x => x.ReqUrl!.Contains(req.reqPath));
 
             if (!string.IsNullOrWhiteSpace(req.reqType))
-                where.And(x => x.ReqType.Contains(req.reqType));
+                where.And(x => x.ReqType!.Contains(req.reqType));
 
             if (!string.IsNullOrWhiteSpace(req.reqIp))
-                where.And(x => x.ReqIp.Contains(req.reqIp));
+                where.And(x => x.ReqIp!.Contains(req.reqIp));
 
             if (req.beginTime != null)
                 where.And(x => x.CreateTime>=(req.beginTime));

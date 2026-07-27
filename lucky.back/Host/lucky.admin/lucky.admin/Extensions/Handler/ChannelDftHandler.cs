@@ -47,7 +47,12 @@ namespace lucky.admin.Extensions.Handler
                         try
                         {
                             _channel.Reader.TryRead(out var log);
-                            if (log != null) lst.Add(log);
+
+                            if (log != null) 
+                                lst.Add(log);
+                            else 
+                                await Task.Delay(1000);
+
                             if (lst.Count >= 100 || (runCounts > 9 && lst.Count > 0))
                             {
                                 using var scope = _prd.CreateScope();
@@ -55,9 +60,10 @@ namespace lucky.admin.Extensions.Handler
                                 await _logRpsty.AddRangeAsync(lst);
                                 lst.Clear(); runCounts = 0;
                             }
-                            else runCounts++;
+                            else 
+                                runCounts++;
 
-                            if (runCounts > 1000)
+                            if (runCounts > 100)
                             {
                                 runCounts = 0;
                                 await Task.Delay(6000);

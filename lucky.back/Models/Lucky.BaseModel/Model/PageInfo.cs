@@ -29,7 +29,7 @@
         /// <summary>
         /// 排序字段
         /// </summary>
-        public string? Sort { get; set; } = "Id";
+        public string? Sort { get; set; } = "CreateTime";
 
         /// <summary>
         /// 排序方式

@@ -29,6 +29,7 @@ namespace Common.CoreLib.Extension.Common
         /// 构造函数
         /// </summary>
         /// <param name="opts"></param>
+        /// <param name="logger"></param>
         public ChannelExtension(IOptions<ChannelOption> opts, ILogger<ChannelExtension> logger)
         {
             var chlOption = opts.Value;

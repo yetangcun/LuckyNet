@@ -32,7 +32,7 @@ namespace lucky.admin.Controllers.sys
         {
             var res = await sysLogService.GetPages(req);
             var pgs = res.Item1 % req.PageSize == 0 ? (res.Item1 / req.PageSize) : (res.Item1 / req.PageSize) + 1;
-            return PageRes<List<SysLogOutput>>.Success(pgs, res.Item1, res.Item2);
+            return PageRes<List<SysLogOutput>>.Success(res.Item1,  res.Item2);
         }
     }
 }

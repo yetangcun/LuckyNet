@@ -14,12 +14,13 @@
       <el-button type="primary" :icon="Search" class="btnStl" @click="getList">查询</el-button>
     </div>
     <div class="pg_grid">
-      <el-table :data="state.tbData" v-loading="state.loading" style="display: flex; flex: 1;width: auto; height: 100%; flex-wrap: wrap; flex-shrink: 1;">
+      <el-table :data="state.tbData" v-loading="state.loading"
+                style="display: flex; flex: 1;width: auto; height: auto; flex-wrap: wrap; flex-shrink: 1;">
           <el-table-column type="selection" width="55" />
           <!-- <el-table-column label="Date" width="120">
             <template #default="scope">{{ scope.row.date }}</template>
           </el-table-column> -->
-          <el-table-column property="reqUrl" label="地址" width="211" />
+          <el-table-column property="reqUrl" label="地址" width="227" />
           <el-table-column property="status" label="状态" width="88">
             <template #default="scope">
               <div style="display: flex; align-items: center">
@@ -42,6 +43,18 @@
             </template>
           </el-table-column>
       </el-table>
+      <el-pagination
+      v-model:current-page="state.query.pageIndex"
+      v-model:page-size="state.query.pageSize"
+      :size="'default'"
+      :background="true"
+      :total="state.query.total"
+      @size-change="hdlSizeChange"
+      :page-sizes="[20, 50, 100, 300, 500, 1000]"
+      style="display: flex; justify-content: flex-end; margin: 10px 10px 10px 1px;"
+      layout="total, sizes, prev, pager, next"
+      @current-change="hdlCurrentChange"
+    />
     </div>
   </div>
 </template>
@@ -63,14 +76,15 @@ const state = reactive<{
 }>({
   loading: false,
   query: {
-    pageNum: 1,
+    pageIndex: 1,
     pageSize: 20,
     reqType: '',
     status: -1,
     reqUrl: '',
     reqIp: '',
     beginTime: '',
-    endTime: ''
+    endTime: '',
+    total: 0
   },
   methodKv: [
     {
@@ -121,16 +135,29 @@ const state = reactive<{
 
 const getList = () => {
   state.loading = true
+  state.tbData = []
   systemReq.axiosIns.get('api/sys/SysLog/pages', { params:state.query })
   .then((res:any) => {
     state.loading = false
-    console.log(res.Data)
+    // console.log(res)
+    state.query.total = res.Total
     state.tbData = res.Data
   })
   .catch((err:any)=>{
     state.loading = false
     console.log(err)
   })
+}
+
+const hdlSizeChange = (val:number) => {
+  state.query.pageSize = val
+  getList()
+}
+
+const hdlCurrentChange = (val:number) => {
+  console.log('val: '+val)
+  state.query.pageIndex = val
+  getList()
 }
 
 const btnScan = (id:number) => {

@@ -87,7 +87,7 @@ namespace Lucky.SysService.Service
         public async Task<List<SysMenuOutput>> GetMenuTree(SysMenuQueryInput input, bool isAdmin = false)
         {
             var isNull = !string.IsNullOrEmpty(input.Name);
-            var data = await _menuRpsty.GetListAsync(x => !x.IsDel && (isNull ? (x.Name.Contains(input.Name) || x.Code.Contains(input.Name)) : true));
+            var data = await _menuRpsty.GetListAsync(x => !x.IsDel && (isNull ? (x.Name.Contains(input.Name!) || x.Code!.Contains(input.Name!)) : true));
             var lst = new List<SysMenuOutput>();
 
             var topMenus = data.Where(x => x.ParentId == 0 || x.ParentId == -1 || x.ParentId == null);
