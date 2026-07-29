@@ -196,6 +196,7 @@ const loginHandle = () => {
   tipMsg.value = '正在登录...'
   const pwdMd5 = Md5.hashStr(reqlogin.passwd)
   const accountBase64 = btoa(reqlogin.account)
+  localStorage.removeItem('currSelMenu')
   systemReq.axiosIns
     .post('api/sys/SysUser/loginHdl', { Account: accountBase64, Passwd: pwdMd5 })
     .then((res: any) => {
@@ -215,7 +216,7 @@ const loginHandle = () => {
 
       axiosReq.runCounts = 0 // 初始化成默认值
 
-      router.replace('/index')
+      router.replace('/index?tp=lg')
     })
     .catch((err: unknown) => {
       loading.value = false

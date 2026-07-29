@@ -17,7 +17,7 @@ app.use(ElementPlus, {
   locale: zhCn,
 })
 
-app.use(ElementPlus)
+// app.use(ElementPlus)
 app.use(createPinia())
 app.use(router)
 

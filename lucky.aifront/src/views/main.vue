@@ -476,9 +476,13 @@ onMounted(() => { // 初始化加载
           }
       })
     }
+
     md.menus = res.Data.permissions
+
     if (currUrl)
       router.push(currUrl)
+    else
+      router.push('/sys/home')
   })
   .catch(ex=>{
     console.log(ex.message)

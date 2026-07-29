@@ -81,12 +81,13 @@ import type { usrQueryModel, usrInfoModel, usrOptModel } from '@/models/sys/usrI
 
 import { systemReq } from '@/utils/reqUtil';
 
-const props = {
-  value: 'id',
-  label: 'label',
-  options: 'options',
-  disabled: 'disabled',
-}
+// const props = {
+//   value: 'id',
+//   label: 'label',
+//   options: 'options',
+//   disabled: 'disabled',
+// }
+
 const state = reactive<{
   loading:boolean,
   dlgTitle:string,
@@ -106,7 +107,7 @@ const state = reactive<{
   selKv: [
     {
       label: '请选择',
-      id: ''
+      value: ''
     }
   ],
   tbData: [],
