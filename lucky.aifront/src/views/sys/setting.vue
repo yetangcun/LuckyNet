@@ -2,25 +2,15 @@
   <div class="pg_top">
     <div class="pg_query">
       <el-text class="lbStl">关键字:</el-text>
-      <el-input class="commonInput" v-model="state.query.txt" placeholder="名称|账号"></el-input>
-      <el-text class="lbStl">组织机构:</el-text>
-      <el-tree-select
-        v-model="state.query.orgId"
-        :data="state.selKv"
-        check-strictly
-        placeholder="请选择"
-        class="commonInput"
-        :render-after-expand="false"/>
-      <!-- <el-select class="commonInput" v-model="state.query.orgId"
-      :options="state.selKv" :props="props" placeholder="请选择"/> -->
+      <el-input class="commonInput" v-model="state.query.name" placeholder="名称|编码"></el-input>
+      <el-text class="lbStl">配置类型:</el-text>
+      <el-select class="commonInput" v-model="state.query.cfgType"
+      :options="state.selKv" :props="props" placeholder="请选择"/>
       <el-button type="primary" :icon="Search" class="btnStl">查询</el-button>
     </div>
     <div class="pg_grid">
       <el-table :data="state.tbData" style="display: flex; flex: 1;width: auto; height: 100%; flex-wrap: wrap; flex-shrink: 1;">
           <el-table-column type="selection" width="55" />
-          <!-- <el-table-column label="Date" width="120">
-            <template #default="scope">{{ scope.row.date }}</template>
-          </el-table-column> -->
           <el-table-column property="realname" label="姓名" width="120" />
           <el-table-column property="sex" label="性别" width="88">
             <template #default="scope">
@@ -77,32 +67,30 @@ import { onMounted, reactive } from 'vue';
 import { Search } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { selKV } from '@/models/common/selectKV';
-import type { usrQueryModel, usrInfoModel, usrOptModel } from '@/models/sys/usrInfoModel'
+import type { cfgInfoModel, cfgInfoQueryModel } from '@/models/sys/cfgInfoModel'
 
 import { systemReq } from '@/utils/reqUtil';
 
-// const props = {
-//   value: 'id',
-//   label: 'label',
-//   options: 'options',
-//   disabled: 'disabled',
-// }
+const props = {
+  value: 'value',
+  label: 'label'
+}
 
 const state = reactive<{
   loading:boolean,
   dlgTitle:string,
-  dlgVisible:boolean,
-  query:usrQueryModel,
   selKv: selKV[],
-  opt: usrOptModel,
-  tbData: usrInfoModel[]
+  opt: cfgInfoModel,
+  dlgVisible:boolean,
+  query:cfgInfoQueryModel,
+  tbData: cfgInfoModel[]
 }>({
   loading: false,
   dlgTitle: '',
-  dlgVisible:false,
+  dlgVisible: false,
   query: {
-    txt: '',
-    orgId: ''
+    name: '',
+    cfgType: '',
   },
   selKv: [
     {
@@ -113,7 +101,12 @@ const state = reactive<{
   tbData: [],
   opt: {
     id: '',
-    name: ''
+    name: '',
+    code: '',
+    value: '',
+    sort: 0,
+    status: 1,
+    cfgType: ''
   }
 })
 
@@ -169,14 +162,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
-/*
-.pg_top {
-  display: flex;
-  flex: 1;
-  width: 100%;
-  height: 100%;
-}
-*/
 
 </style>
