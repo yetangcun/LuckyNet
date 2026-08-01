@@ -15,7 +15,14 @@ namespace Lucky.SysModel.Entity
         /// </summary>
         [StringLength(40)]
         [Column("cfg_type")]
-        public string? CfgType { get; set; }
+        public required string CfgType { get; set; }
+
+        /// <summary>
+        /// 配置类型名称
+        /// </summary>
+        [StringLength(60)]
+        [Column("type_name")]
+        public string? TypeName { get; set; }
 
         /// <summary>
         /// 配置名称
