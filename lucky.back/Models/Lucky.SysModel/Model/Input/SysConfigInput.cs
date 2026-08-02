@@ -62,5 +62,10 @@ namespace Lucky.SysModel.Model.Input
         /// 配置编码
         /// </summary>
         public string? Code { get; set; }
+
+        /// <summary>
+        /// 是否系统配置
+        /// </summary>
+        public bool? IsSystem { get; set; }
     }
 }

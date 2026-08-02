@@ -8,58 +8,58 @@
         /// <summary>
         /// 配置Id
         /// </summary>
-        public int Id { get; set; }
+        public int id { get; set; }
 
 
         /// <summary>
         /// 配置类型
         /// </summary>
-        public string? CfgType { get; set; } = null!;
+        public string? cfgType { get; set; } = null!;
 
         /// <summary>
         /// 配置类型名称
         /// </summary>
-        public string? TypeName { get; set; }
+        public string? typeName { get; set; }
 
         /// <summary>
         /// 选项名
         /// </summary>
-        public required string Name { get; set; }
+        public required string name { get; set; }
 
         /// <summary>
         /// 选项值
         /// </summary>
-        public string? Value { get; set; }
+        public string? value { get; set; }
 
         /// <summary>
         /// 选项编码
         /// </summary>
-        public string? Code { get; set; }
+        public string? code { get; set; }
 
         /// <summary>
         /// 状态 0=禁用 1=启用
         /// </summary>
-        public int Status { get; set; }
+        public int status { get; set; }
 
         /// <summary>
         /// 排序
         /// </summary>
-        public int Sort { get; set; } = 0;
+        public int sort { get; set; } = 0;
 
         /// <summary>
         /// 是否系统内置 0=否 1=是
         /// </summary>
-        public bool IsSystem { get; set; } = false;
+        public bool isSystem { get; set; } = false;
 
 
         /// <summary>
         /// 创建时间
         /// </summary>
-        public DateTime CreateTime { get; set; }
+        public DateTime createTime { get; set; }
 
         /// <summary>
         /// 创建人
         /// </summary>
-        public string? CreateUser { get; set; }
+        public string? createUser { get; set; }
     }
 }

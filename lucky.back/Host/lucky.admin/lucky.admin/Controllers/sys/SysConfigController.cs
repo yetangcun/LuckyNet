@@ -1,4 +1,5 @@
 ﻿using Lucky.BaseModel.Model;
+using Lucky.BaseService.Extension;
 using Lucky.SysModel.Model.Input;
 using Lucky.SysModel.Model.Output;
 using Lucky.SysService.Service.IService;
@@ -44,7 +45,8 @@ namespace lucky.admin.Controllers.sys
         [HttpPost]
         public async Task<ResModel<bool>> Opt([FromBody] SysConfigOptInput input)
         {
-            var res = await _sysConfigService.Opt(input);
+            var uid = HttpContext.GetUid();
+            var res = await _sysConfigService.Opt(input, uid);
             return ResModel<bool>.Success(res);
         }
 
@@ -55,7 +57,8 @@ namespace lucky.admin.Controllers.sys
         [HttpDelete("{id}")]
         public async Task<ResModel<bool>> Del(int id)
         {
-            var res = await _sysConfigService.Del(id);
+            var uid = HttpContext.GetUid();
+            var res = await _sysConfigService.Del(id, uid);
             return ResModel<bool>.Success(res);
         }
 
@@ -68,6 +71,16 @@ namespace lucky.admin.Controllers.sys
         {
             var res = await _sysConfigService.GetById(id);
             return ResModel<SysConfigOutput>.Success(res);
+        }
+
+        /// <summary>
+        /// 获取系统配置列表
+        /// </summary>
+        [HttpGet("list")]
+        public async Task<ResModel<List<SelectKV>>> GetList()
+        {
+            var res = await _sysConfigService.GetList();
+            return ResModel<List<SelectKV>>.Success(res);
         }
     }
 }

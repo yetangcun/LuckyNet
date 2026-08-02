@@ -88,7 +88,11 @@ namespace Lucky.SysService.Cxt
 
             modelBuilder.Entity<SysMenu>().ToTable("sys_menu");
 
-            modelBuilder.Entity<SysConfig>().ToTable("sys_config");
+            modelBuilder.Entity<SysConfig>(x =>
+            {
+                x.ToTable("sys_config");
+                x.Property(e => e.Id).ValueGeneratedOnAdd();
+            });
 
             modelBuilder.Entity<SysLog>().ToTable("sys_log");
 

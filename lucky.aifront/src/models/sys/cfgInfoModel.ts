@@ -1,5 +1,5 @@
 export interface cfgInfoModel {
-  id: string;
+  id: number;
   name: string;
   code: string;
   value: string;
@@ -10,7 +10,7 @@ export interface cfgInfoModel {
 }
 
 export interface cfgOptModel {
-  id: string;
+  id: number;
   name: string;
   value: string;
   code: string;

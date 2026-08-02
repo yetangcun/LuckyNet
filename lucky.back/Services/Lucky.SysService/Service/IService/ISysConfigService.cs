@@ -1,4 +1,5 @@
-﻿using Lucky.SysModel.Model.Input;
+﻿using Lucky.BaseModel.Model;
+using Lucky.SysModel.Model.Input;
 using Lucky.SysModel.Model.Output;
 
 namespace Lucky.SysService.Service.IService
@@ -21,12 +22,20 @@ namespace Lucky.SysService.Service.IService
         /// 新增或修改
         /// </summary>
         /// <param name="req"></param>
-        Task<bool> Opt(SysConfigOptInput req);
+        /// <param name="uid"></param>
+        Task<bool> Opt(SysConfigOptInput req, long uid);
 
         /// <summary>
         /// 删除
         /// </summary>
         /// <param name="id"></param>
-        Task<bool> Del(int id);
+        /// <param name="uid"></param>
+        Task<bool> Del(int id, long uid);
+
+        /// <summary>
+        ///  获取列表
+        /// </summary>
+        /// <returns></returns>
+        Task<List<SelectKV>> GetList();
     }
 }

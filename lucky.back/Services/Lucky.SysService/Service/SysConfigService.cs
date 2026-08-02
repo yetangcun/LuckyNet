@@ -25,11 +25,14 @@ namespace Lucky.SysService.Service
         /// 删除
         /// </summary>
         /// <param name="id"></param>
-        public async Task<bool> Del(int id)
+        public async Task<bool> Del(int id, long uid)
         {
             var cfg = await _cfgRpsty.GetByIdAsync(id);
             if (cfg == null) return false;
-            return (await _cfgRpsty.DeleteAsync(cfg)) > 0;
+            cfg.IsDel = true;
+            cfg.DelTime = DateTime.Now;
+            cfg.DelUid = uid;
+            return (await _cfgRpsty.UpdateAsync(cfg)) > 0;
         }
 
         /// <summary>
@@ -41,14 +44,14 @@ namespace Lucky.SysService.Service
             var data = await _cfgRpsty.GetByIdAsync(id);
             if (data != null) return new SysConfigOutput()
             {
-                Id = data.Id.Value,
-                Name = data.Name,
-                Value = data.Value!,
-                CfgType = data.CfgType,
-                TypeName = data.TypeName,
-                Sort = data.Sort,
-                Status = data.Status,
-                Code = data.Code,
+                id = data.Id.Value,
+                name = data.Name,
+                value = data.Value!,
+                cfgType = data.CfgType,
+                typeName = data.TypeName,
+                sort = data.Sort,
+                status = data.Status,
+                code = data.Code,
             };
             return null;
         }
@@ -69,7 +72,6 @@ namespace Lucky.SysService.Service
                 where = where.And(x => x.Name.Contains(req.Txt));
             }
 
-
             var pgInfo = new PageInfo()
             {
                 PageIndex = req.PageIndex,
@@ -80,17 +82,17 @@ namespace Lucky.SysService.Service
 
             Expression<Func<SysConfig, SysConfigOutput>> expr = x => new SysConfigOutput()  // 1、这是最直接、最可控、最高效的方式
             {
-                Id = x.Id.Value,
-                Name = x.Name,
-                Value = x.Value!,
-                CfgType = x.CfgType,
-                TypeName = x.TypeName,
-                Sort = x.Sort,
-                Status = x.Status,
-                Code = x.Code,
-                CreateTime = x.CreateTime,
-                CreateUser = x.CreateUid.ToString(),
-                IsSystem = x.IsSystem
+                id = x.Id.Value,
+                name = x.Name,
+                sort = x.Sort,
+                code = x.Code,
+                value = x.Value!,
+                status = x.Status,
+                cfgType = x.CfgType,
+                typeName = x.TypeName,
+                createTime = x.CreateTime,
+                createUser = x.CreateUid.ToString(),
+                isSystem = x.IsSystem
             };
 
             var res = await _cfgRpsty.GetPagesAsync(where, expr, pgInfo);
@@ -102,21 +104,22 @@ namespace Lucky.SysService.Service
         /// 新增或修改
         /// </summary>
         /// <param name="req"></param>
-        public async Task<bool> Opt(SysConfigOptInput req)
+        public async Task<bool> Opt(SysConfigOptInput req, long uid)
         {
             if (req.Id <= 0)
             {
                 var cfg = new SysConfig()
                 {
-                    Id = null,
                     Name = req.Name!,
                     Value = req.Value,
                     CfgType = req.CfgType,
                     TypeName = req.TypeName,
                     Sort = req.Sort,
-                    Status = req.Status,
                     Code = req.Code,
-                    CreateTime = DateTime.Now.ToUniversalTime(),
+                    CreateUid = uid,
+                    Status = req.Status,
+                    IsSystem = req.IsSystem ?? true,
+                    CreateTime = DateTime.Now,
                 };
                 var res = await _cfgRpsty.AddAsync(cfg);
                 return res != null;
@@ -130,10 +133,28 @@ namespace Lucky.SysService.Service
                 cfg.CfgType = req.CfgType;
                 cfg.TypeName = req.TypeName;
                 cfg.Sort = req.Sort;
-                cfg.Status = req.Status;
                 cfg.Code = req.Code;
+                cfg.UpdateUid = uid;
+                cfg.Status = req.Status;
+                cfg.UpdateTime = DateTime.Now;
+                cfg.IsSystem = req.IsSystem ?? true;
                 return (await _cfgRpsty.UpdateAsync(cfg)) > 0;
             }
+        }
+
+        /// <summary>
+        /// 获取列表
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<SelectKV>> GetList()
+        {
+            var where = PredicateBuilder.New<SysConfig>(x => !x.IsDel && string.IsNullOrWhiteSpace(x.CfgType)); // 1、这是最直接、最可控、最高效的方式
+            var res = await _cfgRpsty.GetListAsync(where);
+            return res.Select(x => new SelectKV()
+            {
+                label = x.Name,
+                value = x.Value
+            }).ToList();
         }
     }
 }

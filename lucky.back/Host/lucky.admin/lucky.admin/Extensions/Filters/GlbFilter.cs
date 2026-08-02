@@ -41,7 +41,7 @@ namespace lucky.admin.Extensions.Filters
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             // ============ Executing 阶段 ============
-            context.HttpContext.Items["ReqStartTime"] = DateTime.Now;
+            context.HttpContext.Items["ReqStartTime"] = DateTime.UtcNow;
             string? logType = null;
             if (!_whites.Any(path => context.HttpContext.Request.Path.Value.IndexOf(path) != -1)) // 需要过滤
             {
@@ -92,7 +92,7 @@ namespace lucky.admin.Extensions.Filters
             // 计算耗时
             var startTime = context.HttpContext.Items["ReqStartTime"] as DateTime?;
             var duration = startTime.HasValue
-                ? DateTime.Now - startTime.Value
+                ? DateTime.UtcNow - startTime.Value
                 : TimeSpan.Zero;
 
             // 判断执行结果 ----
@@ -104,7 +104,7 @@ namespace lucky.admin.Extensions.Filters
 
             // 构造日志模型
             long.TryParse(uid?.ToString(), out long _uid);
-            var addTime = DateTime.Now.ToUniversalTime();
+            var addTime = DateTime.UtcNow.ToUniversalTime();
             var logModel = new SysLog()
             {
                 Id = IdGreator.GetNxtId(),

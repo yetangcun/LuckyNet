@@ -16,7 +16,7 @@ namespace Lucky.BaseModel.Model.Entity
         [Required]
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public required T Id { get; set; }
+        public T Id { get; set; }
     }
 
     /// <summary>
