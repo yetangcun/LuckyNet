@@ -14,7 +14,7 @@
         /// <summary>
         /// 配置类型
         /// </summary>
-        public string CfgType { get; set; } = null!;
+        public string? CfgType { get; set; } = null!;
 
         /// <summary>
         /// 配置类型名称
@@ -29,7 +29,7 @@
         /// <summary>
         /// 选项值
         /// </summary>
-        public required string Value { get; set; }
+        public string? Value { get; set; }
 
         /// <summary>
         /// 选项编码
@@ -50,5 +50,16 @@
         /// 是否系统内置 0=否 1=是
         /// </summary>
         public bool IsSystem { get; set; } = false;
+
+
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime CreateTime { get; set; }
+
+        /// <summary>
+        /// 创建人
+        /// </summary>
+        public string? CreateUser { get; set; }
     }
 }

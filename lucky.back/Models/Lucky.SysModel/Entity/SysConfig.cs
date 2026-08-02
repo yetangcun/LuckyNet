@@ -8,14 +8,14 @@ namespace Lucky.SysModel.Entity
     /// 系统配置
     /// </summary>
     [Table("sys_config")]
-    public class SysConfig : BaseFullEntity<int>
+    public class SysConfig : BaseFullEntity<int?>
     {
         /// <summary>
         /// 配置类型
         /// </summary>
         [StringLength(40)]
         [Column("cfg_type")]
-        public required string CfgType { get; set; }
+        public string? CfgType { get; set; }
 
         /// <summary>
         /// 配置类型名称
