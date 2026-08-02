@@ -82,5 +82,17 @@ namespace lucky.admin.Controllers.sys
             var res = await _sysConfigService.GetList();
             return ResModel<List<SelectKV>>.Success(res);
         }
+
+        /// <summary>
+        /// 获取系统配置列表根据类型
+        /// </summary>
+        /// <param name="cfgType"></param>
+        /// <returns></returns>
+        [HttpGet("getByType/{cfgType}")]
+        public async Task<ResModel<List<SysConfigOutput>>> GetConfig(string cfgType)
+        {
+            var res = await _sysConfigService.GetConfigs(cfgType);
+            return ResModel<List<SysConfigOutput>>.Success(res);
+        }
     }
 }

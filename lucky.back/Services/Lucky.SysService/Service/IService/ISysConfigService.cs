@@ -37,5 +37,12 @@ namespace Lucky.SysService.Service.IService
         /// </summary>
         /// <returns></returns>
         Task<List<SelectKV>> GetList();
+
+        /// <summary>
+        /// 获取配置
+        /// </summary>
+        /// <param name="cfgType"></param>
+        /// <returns></returns>
+        Task<List<SysConfigOutput>> GetConfigs(string cfgType);
     }
 }

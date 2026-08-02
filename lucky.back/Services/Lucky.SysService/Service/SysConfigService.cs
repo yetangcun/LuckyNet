@@ -156,5 +156,47 @@ namespace Lucky.SysService.Service
                 value = x.Value
             }).ToList();
         }
+
+        /// <summary>
+        /// 获取配置
+        /// </summary>
+        /// <param name="cfgType"></param>
+        public async Task<List<SysConfigOutput>> GetConfigs(string cfgType)
+        {
+            if (string.IsNullOrWhiteSpace(cfgType)) return new List<SysConfigOutput>();
+            if (cfgType.IndexOf(",") > -1)
+            {
+                var types = (cfgType.Split(',')).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+                var where = PredicateBuilder.New<SysConfig>(x => !x.IsDel && types.Contains(x.CfgType));
+                var res = await _cfgRpsty.GetListAsync(where);
+                return res.Select(x => new SysConfigOutput()
+                {
+                    id = x.Id.Value,
+                    name = x.Name,
+                    value = x.Value!,
+                    cfgType = x.CfgType,
+                    typeName = x.TypeName,
+                    sort = x.Sort,
+                    status = x.Status,
+                    code = x.Code,
+                }).ToList();
+            }
+            else
+            {
+                var where = PredicateBuilder.New<SysConfig>(x => !x.IsDel && x.CfgType == cfgType);
+                var res = await _cfgRpsty.GetListAsync(where);
+                return res.Select(x => new SysConfigOutput()
+                {
+                    id = x.Id.Value,
+                    name = x.Name,
+                    value = x.Value!,
+                    cfgType = x.CfgType,
+                    typeName = x.TypeName,
+                    sort = x.Sort,
+                    status = x.Status,
+                    code = x.Code,
+                }).ToList();
+            }
+        }
     }
 }
