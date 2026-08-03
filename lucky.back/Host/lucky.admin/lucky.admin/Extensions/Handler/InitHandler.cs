@@ -116,7 +116,7 @@ namespace lucky.admin.Extensions.Handler
         /// 加载角色缓存  
         /// </summary>
         /// <param name="scope"></param>
-        public async Task<bool> LoadRoleCache(IServiceScope? scope = null)
+        private async Task<bool> LoadRoleCache(IServiceScope? scope = null)
         {
             if (scope == null)
             {
