@@ -1,5 +1,4 @@
 ﻿using Lucky.BaseModel.Enum;
-using System.Text.Json.Serialization;
 
 namespace Lucky.SysModel.Model.Output
 {

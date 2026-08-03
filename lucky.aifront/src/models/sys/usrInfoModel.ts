@@ -32,7 +32,7 @@ export interface usrOptModel {
   id: string,
   account: string,
   name: string,
-  roleIds:string [],
+  roleIds: number [],
   roleId: string,
   orgId: string,
   avatar: string,

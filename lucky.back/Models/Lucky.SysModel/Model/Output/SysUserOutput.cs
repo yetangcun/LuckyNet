@@ -81,7 +81,12 @@ namespace Lucky.SysModel.Model.Output
         /// <summary>
         /// 角色ID
         /// </summary>
-        public string[]? roleIds { get; set; }
+        public int[]? roleIds { get; set; }
+
+        /// <summary>
+        /// 角色名称
+        /// </summary>
+        public string? roleName { get; set; }
 
     }
 

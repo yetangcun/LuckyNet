@@ -156,7 +156,7 @@ const hdlSizeChange = (val:number) => {
 }
 
 const hdlCurrentChange = (val:number) => {
-  console.log('val: '+val)
+  // console.log('val: '+val)
   state.query.pageIndex = val
   getList()
 }

@@ -2,43 +2,57 @@
   <div class="pg_top">
     <div class="pg_query">
       <el-text class="lbStl">关键字:</el-text>
-      <el-input class="commonInput" v-model="state.query.name" placeholder="类型名|选项名"></el-input>
+      <el-input class="commonInput" v-model="state.query.txt" placeholder="类型名|选项名" clearable></el-input>
       <el-text class="lbStl">配置类型:</el-text>
       <el-select class="commonInput" v-model="state.query.cfgType"
-      :options="state.typeKv" :props="props" placeholder="请选择"/>
-      <el-button type="primary" :icon="Search" class="btnStl">查询</el-button>
-      <el-button type="primary" :icon="Plus" class="btnStl" @click="btnAdd">新增</el-button>
+      :options="state.typeKv" :props="props" placeholder="请选择" clearable/>
+      <el-button type="primary" :icon="Search" class="btnStl" @click="getList">查询</el-button>
+      <el-button type="danger" :icon="Plus" class="btnStl" @click="btnAdd">新增</el-button>
     </div>
     <div class="pg_grid">
-      <el-table :data="state.tbData" row-key="id" style="display: flex; flex: 1;width: auto; height: 100%; flex-wrap: wrap; flex-shrink: 1;">
-          <el-table-column type="selection" width="55" />
-          <el-table-column property="cfgType" label="配置类型" width="120" />
-          <el-table-column property="typeName" label="类型名" width="120" />
-          <!-- <el-table-column property="sex" label="性别" width="88">
-            <template #default="scope">
-              <div style="display: flex; align-items: center">
-                <span v-if="scope.row.sex==1">男</span>
-                <span v-else>女</span>
-              </div>
-            </template>
-          </el-table-column> -->
-          <el-table-column property="name" label="选项名" width="137" show-overflow-tooltip/>
-          <el-table-column property="value" label="选项值" width="111" />
-          <el-table-column property="code" label="编码" width="101" />
-          <el-table-column property="status" label="状态" width="88"/>
-          <el-table-column property="sort" label="排序" width="88" show-overflow-tooltip />
-          <el-table-column label="日期" width="168">
-            <template #default="scope">{{ scope.row.createTime }}</template>
-          </el-table-column>
-          <el-table-column label="操作" min-width="150" show-overflow-tooltip>
-            <template #default="scope">
-              <div>
-                <el-button @click="btnEdit(scope.row.id)" type="primary">编辑</el-button>
-                <el-button @click="btnDel(scope.row.id)" type="danger">删除</el-button>
-              </div>
-            </template>
-          </el-table-column>
-      </el-table>
+      <div class="grid_div">
+        <el-table :data="state.tbData" row-key="id" height="100%" v-loading="state.loading">
+            <el-table-column type="selection" width="55" />
+            <el-table-column property="cfgType" label="配置类型" width="120" />
+            <el-table-column property="typeName" label="类型名" width="120" />
+            <!-- <el-table-column property="sex" label="性别" width="88">
+              <template #default="scope">
+                <div style="display: flex; align-items: center">
+                  <span v-if="scope.row.sex==1">男</span>
+                  <span v-else>女</span>
+                </div>
+              </template>
+            </el-table-column> -->
+            <el-table-column property="name" label="选项名" width="137" show-overflow-tooltip/>
+            <el-table-column property="value" label="选项值" width="111" />
+            <el-table-column property="code" label="编码" width="101" />
+            <el-table-column property="status" label="状态" width="88"/>
+            <el-table-column property="sort" label="排序" width="88" show-overflow-tooltip />
+            <el-table-column label="日期" width="168">
+              <template #default="scope">{{ scope.row.createTime }}</template>
+            </el-table-column>
+            <el-table-column label="操作" min-width="150" show-overflow-tooltip>
+              <template #default="scope">
+                <div>
+                  <el-button @click="btnEdit(scope.row.id)" type="primary">编辑</el-button>
+                  <el-button @click="btnDel(scope.row.id)" type="danger">删除</el-button>
+                </div>
+              </template>
+            </el-table-column>
+        </el-table>
+      </div>
+      <el-pagination
+      v-model:current-page="state.query.pageIndex"
+      v-model:page-size="state.query.pageSize"
+      :size="'default'"
+      :background="true"
+      :total="state.query.total"
+      @size-change="hdlSizeChange"
+      :page-sizes="[20, 50, 100, 300, 500, 1000]"
+      layout="total, sizes, prev, pager, next"
+      style="display: flex; justify-content: flex-end; align-items: center; margin: 10px;"
+      @current-change="hdlCurrentChange"
+      />
     </div>
   </div>
   <el-dialog v-model="state.dlgVisible" :title="state.dlgTitle" width="500" draggable>
@@ -106,8 +120,11 @@ const state = reactive<{
   dlgTitle: '',
   dlgVisible: false,
   query: {
-    name: '',
+    txt: '',
     cfgType: '',
+    total: 0,
+    pageIndex: 1,
+    pageSize: 20
   },
   typeKv: [
     {
@@ -145,7 +162,8 @@ const state = reactive<{
 const getList = () => {
   systemReq.axiosIns.get('api/sys/SysConfig/pages', { params:state.query })
   .then((res:any) => {
-    console.log(res.Data)
+    // console.log(res.Data)
+    state.query.total = res.Total
     state.tbData = res.Data
   })
   .catch((err:any)=>{
@@ -222,6 +240,16 @@ const btnSave = () => {
   }).catch((err:any)=>{
     console.log(err)
   })
+}
+
+const hdlSizeChange = (val:number) => {
+  state.query.pageSize = val
+  getList()
+}
+
+const hdlCurrentChange = (val:number) => {
+  state.query.pageIndex = val
+  getList()
 }
 
 const btnDel = (id:string) => {

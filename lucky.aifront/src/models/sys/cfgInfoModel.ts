@@ -1,3 +1,4 @@
+import type { pageInfo } from '@/models/common/pageInfo'
 export interface cfgInfoModel {
   id: number;
   name: string;
@@ -20,7 +21,7 @@ export interface cfgOptModel {
   sort: number;
 }
 
-export interface cfgInfoQueryModel {
-  name: string;
+export interface cfgInfoQueryModel extends pageInfo {
+  txt: string;
   cfgType: string;
 }

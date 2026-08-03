@@ -69,7 +69,7 @@ namespace Lucky.SysService.Service
             }
             if (!string.IsNullOrEmpty(req.Txt))
             {
-                where = where.And(x => x.Name.Contains(req.Txt));
+                where = where.And(x => x.Name.Contains(req.Txt) || x.TypeName.Contains(req.Txt));
             }
 
             var pgInfo = new PageInfo()

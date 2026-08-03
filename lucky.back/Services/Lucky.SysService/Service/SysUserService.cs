@@ -143,6 +143,26 @@ namespace Lucky.SysService.Service
             var expr = SimpleMappingExtensions.AutoMap<SysUser, SysUserInfoOutput>();  // 2、这是最简便的方式
             var res = await _usrRpsty.GetPagesAsync(where, expr, pgInfo);
 
+            if (res.Item1 > 0)
+            {
+                var roles = await _roleRpsty.GetListAsync(x => x.Id > 0, x => new SysRoleOutput()
+                {
+                    id = x.Id,
+                    name = x.Name,
+                    roleType = x.RoleType
+                });
+
+                var uids = res.Item2.Select(x => x.id);
+                var usrRoles = await _usrRoleRpsty.GetListAsync(x => uids.Contains(x.UserId));
+
+                foreach (var item in res.Item2)
+                {
+                    var roleIds = usrRoles.Where(x => x.UserId == item.id).Select(x => x.RoleId).ToArray();
+                    item.roleIds = roleIds;
+                    item.roleName = string.Join(',', roles.Where(x => roleIds.Contains(x.id)).Select(x => x.name));
+                }
+            }
+
             return (res.Item1, res.Item2);
         }
 
@@ -159,7 +179,7 @@ namespace Lucky.SysService.Service
             if (userObj != null)
             {
                 var usrRoleLst = await _usrRoleRpsty.GetListAsync(x => x.UserId == id, x => x.RoleId);
-                userObj.roleIds = usrRoleLst.Select(x => x.ToString()).ToArray();
+                userObj.roleIds = usrRoleLst.Select(x => x).ToArray();
             }
             return userObj;
         }

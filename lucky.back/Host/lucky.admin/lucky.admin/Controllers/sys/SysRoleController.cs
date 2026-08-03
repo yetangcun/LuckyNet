@@ -49,13 +49,13 @@ namespace lucky.admin.Controllers.sys
         /// 获取角色下拉列表
         /// </summary>
         [HttpGet("roleSels")]
-        public async Task<ResModel<List<SelectKV>>> GetSelList()
+        public async Task<ResModel<List<SelectNumKV<int>>>> GetSelList()
         {
             var uid = HttpContext.GetUid();
 
             var res = await _roleService.GetSelList(uid);
 
-            return ResModel<List<SelectKV>>.Success(res);
+            return ResModel<List<SelectNumKV<int>>>.Success(res);
         }
 
         /// <summary>

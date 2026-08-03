@@ -128,7 +128,7 @@
 import { onMounted, reactive } from 'vue';
 import { Plus, Search } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import type { selKV, treeSelKV } from '@/models/common/selectKV';
+import type { treeSelKV, selNumKV } from '@/models/common/selectKV';
 import type { usrQueryModel, usrInfoModel, usrOptModel } from '@/models/sys/usrInfoModel'
 
 import { systemReq } from '@/utils/reqUtil';
@@ -146,7 +146,7 @@ const state = reactive<{
   dlgVisible:boolean,
   query:usrQueryModel,
   orgKv: treeSelKV[],
-  roleKv: selKV[],
+  roleKv: selNumKV[],
   opt: usrOptModel,
   tbData: usrInfoModel[]
 }>({
@@ -170,7 +170,7 @@ const state = reactive<{
   roleKv: [
     {
       label: '请选择',
-      value: ''
+      value: -1
     }
   ],
   tbData: [],

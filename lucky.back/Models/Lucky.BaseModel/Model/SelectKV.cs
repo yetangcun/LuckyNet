@@ -57,4 +57,27 @@
         /// </summary>
         public List<TreeSelectKV>? children { get; set; }
     }
+
+
+    /// <summary>
+    /// 下拉框数据
+    /// </summary>
+    public class SelectNumKV<T>
+    {
+        /// <summary>
+        /// 显示文本
+        /// </summary>
+        public string? label { get; set; }
+
+        /// <summary>
+        /// 背地值
+        /// </summary>
+        public T? value { get; set; }
+
+        /// <summary>
+        /// 扩展字段
+        /// </summary>
+        public string? ext { get; set; }
+    }
+
 }

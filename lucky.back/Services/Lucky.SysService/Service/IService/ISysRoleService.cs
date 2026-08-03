@@ -42,7 +42,7 @@ namespace Lucky.SysService.Service.IService
         /// 获取下拉列表
         /// </summary>
         /// <param name="uid"></param>
-        Task<List<SelectKV>?> GetSelList(long uid);
+        Task<List<SelectNumKV<int>>?> GetSelList(long uid);
 
         /// <summary>
         /// 获取角色权限
