@@ -1,6 +1,9 @@
 ﻿using Common.CoreLib.Extension.Common;
+using Lucky.SysModel;
+
 //using lucky.admin.Extensions.Filters;
 using Lucky.SysModel.Entity;
+using Lucky.SysModel.Model.Output;
 using Lucky.SysService.Rpsty.IRpsty;
 using System.Threading.Channels;
 
@@ -9,10 +12,10 @@ namespace lucky.admin.Extensions.Handler
     /// <summary>
     /// 频道默认处理
     /// </summary>
-    public class ChannelDftHandler
+    public class InitHandler
     {
         private readonly Channel<SysLog> _channel;
-        private readonly ILogger<ChannelDftHandler> _logger;
+        private readonly ILogger<InitHandler> _logger;
         //private readonly ISysRpsty<SysLog, long> _logRpsty;
         private readonly IServiceProvider _prd;
 
@@ -20,7 +23,7 @@ namespace lucky.admin.Extensions.Handler
         /// <summary>
         /// 构造函数
         /// </summary>
-        public ChannelDftHandler(ILogger<ChannelDftHandler> logger, ChannelExtension channel, IServiceProvider prd)
+        public InitHandler(ILogger<InitHandler> logger, ChannelExtension channel, IServiceProvider prd)
         {
             //_logRpsty = logRpsty;
             _prd = prd;
@@ -80,6 +83,60 @@ namespace lucky.admin.Extensions.Handler
                 _tsk.Start();
             }
         }
+
+        /// <summary>
+        /// 初始化缓存
+        /// </summary>
+        /// <param name="cacheType"></param>
+        /// <returns></returns>
+        public async Task InitCache(string cacheType = "")
+        {
+            using var scope = _prd.CreateScope();
+
+            if (string.IsNullOrWhiteSpace(cacheType))
+            {
+                await LoadRoleCache(scope);
+            }
+            else
+            {
+                switch (cacheType)
+                {
+                    case "RoleCache":
+                        {
+                            await LoadRoleCache(scope);
+                        }
+                        break;
+                    default: break;
+                }
+            }
+        }
+
+        #region 初始化缓存
+        /// <summary>
+        /// 加载角色缓存  
+        /// </summary>
+        /// <param name="scope"></param>
+        public async Task<bool> LoadRoleCache(IServiceScope? scope = null)
+        {
+            if (scope == null)
+            {
+                scope = _prd.CreateScope();
+            }
+            var rpsty = scope.ServiceProvider.GetRequiredService<ISysRpsty<SysRole, int>>();
+            var roles = await rpsty.GetListAsync(x => !x.IsDel && x.Status == 1);
+            if (roles != null && roles.Any())
+            {
+                SysModelModule.RoleCache.Clear();
+                SysModelModule.RoleCache.AddRange(roles.Select(x => new SysRoleOutput()
+                {
+                    id = x.Id,
+                    name = x.Name,
+                    roleType = x.RoleType
+                }));
+            }
+            scope.Dispose(); return true;
+        }
+        #endregion
 
         /// <summary>
         /// 停止

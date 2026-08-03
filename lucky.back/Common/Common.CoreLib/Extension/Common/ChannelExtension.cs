@@ -50,7 +50,7 @@ namespace Common.CoreLib.Extension.Common
         /// <param name="customOpts"></param>
         public Channel<T> GetOrCreate<T>(string key, BoundedChannelOptions? customOpts = null)
         {
-            var obj = (ChannelWrapper<T>)_channels.GetOrAdd(key, _ => new ChannelWrapper<T>(Channel.CreateBounded<T>(customOpts ?? bopts)));
+            var obj = (ChannelWrp<T>)_channels.GetOrAdd(key, _ => new ChannelWrp<T>(Channel.CreateBounded<T>(customOpts ?? bopts)));
             return obj.Chl;
         }
 
@@ -76,7 +76,7 @@ namespace Common.CoreLib.Extension.Common
         /// <param name="key"></param>
         public Channel<T>? Get<T>(string key)
         {
-            if (_channels.TryGetValue(key, out var chl) && chl is ChannelWrapper<T> wapper)
+            if (_channels.TryGetValue(key, out var chl) && chl is ChannelWrp<T> wapper)
                 return wapper.Chl;
 
             return null;
@@ -119,7 +119,7 @@ namespace Common.CoreLib.Extension.Common
     /// 在创建通道时，用一个轻量级包装类包装一下
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ChannelWrapper<T> : IChannelSelf
+    public class ChannelWrp<T> : IChannelSelf
     {
         /// <summary>
         /// 通道
@@ -130,7 +130,7 @@ namespace Common.CoreLib.Extension.Common
         /// 构造函数
         /// </summary>
         /// <param name="channel"></param>
-        public ChannelWrapper(Channel<T> channel) => Chl = channel;
+        public ChannelWrp(Channel<T> channel) => Chl = channel;
 
         /// <summary>
         /// 标识通道完成
@@ -184,7 +184,7 @@ namespace Common.CoreLib.Extension.Common
         /// <param name="customOpts"></param>
         public Channel<T> GetOrCreate<T>(string key, BoundedChannelOptions? customOpts = null)
         {
-            var obj = (ChannelWrapper<T>)_channels.GetOrAdd(key, _ => Channel.CreateBounded<T>(customOpts ?? bopts));
+            var obj = (ChannelWrp<T>)_channels.GetOrAdd(key, _ => new ChannelWrp<T>(Channel.CreateBounded<T>(customOpts ?? bopts)));
             return obj.Chl;
         }
 
@@ -210,7 +210,7 @@ namespace Common.CoreLib.Extension.Common
         /// <param name="key"></param>
         public Channel<T>? Get<T>(string key)
         {
-            if (_channels.TryGetValue(key, out var wrapper) && wrapper is ChannelWrapper<T> typed)
+            if (_channels.TryGetValue(key, out var wrapper) && wrapper is ChannelWrp<T> typed)
                 return typed.Chl;
 
             return null;

@@ -3,6 +3,7 @@ using LinqKit;
 using Lucky.BaseModel;
 using Lucky.BaseModel.Enum;
 using Lucky.BaseModel.Model;
+using Lucky.SysModel;
 using Lucky.SysModel.Entity;
 //using System.Linq.Expressions;
 using Lucky.SysModel.Model.Input;
@@ -145,13 +146,6 @@ namespace Lucky.SysService.Service
 
             if (res.Item1 > 0)
             {
-                var roles = await _roleRpsty.GetListAsync(x => x.Id > 0, x => new SysRoleOutput()
-                {
-                    id = x.Id,
-                    name = x.Name,
-                    roleType = x.RoleType
-                });
-
                 var uids = res.Item2.Select(x => x.id);
                 var usrRoles = await _usrRoleRpsty.GetListAsync(x => uids.Contains(x.UserId));
 
@@ -159,7 +153,7 @@ namespace Lucky.SysService.Service
                 {
                     var roleIds = usrRoles.Where(x => x.UserId == item.id).Select(x => x.RoleId).ToArray();
                     item.roleIds = roleIds;
-                    item.roleName = string.Join(',', roles.Where(x => roleIds.Contains(x.id)).Select(x => x.name));
+                    item.roleName = string.Join(',', SysModelModule.RoleCache.Where(x => roleIds.Contains(x.id)).Select(x => x.name));
                 }
             }
 

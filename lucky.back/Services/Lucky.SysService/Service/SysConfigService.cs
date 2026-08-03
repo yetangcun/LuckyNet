@@ -13,9 +13,9 @@ namespace Lucky.SysService.Service
     public class SysConfigService : ISysConfigService
     {
         private readonly ILogger<SysConfigService> _logger;
-        private readonly ISysRpsty<SysConfig, int?> _cfgRpsty;
+        private readonly ISysRpsty<SysConfig, int> _cfgRpsty;
 
-        public SysConfigService(ILogger<SysConfigService> logger, ISysRpsty<SysConfig, int?> cfgRpsty)
+        public SysConfigService(ILogger<SysConfigService> logger, ISysRpsty<SysConfig, int> cfgRpsty)
         {
             _logger = logger;
             _cfgRpsty = cfgRpsty;
@@ -44,7 +44,7 @@ namespace Lucky.SysService.Service
             var data = await _cfgRpsty.GetByIdAsync(id);
             if (data != null) return new SysConfigOutput()
             {
-                id = data.Id.Value,
+                id = data.Id,
                 name = data.Name,
                 value = data.Value!,
                 cfgType = data.CfgType,
@@ -82,7 +82,7 @@ namespace Lucky.SysService.Service
 
             Expression<Func<SysConfig, SysConfigOutput>> expr = x => new SysConfigOutput()  // 1、这是最直接、最可控、最高效的方式
             {
-                id = x.Id.Value,
+                id = x.Id,
                 name = x.Name,
                 sort = x.Sort,
                 code = x.Code,
@@ -126,7 +126,7 @@ namespace Lucky.SysService.Service
             }
             else
             {
-                var cfg = await _cfgRpsty.GetByIdAsync(req.Id);
+                var cfg = await _cfgRpsty.GetByIdAsync(req.Id.Value);
                 if (cfg == null) return false;
                 cfg.Name = req.Name!;
                 cfg.Value = req.Value;
@@ -171,7 +171,7 @@ namespace Lucky.SysService.Service
                 var res = await _cfgRpsty.GetListAsync(where);
                 return res.Select(x => new SysConfigOutput()
                 {
-                    id = x.Id.Value,
+                    id = x.Id,
                     name = x.Name,
                     value = x.Value!,
                     cfgType = x.CfgType,
@@ -187,7 +187,7 @@ namespace Lucky.SysService.Service
                 var res = await _cfgRpsty.GetListAsync(where);
                 return res.Select(x => new SysConfigOutput()
                 {
-                    id = x.Id.Value,
+                    id = x.Id,
                     name = x.Name,
                     value = x.Value!,
                     cfgType = x.CfgType,

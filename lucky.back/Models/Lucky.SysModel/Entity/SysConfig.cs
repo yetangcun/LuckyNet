@@ -8,7 +8,7 @@ namespace Lucky.SysModel.Entity
     /// 系统配置
     /// </summary>
     [Table("sys_config")]
-    public class SysConfig : BaseFullEntity<int?>
+    public class SysConfig : BaseFullEntity<int>
     {
         /// <summary>
         /// 配置类型

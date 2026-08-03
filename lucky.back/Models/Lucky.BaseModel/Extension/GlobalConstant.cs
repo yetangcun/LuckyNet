@@ -37,9 +37,8 @@
         #endregion
 
         /// <summary>
-        /// 线程锁
+        /// 信号量，用于控制并发访问共享资源的线程数
         /// </summary>
         public static Semaphore Glb_semaphore = new Semaphore(1, 1);
-
     }
 }

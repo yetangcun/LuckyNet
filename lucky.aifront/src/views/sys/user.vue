@@ -33,7 +33,7 @@
               </template>
             </el-table-column>
             <el-table-column property="account" label="昵称" width="120" />
-            <el-table-column property="roleName" label="角色" width="120" />
+            <el-table-column property="roleName" label="角色" width="166" show-overflow-tooltip/>
             <el-table-column property="phone" label="联系方式" width="120" />
             <el-table-column property="avatar" label="头像" width="166" show-overflow-tooltip/>
             <el-table-column property="org" label="组织机构" width="120" show-overflow-tooltip />
