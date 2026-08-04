@@ -28,8 +28,8 @@ namespace Lucky.SysService.Service
         public async Task<(int, List<SysLogOutput>)> GetPages(SysLogQueryInput req)
         {
             var where = PredicateBuilder.New<SysLog>(x => true); // 初始化为 true
-            if (!string.IsNullOrWhiteSpace(req.reqPath))
-                where.And(x => x.ReqUrl!.Contains(req.reqPath));
+            if (!string.IsNullOrWhiteSpace(req.reqUrl))
+                where.And(x => x.ReqUrl!.Contains(req.reqUrl));
 
             if (!string.IsNullOrWhiteSpace(req.reqType))
                 where.And(x => x.ReqType!.Contains(req.reqType));

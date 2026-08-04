@@ -74,6 +74,7 @@ const prps = defineProps({
 const expandClose = (obj: menuModel) => {
   const sourceState = obj.isExpand
   if (prps.menus) {
+    // console.log(obj)
     if (obj.parentId=='0') {
       prps.menus.forEach((e:menuModel)=>{
         e.isExpand = false

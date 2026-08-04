@@ -478,7 +478,7 @@ onMounted(() => { // 初始化加载
     }
 
     md.menus = res.Data.permissions
-
+    // console.log(md.menus, res.Data.permissions)
     if (currUrl)
       router.push(currUrl)
     else

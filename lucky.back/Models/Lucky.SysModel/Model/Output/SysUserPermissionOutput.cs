@@ -52,7 +52,7 @@ namespace Lucky.SysModel.Model.Output
         /// <summary>
         /// 父级id
         /// </summary>
-        public required string parent_id { get; set; }
+        public required string parentId { get; set; }
 
         /// <summary>
         /// 名称

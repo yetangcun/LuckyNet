@@ -58,6 +58,12 @@ body {
   background-color: #f4f4f4;
   box-shadow: 0px 0px 14px 0px lightgray inset;
 }
+.grid_div {
+   display: flex;
+   flex: 1;
+   min-height: 0;   /* ⚠️ 同样关键 */
+   overflow: hidden;
+}
 .lbStl0 {
   display: flex;
   flex-wrap: nowrap;
@@ -79,10 +85,3 @@ body {
   display: flex;
 }
 
-
-.grid_div {
-   display: flex;
-   flex: 1;
-   min-height: 0;   /* ⚠️ 同样关键 */
-   overflow: hidden;
-}

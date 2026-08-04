@@ -11,7 +11,7 @@ namespace Lucky.SysModel.Model.Input
         /// <summary>
         /// 请求路径
         /// </summary>
-        public string? reqPath { get; set; }
+        public string? reqUrl { get; set; }
 
         /// <summary>
         /// 请求IP

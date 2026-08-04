@@ -360,7 +360,7 @@ namespace Lucky.SysService.Service
                     icon = item.Icon,
                     iconSize = item.IconSize,
                     menuType = item.MenuType,
-                    parent_id = item.ParentId?.ToString() ?? string.Empty
+                    parentId = item.ParentId?.ToString() ?? string.Empty
                 };
 
                 GetMenuTrees(parentEle, menus);
@@ -390,7 +390,7 @@ namespace Lucky.SysService.Service
                     icon = itm.Icon,
                     iconSize = itm.IconSize,
                     menuType = itm.MenuType,
-                    parent_id = itm.ParentId?.ToString() ?? string.Empty
+                    parentId = itm.ParentId?.ToString() ?? string.Empty
                 };
                 if (itm.MenuType != BaseModel.Enum.MenuType.Menu)
                 {
