@@ -70,7 +70,7 @@ namespace Lucky.SysModel.Entity
         /// 创建时间
         /// </summary>
         [Comment("创建时间")]
-        [Column("create_time")]
+        [Column("create_time", TypeName = "timestamp")]
         public DateTime CreateTime { get; set; } = DateTime.Now;
 
         /// <summary>

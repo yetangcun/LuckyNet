@@ -2,12 +2,12 @@
   <div class="pg_top">
     <div class="pg_query">
       <el-text class="lbStl">关键字:</el-text>
-      <el-input class="commonInput" v-model="state.query.reqUrl" placeholder="请求地址"></el-input>
-      <el-input class="commonInput" v-model="state.query.reqIp" placeholder="客户端IP"></el-input>
-      <el-select class="commonInput" v-model="state.query.reqType" placeholder="请选择">
+      <el-input class="commonInput" v-model="state.query.reqUrl" placeholder="请求地址" clearable/>
+      <el-input class="commonInput" v-model="state.query.reqIp" placeholder="客户端IP" clearable/>
+      <el-select class="commonInput" v-model="state.query.reqType" placeholder="请选择" clearable>
         <el-option v-for="item in state.methodKv" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
-      <el-select class="commonInput" v-model="state.query.status" placeholder="请选择">
+      <el-select class="commonInput" v-model="state.query.status" placeholder="请选择" clearable>
         <el-option v-for="item in state.statusKv" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
 

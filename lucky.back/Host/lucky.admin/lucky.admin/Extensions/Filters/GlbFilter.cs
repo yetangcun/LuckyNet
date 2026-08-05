@@ -41,7 +41,7 @@ namespace lucky.admin.Extensions.Filters
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             // ============ Executing 阶段 ============
-            context.HttpContext.Items["ReqStartTime"] = DateTime.UtcNow;
+            context.HttpContext.Items["ReqStartTime"] = DateTime.Now;
             string? logType = null;
             if (!_whites.Any(path => context.HttpContext.Request.Path.Value.IndexOf(path) != -1)) // 需要过滤
             {
@@ -92,7 +92,7 @@ namespace lucky.admin.Extensions.Filters
             // 计算耗时
             var startTime = context.HttpContext.Items["ReqStartTime"] as DateTime?;
             var duration = startTime.HasValue
-                ? DateTime.UtcNow - startTime.Value
+                ? DateTime.Now - startTime.Value
                 : TimeSpan.Zero;
 
             // 判断执行结果 ----
@@ -102,32 +102,33 @@ namespace lucky.admin.Extensions.Filters
             var errorMsg = isNull ? "UnAuth" : (isSuccess ? null : res.Exception?.Message);
             //var errorMsg = isNull ? "UnAuth" : res.Exception?.Message ?? (isSuccess ? null : "Unknown error");
 
-            // 构造日志模型
-            long.TryParse(uid?.ToString(), out long _uid);
-            var addTime = DateTime.UtcNow.ToUniversalTime();
-            var logModel = new SysLog()
+            if (!isSuccess || reqMethod != "GET")
             {
-                Id = IdGreator.GetNxtId(),
-                CreateTime = addTime,
-                CreateUid = _uid,
-                ReqIp = reqIp,
-                ReqParams = reqBody,
-                ReqUrl = reqPath,
-                ReqType = reqMethod,
-                Status = isSuccess ? 1 : 0,
-                ErrMsg = errorMsg,
-                ExecTime = Convert.ToDecimal(duration.TotalMilliseconds),
-            };
-            try
-            {
-                await _channel.Writer.WriteAsync(logModel);  // 写入日志
+                // 构造日志模型
+                long.TryParse(uid?.ToString(), out long _uid);
+                var logModel = new SysLog()
+                {
+                    Id = IdGreator.GetNxtId(),
+                    CreateTime = DateTime.Now,
+                    CreateUid = _uid,
+                    ReqIp = reqIp,
+                    ReqParams = reqBody,
+                    ReqUrl = reqPath,
+                    ReqType = reqMethod,
+                    Status = isSuccess ? 1 : 0,
+                    ErrMsg = errorMsg,
+                    ExecTime = Convert.ToDecimal(duration.TotalMilliseconds),
+                };
+                try
+                {
+                    await _channel.Writer.WriteAsync(logModel);  // 写入日志
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "日志写入通道失败");
+                }
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "日志写入通道失败");
-            }
-
-            if (!isSuccess)
+            else
                 _logger.LogError($"【{reqMethod}】-【{reqPath}】：{errorMsg},{duration}");
 
             //if (isSuccess)
