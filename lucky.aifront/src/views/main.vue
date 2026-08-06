@@ -41,10 +41,7 @@ const to_pg = (obj: menuModel) => {
     if (!isExist)
       md.selMenuns.push(obj)
   }
-  else {
-    md.selMenuns.push(obj)
-  }
-  // console.log(obj.url)
+  else md.selMenuns.push(obj) // console.log(obj.url)
   router.push(obj.url)
   localStorage.setItem('currSelMenu', obj.id)
 }
