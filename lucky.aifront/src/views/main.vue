@@ -8,6 +8,7 @@ import { useRouter } from 'vue-router';
 import { systemReq } from '@/utils/reqUtil'
 import SelfMenu from '@/compenents/SelfMenu.vue';
 import { ElMessageBox } from 'element-plus'
+import type { TabsPaneContext, TabPaneName } from 'element-plus'
 // import { useGlbStateStore } from '@/stores/glbstate'
 
 const router = useRouter()
@@ -26,6 +27,23 @@ const to_pg = (obj: menuModel) => {
     }
   })
   obj.isSelect = true
+  md.currSelMenu = obj.id
+
+  if (md.selMenuns.length > 0) {
+    let isExist = false
+    md.selMenuns.forEach((e:menuModel) => {
+      if (e.id == obj.id) {
+        isExist = true
+        e.isSelect = true
+      }
+      else e.isSelect = false
+    })
+    if (!isExist)
+      md.selMenuns.push(obj)
+  }
+  else {
+    md.selMenuns.push(obj)
+  }
   // console.log(obj.url)
   router.push(obj.url)
   localStorage.setItem('currSelMenu', obj.id)
@@ -47,24 +65,23 @@ const quit_hdl = () => {
     .catch(() => { })
 }
 
-// const glbstate = useGlbStateStore()
-// console.log(glbstate.usrInfo.avatar + ' --- ' + glbstate.usrInfo.name)
-
 const lg_title = ref(import.meta.env.VITE_SYS_LOG_TITLE)
 const md = reactive<{
   loading:boolean,
   layout:number,
   currNav:string,  // 当前选中展开的目录
+  currSelMenu:string,  // 当前选中菜单
   modules:menuModel[],
   menus:menuModel[],
+  selMenuns:menuModel[],
   isNavExpand:boolean,
   navWdth:string
 }>({
   loading: false,
   currNav: '',
+  currSelMenu: '-1',
   layout:1,   // 布局类型 1全部左侧 2顶部模块+左侧子菜单
   modules: [],
-  // menus:[
   //   {
   //     "id": "1",
   //     "parent_id": "0",
@@ -438,9 +455,75 @@ const md = reactive<{
   //   }
   // ],
   menus:[],
+  selMenuns:[{
+    id: '-1',
+    name: '首页',
+    parentId: '0',
+    code: '-1',
+    url: '/sys/home',
+    icon: 'icon-shouye',
+    menuType: 3,
+    status: 1,
+    sort: 1,
+    iconSize: '16',
+    children: [],
+    isExpand: false,
+    isSelect: false
+  }],
   isNavExpand:true,
   navWdth:'199px'
 })
+
+const tab_click = (tab:TabsPaneContext) => { // console.log(tab.props.name)
+  md.currSelMenu =  tab.props.name!.toString()
+  md.selMenuns.forEach((e:menuModel) => {
+    if (e.id == tab.props.name) {
+      e.isSelect = true
+      router.push(e.url)
+    }
+    else e.isSelect = false
+  })
+  localStorage.setItem('currSelMenu', md.currSelMenu)
+}
+
+const cls_tab = (tab:TabPaneName) => {
+  const idx = md.selMenuns.findIndex((e:menuModel) => e.id == tab) // console.log(tab, idx)
+  if (idx >= 0) {
+    md.selMenuns.splice(idx, 1)
+    if (md.selMenuns.length > 0) {
+      const lastIdx = idx - 1 >= 0 ? idx - 1 : 0
+      const lastMenu = md.selMenuns[lastIdx]
+
+      if (lastMenu) {
+        md.currSelMenu = lastMenu.id; router.push(lastMenu.url)
+        md.menus.forEach((e:menuModel) => {
+          if (e.children && e.children.length>0) {
+            e.children.forEach((c:menuModel) => {
+              c.isSelect = false
+              if (c.id == lastMenu.id) {
+                c.isSelect = true
+                return
+              }
+              else if (c.children && c.children.length > 0) {
+                c.children.forEach((ch:menuModel) => {
+                  ch.isSelect = false
+                  if (ch.id == lastMenu.id) ch.isSelect = true
+                })
+              }
+            })
+          }
+          else {
+            e.isSelect = false
+            if (e.id == md.currSelMenu) e.isSelect = true
+          }
+        })
+        return
+      }
+    }
+    md.currSelMenu = ''
+    router.push('/sys/home')
+  }
+}
 
 onMounted(() => { // 初始化加载
   md.loading = true
@@ -456,8 +539,9 @@ onMounted(() => { // 初始化加载
               if (c.id == currSelMenu) {
                 c.isSelect = true
                 e.isExpand = true
-                md.currNav = e.id
-                currUrl = c.url
+                md.currNav = e.id; currUrl = c.url
+                md.selMenuns.push(c)
+                md.currSelMenu = c.id
                 return
               }
               else if (c.children && c.children.length>0) {
@@ -466,8 +550,9 @@ onMounted(() => { // 初始化加载
                     ch.isSelect = true
                     c.isExpand = true
                     e.isExpand = true
-                    md.currNav = e.id
-                    currUrl = ch.url
+                    md.currNav = e.id; currUrl = ch.url
+                    md.selMenuns.push(ch)
+                    md.currSelMenu = ch.id
                     return
                   }
                 })
@@ -477,8 +562,7 @@ onMounted(() => { // 初始化加载
       })
     }
 
-    md.menus = res.Data.permissions
-    // console.log(md.menus, res.Data.permissions)
+    md.menus = res.Data.permissions // console.log(md.menus, res.Data.permissions)
     if (currUrl)
       router.push(currUrl)
     else
@@ -562,6 +646,19 @@ const expandOr = () => {
             </template>
           </el-dropdown>
         </div>
+      </div>
+      <div id="r_tab">
+        <el-tabs v-model="md.currSelMenu" type="card" @tab-click="tab_click" @tab-remove="cls_tab">
+          <el-tab-pane v-for="(e, i) in md.selMenuns" :key="i" :label="e.name" :name="e.id" :closable="e.id!='-1'">
+            <template #label>
+              <div>
+                <span :class="'iconfont '+ e.icon" style="font-size: 16px;"></span><!-- <el-icon :size="20" :color="'white'"><Cpu /></el-icon> -->
+                <span style="padding-left: 10px;">{{e.name}}</span>
+              </div>
+            </template>
+          </el-tab-pane>
+
+        </el-tabs>
       </div>
       <div id="r_content">
         <!-- <RouterView /> -->
@@ -665,5 +762,12 @@ const expandOr = () => {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+}
+
+:deep(.el-tabs__header) {
+  /* background-color: #3964fe; */
+  color: white;
+  border-bottom: 1px solid lightgray;
+  margin: 0px;
 }
 </style>
