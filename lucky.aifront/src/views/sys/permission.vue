@@ -386,7 +386,7 @@ const btnRelate = () => {
 const getMenuTree = () => {
   systemReq.axiosIns.get('api/sys/SysMenu/getMenuSelTree')
   .then((res:any) => {
-    console.log(res.Data)
+    // console.log(res.Data)
     state.pData = res.Data
   })
   .catch((err:any)=>{

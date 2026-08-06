@@ -79,378 +79,6 @@ const md = reactive<{
   currSelMenu: '-1',
   layout:1,   // 布局类型 1全部左侧 2顶部模块+左侧子菜单
   modules: [],
-  //   {
-  //     "id": "1",
-  //     "parent_id": "0",
-  //     "name": "系统管理",
-  //     "code": "01",
-  //     "menu_type": 1,
-  //     "path": "/system",
-  //     "icon": "icon-system-locked",
-  //     "icon_size": "20",
-  //     "isExpand":true,
-  //     "isSelect":false,
-  //     "childs": [
-  //       {
-  //         "id": "101",
-  //         "parent_id": "1",
-  //         "name": "用户管理",
-  //         "code": "0101",
-  //         "menu_type": 3,
-  //         "path": "/sys/user",
-  //         "icon": "icon-yonghuguanli",
-  //         "icon_size": "21",
-  //         "childs": [],
-  //     "isSelect":false,
-  //         "isExpand":false
-  //       },
-  //       {
-  //         "id": "102",
-  //         "parent_id": "1",
-  //         "name": "角色权限管理",
-  //         "code": "0102",
-  //         "menu_type": 3,
-  //         "path": "/sys/permission",
-  //         "icon": "icon-jiaose",
-  //         "icon_size": "18",
-  //         "childs": [],
-  //     "isSelect":false,
-  //         "isExpand":false
-  //       },
-  //       {
-  //         "id": "103",
-  //         "parent_id": "1",
-  //         "name": "菜单管理",
-  //         "code": "0103",
-  //         "menu_type": 3,
-  //         "path": "/sys/menu",
-  //         "icon": "icon-view-module",
-  //         "icon_size": "18",
-  //         "childs": [],
-  //     "isSelect":false,
-  //         "isExpand":false
-  //       },
-  //       {
-  //         "id": "104",
-  //         "parent_id": "1",
-  //         "name": "日志管理",
-  //         "code": "0104",
-  //         "menu_type": 3,
-  //         "path": "/sys/loginlog",
-  //         "icon": "icon-MenuIcon-rizhiguanli-heise",
-  //         "icon_size": "20",
-  //         "childs": [],
-  //     "isSelect":false,
-  //         "isExpand":false
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     "id": "2",
-  //     "parent_id": "0",
-  //     "name": "任务管理",
-  //     "code": "02",
-  //     "menu_type": 1,
-  //     "path": "/",
-  //     "icon": "icon-task-time",
-  //     "icon_size": "22",
-  //     "isExpand":false,
-  //     "isSelect":false,
-  //     "childs": [
-  //       {
-  //         "id": "201",
-  //         "parent_id": "2",
-  //         "name": "文章管理",
-  //         "code": "0201",
-  //         "menu_type": 3,
-  //         "path": "/sys/org",
-  //         "icon": "icon-article",
-  //         "icon_size": "19",
-  //         "childs": [],
-  //         "isSelect":false,
-  //         "isExpand":false
-  //       },
-  //       {
-  //         "id": "202",
-  //         "parent_id": "2",
-  //         "name": "分类管理",
-  //         "code": "0202",
-  //         "menu_type": 3,
-  //         "path": "/sys/org",
-  //         "icon": "icon-gengduo",
-  //         "icon_size": "20",
-  //         "childs": [],
-  //         "isSelect":false,
-  //         "isExpand":false
-  //       },
-  //       {
-  //         "id": "203",
-  //         "parent_id": "2",
-  //         "name": "评论管理",
-  //         "code": "0203",
-  //         "menu_type": 3,
-  //         "path": "/sys/org",
-  //         "icon": "icon-pinglun",
-  //         "icon_size": "20",
-  //         "childs": [],
-  //         "isSelect":false,
-  //         "isExpand":false
-  //       },
-  //       {
-  //         "id": "204",
-  //         "parent_id": "2",
-  //         "name": "友情链接",
-  //         "code": "0204",
-  //         "menu_type": 3,
-  //         "path": "/sys/org",
-  //         "icon": "icon-lianjie",
-  //         "icon_size": "20",
-  //         "childs": [],
-  //         "isSelect":false,
-  //         "isExpand":false
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     "isExpand":false,
-  //     "id": "3",
-  //     "parent_id": "0",
-  //     "name": "移动端管理",
-  //     "code": "03",
-  //     "menu_type": 1,
-  //     "path": "/operation",
-  //     "icon": "icon-shouji",
-  //     "icon_size": "21",
-  //     "isSelect":false,
-  //     "childs": [
-  //       {
-  //         "id": "301",
-  //         "parent_id": "3",
-  //         "name": "数据看板",
-  //         "code": "0301",
-  //         "menu_type": 3,
-  //         "path": "/operation/dashboard",
-  //         "icon": "icon-shujujianguan",
-  //         "icon_size": "20",
-  //         "childs": [],
-  //         "isSelect":false,
-  //         "isExpand":false
-  //       },
-  //       {
-  //         "id": "302",
-  //         "parent_id": "3",
-  //         "name": "消息推送",
-  //         "code": "0302",
-  //         "menu_type": 3,
-  //         "path": "/operation/push",
-  //         "icon": "icon-fenxiang1",
-  //         "icon_size": "20",
-  //         "childs": [],
-  //         "isSelect":false,
-  //         "isExpand":false
-  //       },
-  //       {
-  //         "id": "303",
-  //         "parent_id": "3",
-  //         "name": "活动管理",
-  //         "code": "0303",
-  //         "menu_type": 3,
-  //         "path": "/operation/activity",
-  //         "icon": "icon-huodongchouhua",
-  //         "icon_size": "20",
-  //         "childs": [],
-  //         "isSelect":false,
-  //         "isExpand":false
-  //       },
-  //       {
-  //         "id": "304",
-  //         "parent_id": "3",
-  //         "name": "问卷调研",
-  //         "code": "0304",
-  //         "menu_type": 3,
-  //         "path": "/operation/survey",
-  //         "icon": "icon-dengji",
-  //         "icon_size": "20",
-  //         "childs": [],
-  //         "isSelect":false,
-  //         "isExpand":false
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     "id": "4",
-  //     "parent_id": "0",
-  //     "name": "统计分析",
-  //     "code": "04",
-  //     "menu_type": 1,
-  //     "path": "/analytics",
-  //     "icon": "icon-tubiao",
-  //     "icon_size": "23",
-  //     "isExpand":false,
-  //     "isSelect":false,
-  //     "childs": [
-  //       {
-  //         "id": "401",
-  //         "parent_id": "4",
-  //         "name": "用户分析",
-  //         "code": "0401",
-  //         "menu_type": 3,
-  //         "path": "/analytics/user",
-  //         "icon": "icon-MenuIcon-renyuanguanli-heise",
-  //         "icon_size": "20",
-  //         "childs": [],
-  //         "isSelect":false,
-  //         "isExpand":false
-  //       },
-  //       {
-  //         "id": "402",
-  //         "parent_id": "4",
-  //         "name": "销售报表",
-  //         "code": "0402",
-  //         "menu_type": 3,
-  //         "path": "/analytics/sales",
-  //         "icon": "icon-yunyingguize",
-  //         "icon_size": "21",
-  //         "childs": [],
-  //         "isSelect":false,
-  //         "isExpand":false
-  //       },
-  //       {
-  //         "id": "403",
-  //         "parent_id": "4",
-  //         "name": "流量分析",
-  //         "code": "0403",
-  //         "menu_type": 3,
-  //         "path": "/analytics/traffic",
-  //         "icon": "icon-celve",
-  //         "icon_size": "18",
-  //         "childs": [],
-  //         "isSelect":false,
-  //         "isExpand":false
-  //       },
-  //       {
-  //         "id": "404",
-  //         "parent_id": "4",
-  //         "name": "转化漏斗",
-  //         "code": "0404",
-  //         "menu_type": 3,
-  //         "path": "/analytics/funnel",
-  //         "icon": "icon-shaixuan",
-  //         "icon_size": "20",
-  //         "childs": [],
-  //         "isSelect":false,
-  //         "isExpand":false
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     "id": "5",
-  //     "parent_id": "0",
-  //     "name": "测试007",
-  //     "code": "05",
-  //     "menu_type": 1,
-  //     "path": "/sys/org",
-  //     "icon": "icon-tubiao",
-  //     "icon_size": "23",
-  //     "isExpand":false,
-  //     "isSelect":false,
-  //     "childs": [
-  //       {
-  //         "id": "502",
-  //         "parent_id": "5",
-  //         "name": "测试00071",
-  //         "code": "0502",
-  //         "menu_type": 3,
-  //         "path": "/sys/org",
-  //         "icon": "icon-tubiao",
-  //         "icon_size": "20",
-  //         "isExpand":false,
-  //         "isSelect":false,
-  //         "childs": []
-  //       },
-  //       {
-  //         "id": "501",
-  //         "parent_id": "5",
-  //         "name": "测试00070",
-  //         "code": "0501",
-  //         "menu_type": 2,
-  //         "path": "/sys/org",
-  //         "icon": "icon-tubiao",
-  //         "icon_size": "20",
-  //         "isExpand":false,
-  //         "isSelect":false,
-  //         "childs": [
-  //           {
-  //             "id": "50101",
-  //             "parent_id": "501",
-  //             "name": "测试00007",
-  //             "code": "050101",
-  //             "menu_type": 3,
-  //             "path": "/sys/org",
-  //             "icon": "icon-tubiao",
-  //             "icon_size": "20",
-  //             "isExpand":false,
-  //             "isSelect":false,
-  //             "childs": []
-  //           },
-  //           {
-  //             "id": "50102",
-  //             "parent_id": "501",
-  //             "name": "测试000072",
-  //             "code": "050102",
-  //             "menu_type": 3,
-  //             "path": "/sys/org",
-  //             "icon": "icon-tubiao",
-  //             "icon_size": "20",
-  //             "isExpand":false,
-  //             "isSelect":false,
-  //             "childs": []
-  //           }
-  //         ]
-  //       },
-  //       {
-  //         "id": "503",
-  //         "parent_id": "5",
-  //         "name": "测试00072",
-  //         "code": "0503",
-  //         "menu_type": 2,
-  //         "path": "/sys/org",
-  //         "icon": "icon-tubiao",
-  //         "icon_size": "20",
-  //         "isExpand":false,
-  //         "isSelect":false,
-  //         "childs": [
-  //           {
-  //             "id": "50301",
-  //             "parent_id": "503",
-  //             "name": "测试000073",
-  //             "code": "050301",
-  //             "menu_type": 3,
-  //             "path": "/sys/org",
-  //             "icon": "icon-tubiao",
-  //             "icon_size": "20",
-  //             "isExpand":false,
-  //             "isSelect":false,
-  //             "childs": []
-  //           },
-  //           {
-  //             "id": "50302",
-  //             "parent_id": "503",
-  //             "name": "测试000075",
-  //             "code": "050302",
-  //             "menu_type": 3,
-  //             "path": "/sys/org",
-  //             "icon": "icon-tubiao",
-  //             "icon_size": "20",
-  //             "isExpand":false,
-  //             "isSelect":false,
-  //             "childs": []
-  //           }
-  //         ]
-  //       }
-  //     ]
-  //   }
-  // ],
   menus:[],
   selMenuns:[{
     id: '-1',
@@ -471,55 +99,82 @@ const md = reactive<{
   navWdth:'199px'
 })
 
-const tab_click = (tab:TabsPaneContext) => { // console.log(tab.props.name)
+const tab_click = (tab:TabsPaneContext) => { // console.log(tab.props.name) 单击选中tab
   md.currSelMenu =  tab.props.name!.toString()
-  md.selMenuns.forEach((e:menuModel) => {
-    if (e.id == tab.props.name) {
-      e.isSelect = true
-      router.push(e.url)
+  md.selMenuns.forEach((f:menuModel) => {
+    if (f.id == tab.props.name) {
+      f.isSelect = true
+      router.push(f.url)
+      asyncSelectMenu(f.id)
     }
-    else e.isSelect = false
+    else f.isSelect = false
   })
   localStorage.setItem('currSelMenu', md.currSelMenu)
 }
 
-const cls_tab = (tab:TabPaneName) => {
+const cls_tab = (tab:TabPaneName) => { // 关闭tab
   const idx = md.selMenuns.findIndex((e:menuModel) => e.id == tab) // console.log(tab, idx)
   if (idx >= 0) {
     md.selMenuns.splice(idx, 1)
     if (md.selMenuns.length > 0) {
       const lastIdx = idx - 1 >= 0 ? idx - 1 : 0
       const lastMenu = md.selMenuns[lastIdx]
-
       if (lastMenu) {
         md.currSelMenu = lastMenu.id; router.push(lastMenu.url)
-        md.menus.forEach((e:menuModel) => {
-          if (e.children && e.children.length>0) {
-            e.children.forEach((c:menuModel) => {
-              c.isSelect = false
-              if (c.id == lastMenu.id) {
-                c.isSelect = true
-                return
-              }
-              else if (c.children && c.children.length > 0) {
-                c.children.forEach((ch:menuModel) => {
-                  ch.isSelect = false
-                  if (ch.id == lastMenu.id) ch.isSelect = true
-                })
-              }
-            })
-          }
-          else {
-            e.isSelect = false
-            if (e.id == md.currSelMenu) e.isSelect = true
-          }
-        })
+        asyncSelectMenu(lastMenu.id)
         return
       }
     }
-    md.currSelMenu = ''
+    md.currSelMenu = '-1'
     router.push('/sys/home')
   }
+}
+
+const asyncSelectMenu = (id: string) => { // 状态复位
+  md.menus.forEach((e:menuModel) => {
+    e.isSelect = false
+    if (e.children && e.children.length>0) {
+      e.isExpand = false
+      e.children.forEach((c:menuModel) => {
+        c.isSelect = false
+        if (c.children && c.children.length > 0){
+          c.isExpand = false
+          c.children.forEach((ch:menuModel) => {
+            ch.isSelect = false
+          })
+        }
+      })
+    }
+  })
+
+  // 根据id选中菜单
+  md.menus.forEach((e:menuModel) => {
+    if (e.children && e.children.length>0) {
+      e.children.forEach((c:menuModel) => {
+        if (c.id == id) {
+          c.isSelect = true
+          md.currNav = e.id
+          e.isExpand = true
+          return
+        }
+        else if (c.children && c.children.length > 0) {
+          c.children.forEach((ch:menuModel) => {
+            if (ch.id == id){
+              ch.isSelect = true
+              c.isExpand = true
+              e.isExpand = true
+              md.currNav = e.id
+              return
+            }
+          })
+        }
+      })
+    }
+    else {
+      e.isSelect = false
+      if (e.id == md.currSelMenu) e.isSelect = true
+    }
+  })
 }
 
 onMounted(() => { // 初始化加载
@@ -764,7 +419,7 @@ const expandOr = () => {
 :deep(.el-tabs__header) {
   /* background-color: #3964fe; */
   color: white;
-  border-bottom: 1px solid lightgray;
-  margin: 0px;
+  border-bottom: 1px solid #e4e7ed;
+  margin: 1px 0px 0px 0px;
 }
 </style>
