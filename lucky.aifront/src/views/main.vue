@@ -192,8 +192,8 @@ onMounted(() => { // 初始化加载
                 c.isSelect = true
                 e.isExpand = true
                 md.currNav = e.id; currUrl = c.url
-                md.selMenuns.push(c)
                 md.currSelMenu = c.id
+                md.selMenuns.push(c)
                 return
               }
               else if (c.children && c.children.length>0) {
@@ -203,8 +203,8 @@ onMounted(() => { // 初始化加载
                     c.isExpand = true
                     e.isExpand = true
                     md.currNav = e.id; currUrl = ch.url
-                    md.selMenuns.push(ch)
                     md.currSelMenu = ch.id
+                    md.selMenuns.push(ch)
                     return
                   }
                 })
@@ -304,7 +304,7 @@ const expandOr = () => {
           <el-tab-pane v-for="(e, i) in md.selMenuns" :key="i" :label="e.name" :name="e.id" :closable="e.id!='-1'">
             <template #label>
               <div>
-                <span :class="'iconfont '+ e.icon" style="font-size: 16px;"></span><!-- <el-icon :size="20" :color="'white'"><Cpu /></el-icon> -->
+                <span :class="'iconfont '+ e.icon" style="font-size: 16px; margin-top: 2px;"></span><!-- <el-icon :size="20" :color="'white'"><Cpu /></el-icon> -->
                 <span style="padding-left: 10px;">{{e.name}}</span>
               </div>
             </template>
@@ -368,7 +368,7 @@ const expandOr = () => {
   min-height: 67px;
   max-height: 67px;
   width: 100%;
-  background-color: lightgray;
+  background-color: #e4e7ed;
   border-bottom: 1px solid snow;
   box-shadow: 0px 0px 11px 0px whitesmoke inset;
 }
@@ -421,5 +421,8 @@ const expandOr = () => {
   color: white;
   border-bottom: 1px solid #e4e7ed;
   margin: 1px 0px 0px 0px;
+}
+:deep(.el-tabs__item) {
+  padding: 0px 11px;
 }
 </style>
