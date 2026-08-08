@@ -73,7 +73,7 @@ namespace MqttServerLib
                 {
                     if(!string.IsNullOrWhiteSpace(mqttOption.CertificatePath) && File.Exists(mqttOption.CertificatePath))
                     {
-                        // 配置 HTTPS 端口 (用于WSS和HTTP API)
+                        // 配置 HTTPS 端口 (用于WSS和HTTPS API)
                         if (mqttOption.WssPort > 0)
                         {
                             options.ListenAnyIP(mqttOption.WssPort, listenOptions => listenOptions.UseHttps(mqttOption.CertificatePath, mqttOption.CertificatePassword));
