@@ -13,8 +13,8 @@
       <div class="grid_div">
         <el-table :data="state.tbData" row-key="id" height="100%" v-loading="state.loading">
             <el-table-column type="selection" width="55" />
-            <el-table-column property="cfgType" label="配置类型" width="120" />
-            <el-table-column property="typeName" label="类型名" width="120" />
+            <el-table-column property="cfgType" label="配置类型" width="137" show-overflow-tooltip/>
+            <el-table-column property="typeName" label="类型名" width="137" show-overflow-tooltip />
             <!-- <el-table-column property="sex" label="性别" width="88">
               <template #default="scope">
                 <div style="display: flex; align-items: center">
@@ -24,10 +24,10 @@
               </template>
             </el-table-column> -->
             <el-table-column property="name" label="选项名" width="137" show-overflow-tooltip/>
-            <el-table-column property="value" label="选项值" width="111" />
-            <el-table-column property="code" label="编码" width="101" />
+            <el-table-column property="value" label="选项值" width="137" show-overflow-tooltip />
+            <el-table-column property="code" label="编码" width="137" show-overflow-tooltip />
             <el-table-column property="status" label="状态" width="88"/>
-            <el-table-column property="sort" label="排序" width="88" show-overflow-tooltip />
+            <el-table-column property="sort" label="排序" width="88" />
             <el-table-column label="日期" width="168">
               <template #default="scope">{{ scope.row.createTime }}</template>
             </el-table-column>

@@ -37,7 +37,7 @@ namespace Lucky.BaseModel.Model.Entity
     /// <summary>
     /// 基本创建
     /// </summary>
-    public class BaseCreateEntity<T> : CommonCommonEntity<T>
+    public class BaseCreateEntity<T> : BaseCommonEntity<T>
     {
         /// <summary>
         /// 创建时间
@@ -51,28 +51,6 @@ namespace Lucky.BaseModel.Model.Entity
         /// </summary>
         [Column("create_uid")]
         public long CreateUid { get; set; }
-
-    }
-
-    /// <summary>
-    /// 基本删除
-    /// </summary>
-    public class BaseDelEntity<T> : CommonCommonEntity<T>
-    {
-        /// <summary>
-        /// 删除时间
-        /// </summary>
-        //[Comment("删除时间")]
-        [Column("del_time", TypeName = "timestamp")]
-        public DateTime? DelTime { get; set; }
-
-        /// <summary>
-        /// 删除人Id
-        /// </summary>
-        //[MaxLength(20)]
-        // [Comment("删除人Id")]
-        [Column("del_uid")]
-        public long? DelUid { get; set; }
 
     }
 

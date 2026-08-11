@@ -34,7 +34,7 @@ namespace Lucky.SysModel.Entity
         /// <summary>
         /// 配置值
         /// </summary>
-        [StringLength(10)]
+        [StringLength(40)]
         [Column("value")]
         public string? Value { get; set; }
 
