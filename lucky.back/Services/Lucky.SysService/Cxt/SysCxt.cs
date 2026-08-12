@@ -59,6 +59,11 @@ namespace Lucky.SysService.Cxt
         /// </summary>
         public DbSet<SysUserOrg> SysUserOrgs { get; set; }
 
+        /// <summary>
+        /// 任务
+        /// </summary>
+        public DbSet<SysTsk> SysTsk { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -91,6 +96,12 @@ namespace Lucky.SysService.Cxt
             modelBuilder.Entity<SysConfig>(x =>
             {
                 x.ToTable("sys_config");
+                x.Property(e => e.Id).ValueGeneratedOnAdd();
+            });
+
+            modelBuilder.Entity<SysTsk>(x =>
+            {
+                x.ToTable("sys_tsk");
                 x.Property(e => e.Id).ValueGeneratedOnAdd();
             });
 

@@ -32,12 +32,18 @@ namespace Lucky.SysModel.Entity
         /// 任务执行表达式
         /// </summary>
         [Column("cron")]
-        public string Cron { get; set; } = "* * * * *";
+        public string? Cron { get; set; } = "* * * * *";
 
         /// <summary>
         /// 任务参数
         /// </summary>
         [Column("param_model")]
         public string? ParamModel { get; set; }
+
+        /// <summary>
+        /// 任务描述
+        /// </summary>
+        [Column("remark")]
+        public string? Remark { get; set; }
     }
 }

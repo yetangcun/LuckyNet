@@ -17,10 +17,13 @@ namespace Lucky.SysModel.Entity
 
         /// <summary>
         /// 任务执行结果
-        /// 0:失败 1:成功
+        /// 0未开始
+        /// 1执行中
+        /// 2成功
+        /// 3失败
         /// </summary>
-        [Column("tsk_result")]
-        public int TskResult { get; set; }
+        [Column("status")]
+        public int Status { get; set; }
 
         /// <summary>
         /// 任务执行结果信息
@@ -33,6 +36,18 @@ namespace Lucky.SysModel.Entity
         /// 任务参数
         /// </summary>
         [Column("tsk_params")]
-        public string TskParams { get; set; } = string.Empty;
+        public string TskParam { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 任务开始时间
+        /// </summary>
+        [Column("start_time")]
+        public DateTime StartTime { get; set; }
+
+        /// <summary>
+        /// 任务结束时间
+        /// </summary>
+        [Column("end_time")]
+        public DateTime EndTime { get; set; }
     }
 }
