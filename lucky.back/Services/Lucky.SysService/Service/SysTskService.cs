@@ -6,8 +6,6 @@ using Lucky.SysModel.Model.Output;
 using Lucky.SysService.Rpsty.IRpsty;
 using Lucky.SysService.Service.IService;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace Lucky.SysService.Service
@@ -123,7 +121,7 @@ namespace Lucky.SysService.Service
                 {
                     Name = req.Name,
                     Remark = req.Remark,
-                    Status = req.Status,
+                    Status = req.Status??1,
                     Code = req.Code,
                     Cron = req.Cron,
                     ParamModel = req.ParamModel,
@@ -142,7 +140,7 @@ namespace Lucky.SysService.Service
                 }
                 entity.Name = req.Name;
                 entity.Remark = req.Remark;
-                entity.Status = req.Status;
+                entity.Status = req.Status??1;
                 entity.Code = req.Code;
                 entity.Cron = req.Cron;
                 entity.ParamModel = req.ParamModel;

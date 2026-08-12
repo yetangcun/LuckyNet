@@ -1,4 +1,5 @@
 ﻿using Lucky.BaseModel.Model.Entity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lucky.SysModel.Entity
@@ -7,7 +8,7 @@ namespace Lucky.SysModel.Entity
     /// 系统任务执行记录
     /// </summary>
     [Table("sys_tsk_record")]
-    public class SysTskRecord : BaseCreateEntity<long>
+    public class SysTskRecord : BaseCommonEntity<long>
     {
         /// <summary>
         /// 任务ID
@@ -35,7 +36,7 @@ namespace Lucky.SysModel.Entity
         /// <summary>
         /// 任务参数
         /// </summary>
-        [Column("tsk_params")]
+        [Column("tsk_param")]
         public string TskParam { get; set; } = string.Empty;
 
         /// <summary>
@@ -49,5 +50,13 @@ namespace Lucky.SysModel.Entity
         /// </summary>
         [Column("end_time")]
         public DateTime EndTime { get; set; }
+
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        [Required]
+        [Column("create_time", TypeName = "timestamp")]
+        public DateTime CreateTime { get; set; }
+
     }
 }

@@ -10,7 +10,7 @@ namespace Lucky.SysModel.Model.Input
         /// <summary>
         /// 关键字
         /// </summary>
-        public string Txt { get; set; } = string.Empty;
+        public string? Txt { get; set; } = string.Empty;
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ namespace Lucky.SysModel.Model.Input
         /// <summary>
         /// 状态
         /// </summary>
-        public int Status { get; set; }
+        public int? Status { get; set; } = 1;
 
         /// <summary>
         /// 备注

@@ -63,6 +63,22 @@ const sysrouter = [
       keepAlive: true,
     },
   },
+  {
+    path: '/sys/tsk',
+    name: 'sys_tsk',
+    component: () => import('../../views/sys/tsk.vue'),
+    meta: {
+      keepAlive: true,
+    },
+  },
+  {
+    path: '/sys/tskRecord',
+    name: 'sys_tskRecord',
+    component: () => import('../../views/sys/tskRecord.vue'),
+    meta: {
+      keepAlive: true,
+    },
+  },
 ]
 
 export default sysrouter

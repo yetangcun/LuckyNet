@@ -367,7 +367,7 @@ namespace Lucky.SysService.Service
 
                 lst.Add(parentEle);
             }
-            lst[0].isExpand = true;
+            // lst[0].isExpand = true;
             return lst;
         }
 
