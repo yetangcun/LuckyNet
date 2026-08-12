@@ -160,7 +160,7 @@ const state = reactive<{
     id: -1,
     name: '',
     code: '',
-    status: 1,
+    status: 0,
     cron: '',
     paramModel: '',
     remark: ''
@@ -204,7 +204,7 @@ const btnAdd = () => { // 新增
   state.opt.id = -1
   state.opt.name = ''
   state.opt.code = ''
-  state.opt.status = 1
+  state.opt.status = 0
   state.opt.cron = ''
   state.opt.paramModel = ''
   state.opt.remark = ''
