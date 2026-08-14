@@ -72,6 +72,17 @@ namespace lucky.admin.Controllers.sys
             return ResModel<SysTskOutput>.Success(res);
         }
 
+        /// <summary>
+        /// 启用|停用任务
+        /// </summary>
+        [HttpPut("status/{id}")]
+        public async Task<ResModel<bool>> Set(int id)
+        {
+            var uid = HttpContext.GetUid();
+            var res = await sysTskService.Set(id, uid);
+            return res.Item1 ? ResModel<bool>.Success(true) : ResModel<bool>.Failed(false, res.Item2);
+        }
+
         #region 任务记录
         #endregion
     }

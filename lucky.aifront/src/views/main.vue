@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 // import { RouterView } from 'vue-router';
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, provide } from 'vue';
 import { Cpu, Expand, Fold } from '@element-plus/icons-vue'
 import type { menuModel } from '@/models/sys/menuModel'
 
@@ -12,7 +12,7 @@ import type { TabsPaneContext, TabPaneName } from 'element-plus'
 // import { useGlbStateStore } from '@/stores/glbstate'
 
 const router = useRouter()
-const to_pg = (obj: menuModel) => {
+const to_pg = (obj: menuModel, otherId:string = '') => {
   md.menus.forEach((e:menuModel) => {
     if (e.children && e.children.length>0) {
       e.children.forEach((c:menuModel) => {
@@ -42,9 +42,40 @@ const to_pg = (obj: menuModel) => {
       md.selMenuns.push(obj)
   }
   else md.selMenuns.push(obj) // console.log(obj.url)
-  router.push(obj.url)
+  if (!otherId) router.push(obj.url)
+  else router.push({ path: obj.url, query: { otherId: otherId } })
   localStorage.setItem('currSelMenu', obj.id)
 }
+
+const tik2pg = (menuId:string, otherId:string) => {
+  // 递归找菜单，从md.menus中找出id为menuId的菜单
+  let obj: menuModel | null = null
+  md.menus.forEach((e:menuModel) => {
+    if (e.children && e.children.length>0) {
+      e.children.forEach((c:menuModel) => {
+        if (c.id == menuId) {
+          obj = c
+          return
+        }
+        else if (c.children && c.children.length>0) {
+          c.children.forEach((ch:menuModel) => {
+            if (ch.id == menuId) {
+              obj = ch
+              return
+            }
+          })
+        }
+      })
+    }
+    else if (e.id == menuId) {
+      obj = e
+      return
+    }
+  })
+
+  if (obj) to_pg(obj, otherId)
+}
+provide('tik2pg', tik2pg)
 
 const quit_hdl = () => {
   ElMessageBox.confirm(

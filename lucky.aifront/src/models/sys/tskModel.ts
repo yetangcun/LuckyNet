@@ -39,7 +39,7 @@ export interface tskRecordModel {
   endTime: string;
 }
 
-export interface tskRecordQueryModel {
+export interface tskRecordQueryModel extends pageInfo {
   tskId: string;
   status: number;
   startTime: string;

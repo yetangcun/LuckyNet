@@ -64,27 +64,30 @@
 import { onMounted, reactive } from 'vue';
 import { Search } from '@element-plus/icons-vue'
 import type { selNumKV, selKV } from '@/models/common/selectKV';
-import type { logQueryModel, logInfoModel } from '@/models/sys/logModel'
+import type { tskRecordQueryModel, tskRecordModel } from '@/models/sys/tskModel'
+
+import { useRoute } from 'vue-router'
 
 import { systemReq } from '@/utils/reqUtil';
 
+const route = useRoute()
+const tskId = route.query.otherId?route.query.otherId.toString():''
+
 const state = reactive<{
   loading:boolean,
-  query:logQueryModel,
+  query:tskRecordQueryModel,
   statusKv: selNumKV[],
   methodKv: selKV[],
-  tbData: logInfoModel[]
+  tbData: tskRecordModel[]
 }>({
   loading: false,
   query: {
+    tskId: '',
+    status: -1,
+    startTime: '',
+    endTime: '',
     pageIndex: 1,
     pageSize: 20,
-    reqType: '',
-    status: -1,
-    reqUrl: '',
-    reqIp: '',
-    beginTime: '',
-    endTime: '',
     total: 0
   },
   methodKv: [
@@ -137,6 +140,10 @@ const state = reactive<{
 const getList = () => {
   state.loading = true
   state.tbData = []
+  // console.log('tskId: '+tskId)
+  if (tskId) {
+    state.query.tskId = tskId
+  }
   systemReq.axiosIns.get('api/sys/SysLog/pages', { params:state.query })
   .then((res:any) => {
     state.loading = false

@@ -4,41 +4,37 @@
       <el-text class="lbStl">关键字:</el-text>
       <el-input class="commonInput" v-model="state.query.txt" placeholder="名称|账号"></el-input>
       <el-text class="lbStl">状态:</el-text>
-      <el-select class="commonInput" v-model="state.query.status"
-      :options="state.statusKv" :props="props" placeholder="请选择"/>
+      <el-select class="commonInput" v-model="state.query.status" :options="state.sttKv" placeholder="请选择" :props="props" clearable/>
       <el-button type="primary" :icon="Search" class="btnStl" @click="getList">查询</el-button>
       <el-button type="danger" :icon="Plus" class="btnStl" @click="btnAdd">新增</el-button>
     </div>
     <div class="pg_grid">
       <div class="grid_div">
         <el-table :data="state.tbData" row-key="id" v-loading="state.loading" height="100%">
-            <el-table-column type="selection" width="55" />
+            <el-table-column type="selection" width="66" />
             <!-- <el-table-column label="Date" width="120">
               <template #default="scope">{{ scope.row.date }}</template>
             </el-table-column> -->
-            <el-table-column property="name" label="姓名" width="120" />
-            <el-table-column property="code" label="姓名" width="120" />
-            <el-table-column property="status" label="性别" width="88">
+            <el-table-column property="name" label="名称" width="166" show-overflow-tooltip />
+            <el-table-column property="code" label="编码" width="166" show-overflow-tooltip />
+            <el-table-column property="status" label="状态" width="88">
               <template #default="scope">
                 <div style="display: flex; align-items: center">
-                  <span v-if="scope.row.sex==1">男</span>
-                  <span v-else>女</span>
+                  <span v-if="scope.row.status==1" style="color: green">启用</span>
+                  <span v-else style="color: red">禁用</span>
                 </div>
               </template>
             </el-table-column>
-            <el-table-column property="cron" label="昵称" width="120" />
-            <el-table-column property="paramModel" label="角色" width="166" show-overflow-tooltip/>
-            <el-table-column property="createTime" label="联系方式" width="120" />
-            <el-table-column property="updateTime" label="组织机构" width="120" show-overflow-tooltip />
-            <el-table-column label="日期" width="137">
-              <template #default="scope">{{ scope.row.createTime }}</template>
-            </el-table-column>
-            <el-table-column property="createUser" label="创建人" width="120"/>
-            <el-table-column property="updateUser" label="创建人" width="120"/>
-            <el-table-column label="设置" min-width="176">
+            <el-table-column property="cron" label="策略" width="137" show-overflow-tooltip />" />
+            <el-table-column property="paramModel" label="参数模型" width="257" show-overflow-tooltip/>
+            <el-table-column property="createTime" label="创建时间" width="166" />
+            <el-table-column property="updateTime" label="更新时间" width="166" show-overflow-tooltip />
+            <el-table-column property="createUser" label="创建人" width="137"/>
+            <el-table-column property="updateUser" label="更新人" width="137"/>
+            <el-table-column label="设置" width="257">
               <template #default="scope">
                 <div>
-                  <el-switch v-model="scope.row.status" active-text="启用" inactive-text="禁用" @change="setStatus" />
+                  <el-switch v-model="scope.row.status" :inactive-value="0" :active-value="1" inactive-text="禁用" active-text="启用" @change="setStatus(scope.row.id)" />
                 </div>
               </template>
             </el-table-column>
@@ -47,6 +43,7 @@
                 <div>
                   <el-button @click="btnEdit(scope.row.id)" type="primary">编辑</el-button>
                   <el-button @click="btnDel(scope.row.id)" type="danger">删除</el-button>
+                  <el-button @click="btnDetail(scope.row.id)" type="warning">执行记录</el-button>
                 </div>
               </template>
             </el-table-column>
@@ -69,7 +66,7 @@
   <el-dialog
     v-model="state.dlgVisible"
     :title="state.dlgTitle"
-    width="500"
+    width="600"
     draggable
     overflow
   >
@@ -78,11 +75,11 @@
           <el-form-item label="名称" placeholder="请输入姓名" prop="name">
             <el-input v-model="state.opt.name" />
           </el-form-item>
-          <el-form-item label="编码" placeholder="请输入账号">
+          <el-form-item label="编码" placeholder="业务模块+业务功能@用英文单词">
             <el-input v-model="state.opt.code" />
           </el-form-item>
           <el-form-item label="策略" placeholder="请输入昵称">
-            <el-input v-model="state.opt.name" />
+            <el-input v-model="state.opt.cron" />
           </el-form-item>
           <el-form-item label="状态" placeholder="请选择性别">
             <el-radio-group v-model="state.opt.status">
@@ -91,10 +88,10 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="参数模型">
-            <el-input v-model="state.opt.paramModel" />
+            <el-input v-model="state.opt.paramModel" type="textarea" :rows="6" placeholder="请输入参数模型" />
           </el-form-item>
           <el-form-item label="备注">
-            <el-input v-model="state.opt.remark" />
+            <el-input v-model="state.opt.remark" type="textarea" :rows="3" placeholder="请输入参数模型"  />
           </el-form-item>
       </el-form>
     </div>
@@ -108,7 +105,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive } from 'vue';
+import { onMounted, reactive, nextTick, inject } from 'vue';
 import { Plus, Search } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { selNumKV } from '@/models/common/selectKV';
@@ -118,8 +115,7 @@ import { systemReq } from '@/utils/reqUtil';
 
 const props = {
   value: 'value',
-  label: 'label',
-  options: 'options',
+  label: 'label'
 }
 
 const state = reactive<{
@@ -127,7 +123,7 @@ const state = reactive<{
   dlgTitle:string,
   dlgVisible:boolean,
   query:tskQueryModel,
-  statusKv: selNumKV[],
+  sttKv: selNumKV[],
   opt: tskOptModel,
   tbData: tskModel[]
 }>({
@@ -141,7 +137,7 @@ const state = reactive<{
     pageSize: 20,
     total: 0
   },
-  statusKv: [
+  sttKv: [
     {
       label: '请选择',
       value: -1
@@ -188,8 +184,14 @@ const hdlSizeChange = (val:number) => {
 }
 
 const setStatus = (val:number) => {
-  state.query.status = val
-  getList()
+  systemReq.axiosIns.put(`api/sys/SysTsk/status/${val}`)
+  .then((res:any) => {
+    ElMessage.success('操作成功')
+  })
+  .catch((err:any)=>{
+    console.log(err)
+  })
+  // getList()
 }
 
 const hdlCurrentChange = (val:number) => {
@@ -201,7 +203,7 @@ const hdlCurrentChange = (val:number) => {
 const btnAdd = () => { // 新增
   state.dlgTitle = '新增任务'
   state.dlgVisible = true
-  state.opt.id = -1
+  state.opt.id = undefined
   state.opt.name = ''
   state.opt.code = ''
   state.opt.status = 0
@@ -218,11 +220,11 @@ const btnEdit = (id:number) => {  // 编辑
   systemReq.axiosIns.get(`api/sys/SysTsk/${id}`)
   .then((res:any) => {
     // console.log(res.Data)
-    state.opt.name = res.Data.realname
-    state.opt.code = res.Data.account
+    state.opt.name = res.Data.name
+    state.opt.code = res.Data.code
     state.opt.remark = res.Data.remark
-    state.opt.cron = res.Data.orgId
-    state.opt.paramModel = res.Data.avatar
+    state.opt.cron = res.Data.cron
+    state.opt.paramModel = res.Data.paramModel
     state.opt.status = res.Data.status
   })
   .catch((err:any)=>{
@@ -269,57 +271,43 @@ const btnSave = () => {
     return
   }
 
-  if (!state.opt.id) {
-    // state.opt.id = '0'
-    systemReq.axiosIns.post('api/sys/SysTsk', state.opt)
-    .then((res:any) => {
-      state.dlgVisible = false
-      if (res.Data) {
-        getList()
-        ElMessage({
-          type: 'success',
-          message: '保存成功',
-        })
-        return
-      }
-      else if(res.Msg) {
-        ElMessage({
-          type: 'error',
-          message: res.Msg,
-        })
-      }
-    })
-    .catch((err:any)=>{
-      console.log(err)
-    })
-  }
-  else {
-    systemReq.axiosIns.put(`api/sys/SysTsk`, state.opt)
-    .then((res:any) => {
-      state.dlgVisible = false
-      if (res.Data) {
-        getList()
-        ElMessage({
-          type: 'success',
-          message: '保存成功',
-        })
-        return
-      }
-      else if(res.Msg) {
-        ElMessage({
-          type: 'error',
-          message: res.Msg,
-        })
-      }
-    })
-    .catch((err:any)=>{
-      console.log(err)
-    })
+  if (!state.opt.id) state.opt.id = 0
+  systemReq.axiosIns.post('api/sys/SysTsk', state.opt)
+  .then((res:any) => {
+    state.dlgVisible = false
+    if (res.Data) {
+      getList()
+      ElMessage({
+        type: 'success',
+        message: '保存成功',
+      })
+      return
+    }
+    else if(res.Msg) {
+      ElMessage({
+        type: 'error',
+        message: res.Msg,
+      })
+    }
+  })
+  .catch((err:any)=>{
+    console.log(err)
+  })
+}
+
+const tik2pg = inject('tik2pg')
+const btnDetail = (id:number) => {
+  if (tik2pg) {
+      // console.log('btnDetail: '+id)
+      tik2pg('24', id)
   }
 }
 
 onMounted(async () => {
   getList()
+  nextTick(() => {
+    state.query.status = -1
+  })
 })
 
 </script>
