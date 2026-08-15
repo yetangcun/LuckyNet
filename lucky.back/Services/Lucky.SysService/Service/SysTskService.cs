@@ -178,7 +178,7 @@ namespace Lucky.SysService.Service
             var where = PredicateBuilder.New<SysTskRecord>(x => true);
             if (req.TskId != null && req.TskId > 0)
                 where = where.And(x => x.TskId == req.TskId);
-            if (req.Status != null)
+            if (req.Status != null && req.Status > -1)
                 where = where.And(x => x.Status == req.Status);
             if (req.StartTime != null)
                 where = where.And(x => x.CreateTime >= req.StartTime);
@@ -193,13 +193,13 @@ namespace Lucky.SysService.Service
             };
             Expression<Func<SysTskRecord, SysTskRecordOutput>> expr = x => new SysTskRecordOutput()
             {
-                Id = x.Id,
-                TskId = x.TskId,
-                Status = x.Status,
-                StartTime = x.StartTime,
-                EndTime = x.EndTime,
-                TskParam = x.TskParam,
-                TskMsg = x.TskMsg,
+                id = x.Id,
+                tskId = x.TskId,
+                status = x.Status,
+                startTime = x.StartTime,
+                endTime = x.EndTime,
+                tskParam = x.TskParam,
+                tskMsg = x.TskMsg,
             };
             return await _tskRecordRpsty.GetPagesAsync(where, expr, pgInfo);
         }

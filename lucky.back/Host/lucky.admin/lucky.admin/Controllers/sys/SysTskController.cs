@@ -84,6 +84,17 @@ namespace lucky.admin.Controllers.sys
         }
 
         #region 任务记录
+        /// <summary>
+        /// 获取任务执行记录列表
+        /// </summary>
+        /// <param name="req"></param>
+        [HttpGet("record/pages")]
+        public async Task<PageRes<List<SysTskRecordOutput>>> GetRecordPages([FromQuery] SysTskRecordInput req)
+        {
+            var uid = HttpContext.GetUid();
+            var res = await sysTskService.GetRecordPages(req);
+            return PageRes<List<SysTskRecordOutput>>.Success(res.Item1, res.Item2);
+        }
         #endregion
     }
 }

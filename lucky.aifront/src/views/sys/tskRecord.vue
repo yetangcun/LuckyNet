@@ -2,25 +2,17 @@
   <div class="pg_top">
     <div class="pg_query">
       <el-text class="lbStl">关键字:</el-text>
-      <el-input class="commonInput" v-model="state.query.reqUrl" placeholder="请求地址" clearable/>
-      <el-input class="commonInput" v-model="state.query.reqIp" placeholder="客户端IP" clearable/>
-      <el-select class="commonInput" v-model="state.query.reqType" placeholder="请选择" clearable>
-        <el-option v-for="item in state.methodKv" :key="item.value" :label="item.label" :value="item.value"></el-option>
-      </el-select>
+      <el-input class="commonInput" v-model="state.query.tskId" placeholder="任务id" clearable/>
       <el-select class="commonInput" v-model="state.query.status" placeholder="请选择" clearable>
         <el-option v-for="item in state.statusKv" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
-
       <el-button type="primary" :icon="Search" class="btnStl" @click="getList">查询</el-button>
     </div>
     <div class="pg_grid">
       <div class="grid_div">
         <el-table :data="state.tbData" v-loading="state.loading" height="100%">
             <el-table-column type="selection" width="55" />
-            <!-- <el-table-column label="Date" width="120">
-              <template #default="scope">{{ scope.row.date }}</template>
-            </el-table-column> -->
-            <el-table-column property="reqUrl" label="地址" width="257" />
+            <el-table-column property="tskId" label="任务id" width="257" />
             <el-table-column property="status" label="状态" width="88">
               <template #default="scope">
                 <div style="display: flex; align-items: center">
@@ -29,12 +21,10 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column property="reqIp" label="客户端IP" width="166" show-overflow-tooltip/>
-            <el-table-column property="reqParam" label="请求参数" width="257" show-overflow-tooltip/>
-            <el-table-column property="reqType" label="请求方式" width="88" />
-            <el-table-column property="logMsg" label="异常提示" width="199" show-overflow-tooltip />
-            <el-table-column property="reqUser" label="用户" width="166" />
-            <el-table-column property="reqTime" label="操作时间" width="166" show-overflow-tooltip />
+            <el-table-column property="tskParam" label="参数" width="166" show-overflow-tooltip/>
+            <el-table-column property="startTime" label="开始时间" width="166" show-overflow-tooltip/>
+            <el-table-column property="endTime" label="完成时间" width="166" show-overflow-tooltip />
+            <el-table-column property="tskMsg" label="执行信息" width="257" show-overflow-tooltip/>
             <el-table-column label="操作" min-width="156">
               <template #default="scope">
                 <div>
@@ -63,7 +53,7 @@
 <script lang="ts" setup>
 import { onMounted, reactive } from 'vue';
 import { Search } from '@element-plus/icons-vue'
-import type { selNumKV, selKV } from '@/models/common/selectKV';
+import type { selNumKV } from '@/models/common/selectKV';
 import type { tskRecordQueryModel, tskRecordModel } from '@/models/sys/tskModel'
 
 import { useRoute } from 'vue-router'
@@ -71,13 +61,12 @@ import { useRoute } from 'vue-router'
 import { systemReq } from '@/utils/reqUtil';
 
 const route = useRoute()
-const tskId = route.query.otherId?route.query.otherId.toString():''
+let tskId = route.query.otherId?route.query.otherId.toString():''
 
 const state = reactive<{
   loading:boolean,
   query:tskRecordQueryModel,
   statusKv: selNumKV[],
-  methodKv: selKV[],
   tbData: tskRecordModel[]
 }>({
   loading: false,
@@ -90,36 +79,6 @@ const state = reactive<{
     pageSize: 20,
     total: 0
   },
-  methodKv: [
-    {
-      label: '请选择',
-      value: '',
-    },
-    {
-      label: 'GET',
-      value: 'GET'
-    },
-    {
-      label: 'POST',
-      value: 'POST'
-    },
-    {
-      label: 'PUT',
-      value: 'PUT'
-    },
-    {
-      label: 'DELETE',
-      value: 'DELETE'
-    },
-    {
-      label: '登录',
-      value: 'LOGIN'
-    },
-    {
-      label: '退出',
-      value: 'QUIT'
-    }
-  ],
   statusKv: [
     {
       label: '请选择',
@@ -139,12 +98,12 @@ const state = reactive<{
 
 const getList = () => {
   state.loading = true
-  state.tbData = []
-  // console.log('tskId: '+tskId)
+  state.tbData = [] // console.log('tskId: '+tskId)
   if (tskId) {
     state.query.tskId = tskId
+    tskId = ''
   }
-  systemReq.axiosIns.get('api/sys/SysLog/pages', { params:state.query })
+  systemReq.axiosIns.get('api/sys/SysTsk/record/pages', { params:state.query })
   .then((res:any) => {
     state.loading = false
     // console.log(res)
@@ -162,8 +121,7 @@ const hdlSizeChange = (val:number) => {
   getList()
 }
 
-const hdlCurrentChange = (val:number) => {
-  // console.log('val: '+val)
+const hdlCurrentChange = (val:number) => { // console.log('val: '+val)
   state.query.pageIndex = val
   getList()
 }

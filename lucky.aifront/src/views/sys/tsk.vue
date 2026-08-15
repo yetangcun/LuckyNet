@@ -297,8 +297,7 @@ const btnSave = () => {
 
 const tik2pg = inject('tik2pg')
 const btnDetail = (id:number) => {
-  if (tik2pg) {
-      // console.log('btnDetail: '+id)
+  if (tik2pg) { // console.log('btnDetail: '+id)
       tik2pg('24', id)
   }
 }

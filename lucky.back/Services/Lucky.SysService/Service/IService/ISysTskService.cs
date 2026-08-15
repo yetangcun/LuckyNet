@@ -1,8 +1,5 @@
 ﻿using Lucky.SysModel.Model.Input;
 using Lucky.SysModel.Model.Output;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Lucky.SysService.Service.IService
 {
@@ -32,5 +29,12 @@ namespace Lucky.SysService.Service.IService
         /// 启用or禁用
         /// </summary>
         Task<(bool, string)> Set(int id, long uid);
+
+
+        /// <summary>
+        /// 获取分页数据
+        /// </summary>
+        Task<(int, List<SysTskRecordOutput>)> GetRecordPages(SysTskRecordInput req);
+
     }
 }

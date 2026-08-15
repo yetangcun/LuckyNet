@@ -64,6 +64,11 @@ namespace Lucky.SysService.Cxt
         /// </summary>
         public DbSet<SysTsk> SysTsk { get; set; }
 
+        /// <summary>
+        /// 任务
+        /// </summary>
+        public DbSet<SysTskRecord> SysTskRecord { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -104,6 +109,7 @@ namespace Lucky.SysService.Cxt
                 x.ToTable("sys_tsk");
                 x.Property(e => e.Id).ValueGeneratedOnAdd();
             });
+            modelBuilder.Entity<SysTskRecord>().ToTable("sys_tsk_record");
 
             modelBuilder.Entity<SysLog>().ToTable("sys_log");
 

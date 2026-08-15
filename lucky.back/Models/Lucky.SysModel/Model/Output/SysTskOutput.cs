@@ -84,22 +84,22 @@ namespace Lucky.SysModel.Model.Output
         /// <summary>
         /// 主键
         /// </summary>
-        public long Id { get; set; }
+        public long id { get; set; }
 
         /// <summary>
         /// 任务Id
         /// </summary>
-        public long TskId { get; set; }
+        public long tskId { get; set; }
 
         /// <summary>
         /// 开始时间
         /// </summary>
-        public DateTime StartTime { get; set; }
+        public DateTime startTime { get; set; }
 
         /// <summary>
         ///  结束时间
         /// </summary>
-        public DateTime EndTime { get; set; }
+        public DateTime endTime { get; set; }
 
         /// <summary>
         /// 状态
@@ -108,16 +108,16 @@ namespace Lucky.SysModel.Model.Output
         /// 2成功
         /// 3失败
         /// </summary>
-        public int Status { get; set; }
+        public int status { get; set; }
 
         /// <summary>
         /// 任务消息
         /// </summary>
-        public string? TskMsg { get; set; }
+        public string? tskMsg { get; set; }
 
         /// <summary>
         /// 任务参数
         /// </summary>
-        public string? TskParam { get; set; }
+        public string? tskParam { get; set; }
     }
 }
