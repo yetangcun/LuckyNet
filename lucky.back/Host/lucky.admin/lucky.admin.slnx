@@ -17,7 +17,9 @@
     <Project Path="../../Common/Tsk/Tsk.Hangfire/Tsk.Hangfire.csproj" Id="cb084fae-6c57-4925-988d-adb247ff5ed1" />
     <Project Path="../../Common/Tsk/Tsk.Quartz/Tsk.Quartz.csproj" Id="6ee83bc9-5a12-421e-aac6-765e76bb0817" />
   </Folder>
-  <Folder Name="/Document/" />
+  <Folder Name="/Document/">
+    <File Path="../../../document/luckysdb.sql" />
+  </Folder>
   <Folder Name="/Host/">
     <Project Path="../Lucky.IOT/Lucky.IOT.csproj" Id="cea9de76-0e75-4c96-9fea-8a94faeb75e6" />
     <Project Path="../Lucky.MqttServr/Lucky.MqttServr.csproj" Id="bbc620c8-5c74-4610-a3a9-822f71f8a2bb" />

@@ -32,7 +32,7 @@
             <el-table-column property="reqIp" label="客户端IP" width="166" show-overflow-tooltip/>
             <el-table-column property="reqParam" label="请求参数" width="257" show-overflow-tooltip/>
             <el-table-column property="reqType" label="请求方式" width="88" />
-            <el-table-column property="logMsg" label="异常提示" width="199" show-overflow-tooltip />
+            <el-table-column property="msg" label="异常提示" width="199" show-overflow-tooltip />
             <el-table-column property="reqUser" label="用户" width="166" />
             <el-table-column property="reqTime" label="操作时间" width="166" show-overflow-tooltip />
             <el-table-column label="操作" min-width="156">
