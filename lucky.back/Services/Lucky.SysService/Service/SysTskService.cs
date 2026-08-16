@@ -7,6 +7,8 @@ using Lucky.SysService.Rpsty.IRpsty;
 using Lucky.SysService.Service.IService;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
+using Tsk.Quartz.Jobs;
+using Tsk.Quartz.Jobs.Example;
 
 namespace Lucky.SysService.Service
 {
@@ -15,15 +17,17 @@ namespace Lucky.SysService.Service
         private readonly ILogger<SysTskService> _logger;
         private ISysRpsty<SysTsk, int> _sysRpsty;
         private ISysRpsty<SysTskRecord, long> _tskRecordRpsty;
+        private readonly JobExtension _jobExt;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="logger"></param>
         /// <param name="sysRpsty"></param>
-        public SysTskService(ILogger<SysTskService> logger, ISysRpsty<SysTsk, int> sysRpsty, ISysRpsty<SysTskRecord, long> tskRecordRpsty)
+        public SysTskService(ILogger<SysTskService> logger, ISysRpsty<SysTsk, int> sysRpsty, ISysRpsty<SysTskRecord, long> tskRecordRpsty, JobExtension jobExt)
         {
             _logger = logger;
+            _jobExt = jobExt;
             _sysRpsty = sysRpsty;
             _tskRecordRpsty = tskRecordRpsty;
         }
@@ -166,6 +170,18 @@ namespace Lucky.SysService.Service
             entity.UpdateTime = DateTime.Now;
             entity.UpdateUid = uid;
             var res = await _sysRpsty.UpdateAsync(entity);
+
+            #region 根据状态启动、剔除任务
+            if (entity.Status==1)
+            {
+               await _jobExt.AddIntervalJob<CornTestJob>(null);
+            }
+            else
+            {
+                await _jobExt.DeleteJob("");
+            }
+            #endregion
+
             return res > 0 ? (true, string.Empty) : (false, "设置失败");
         }
 

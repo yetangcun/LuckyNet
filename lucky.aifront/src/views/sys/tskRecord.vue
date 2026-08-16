@@ -12,7 +12,7 @@
       <div class="grid_div">
         <el-table :data="state.tbData" v-loading="state.loading" height="100%">
             <el-table-column type="selection" width="55" />
-            <el-table-column property="tskId" label="任务id" width="257" />
+            <el-table-column property="tskId" label="任务id" width="157" />
             <el-table-column property="status" label="状态" width="88">
               <template #default="scope">
                 <div style="display: flex; align-items: center">
@@ -21,9 +21,9 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column property="tskParam" label="参数" width="166" show-overflow-tooltip/>
-            <el-table-column property="startTime" label="开始时间" width="166" show-overflow-tooltip/>
-            <el-table-column property="endTime" label="完成时间" width="166" show-overflow-tooltip />
+            <el-table-column property="tskParam" label="参数" width="257" show-overflow-tooltip/>
+            <el-table-column property="startTime" label="开始时间" width="169"/>
+            <el-table-column property="endTime" label="完成时间" width="169" />
             <el-table-column property="tskMsg" label="执行信息" width="257" show-overflow-tooltip/>
             <el-table-column label="操作" min-width="156">
               <template #default="scope">

@@ -406,7 +406,7 @@ const expandOr = () => {
 #r_content {
   display: flex;
   flex: 1;
-  padding: 6px;
+  padding: 4px;
   min-height: 0px;  /* 关键666 */
   overflow: hidden;
   flex-direction: column;
@@ -426,7 +426,7 @@ const expandOr = () => {
 }
 #l_footer {
   display: flex;
-  padding: 10px 0px;
+  padding: 16px 0px;
   align-items: center;
   justify-content: center;
   /* border-top: 1px solid cornflowerblue; */
