@@ -12,10 +12,10 @@
           fontStyle: 'italic'}
         "
       >
-        <el-icon :size="61" :color="selColor">
-          <Cpu class="common_large_icon" />
+        <el-icon :size="46" :color="selColor" style="margin: 4px 6px 0px 0px;">
+          <Cpu />
         </el-icon>
-        <span :style="{ color: selColor ,display: 'flex', fontSize: '29px', textShadow: `0 0 32px ${selColor}` }"> AI NEXT </span>
+        <span :style="{ color: selColor ,display: 'flex', fontSize: '27px', textShadow: `0 0 32px ${selColor}`, fontWeight:600 }"> AI NEXT </span>
       </div>
       <div style="display: flex">
         <span
@@ -114,7 +114,7 @@
         </div>
       </div>
     </div>
-    <div id="page_footer" :style="{boxShadow:`0px 0px 12px 0px ${selColor}`}">
+    <div id="page_footer" :style="{boxShadow:`0px 0px 12px 0px ${selColor}`,fontFamily:'楷体'}">
       <label :style="{color:selColor}">AI Next Copyright@{{ years }} owned by Wuxiaojun</label>
       <!-- <label>AI Next Copyright@{{ years }} wholly owned by Wuxiaojun</label> -->
     </div>
