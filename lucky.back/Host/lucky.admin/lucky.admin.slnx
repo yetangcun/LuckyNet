@@ -9,8 +9,10 @@
   </Folder>
   <Folder Name="/Common/Protocol/">
     <Project Path="../../Common/Protocol/Prtcl.Grpc/Prtcl.Grpc.csproj" Id="f8563c23-8e7a-40ca-a274-d28a082980b8" />
+    <Project Path="../../Common/Protocol/Prtcl.Kfk/Prtcl.Kfk.csproj" Id="4adc277e-a6a8-405c-9f59-4942f5f14348" />
     <Project Path="../../Common/Protocol/Prtcl.Mqtt/Prtcl.Mqtt.csproj" Id="19687d2b-757d-4561-ae54-253b71e7049d" />
     <Project Path="../../Common/Protocol/Prtcl.MqttServr/Prtcl.MqttServr.csproj" Id="d49a2d8a-2e75-409b-b99c-efdf8c914ea5" />
+    <Project Path="../../Common/Protocol/Prtcl.Rabbitmq/Prtcl.Rabbitmq.csproj" Id="04c00293-f1f4-4d84-8d88-74129d8a69ad" />
     <Project Path="../../Common/Protocol/Prtcl.Tcudp/Prtcl.Tcudp.csproj" Id="f6ab20ad-9673-4137-ab1d-1f1d0289674d" />
   </Folder>
   <Folder Name="/Common/Tsk/">

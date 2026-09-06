@@ -55,6 +55,9 @@ namespace Lucky.SysService
             services.AddScoped<ISysTskService, SysTskService>();
             services.AddScoped<ISysConfigService, SysConfigService>();
 
+            //services.AddKeyedScoped<ISysConfigService, SysConfigService>("");
+            //services.AddKeyedScoped<ISysConfigService, SysConfigService>("");
+
             services.QuartzModuleLoad(cfg); // 添加Quartz
         }
 

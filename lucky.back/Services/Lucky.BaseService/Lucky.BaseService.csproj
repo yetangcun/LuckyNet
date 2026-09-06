@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common.CoreLib\Common.CoreLib.csproj" />
     <ProjectReference Include="..\..\Common\Protocol\Prtcl.Grpc\Prtcl.Grpc.csproj" />
+    <ProjectReference Include="..\..\Common\Protocol\Prtcl.Rabbitmq\Prtcl.Rabbitmq.csproj" />
     <ProjectReference Include="..\..\Models\Lucky.BaseModel\Lucky.BaseModel.csproj" />
   </ItemGroup>
 
