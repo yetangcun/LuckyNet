@@ -1,13 +1,12 @@
-﻿using Common.CoreLib.Extension.Common;
+﻿using System.Text;
+using Common.CoreLib.Extension.Common;
 using Common.CoreLib.Model.Common;
 using Common.CoreLib.Model.Option;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Collections.Concurrent;
-using System.Text;
 
 namespace Prtcl.Rabbitmq
 {
@@ -22,8 +21,9 @@ namespace Prtcl.Rabbitmq
             _logger = logger;
         }
 
+        #region 简单模式|工作队列
         /// <summary>
-        /// 发送消息
+        /// 发布消息
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="data"></param>
@@ -41,13 +41,27 @@ namespace Prtcl.Rabbitmq
             await channel.BasicPublishAsync("", queueName, content);
             return true;
         }
-        private AsyncEventingBasicConsumer? _simpleConsumer = null; // private EventingBasicConsumer? _simpleConsumer = null;
-        public async Task ConsumerAsync(string queueName)
-        {
-            var consumerChannel = await _pool.AcquireChannelAsync();
 
-            if (consumerChannel != null)
+        // private AsyncEventingBasicConsumer? _simpleConsumer = null; // private EventingBasicConsumer? _simpleConsumer = null;
+        private List<AsyncEventingBasicConsumer> _consumers = new List<AsyncEventingBasicConsumer>();
+
+        /// <summary>
+        /// 批量消费者
+        /// </summary>
+        /// <param name="queueName"> 队列名称 </param>
+        /// <param name="consumers"> 消费者数量 </param>
+        public async Task ConsumerAsync(string queueName, int consumers = 1)
+        {
+            if (_consumers.Count >= consumers)
+                return;
+
+            for (int i = 0; i < consumers; i++)
             {
+                var consumerChannel = await _pool.AcquireChannelAsync();
+
+                if (consumerChannel == null || !consumerChannel.IsOpen)
+                    continue;
+
                 await consumerChannel.QueueDeclareAsync(queueName, true, false, false, null);
 
                 // 第一个参数指定消息本身大小 0表示不限制
@@ -55,43 +69,42 @@ namespace Prtcl.Rabbitmq
                 // 第三个表示前面的设置应用于整个通道 false表示只应用于当前通道
                 await consumerChannel.BasicQosAsync(0, 1, false);
 
-                if (_simpleConsumer == null)
+                var _consumer = new AsyncEventingBasicConsumer(consumerChannel);
+                _consumer.ShutdownAsync += _simpleConsumer_ShutdownAsync;
+                _consumer.ReceivedAsync += async (sender, args) =>
                 {
-                    _simpleConsumer = new AsyncEventingBasicConsumer(consumerChannel);
-                    _simpleConsumer.ShutdownAsync += _simpleConsumer_ShutdownAsync;
-                    _simpleConsumer.ReceivedAsync += async (sender, args) =>
+                    try
                     {
-                        try
+                        var json = Encoding.UTF8.GetString(args.Body.ToArray());
+                        var content = json.ToObj<MqMsgModel>();
+                        if (content == null)
+                            return;
+
+                        if (!MqExtension.MqHandlersDic.TryGetValue(content.MsgType, out var handler))
+                            return;
+
+                        if (handler == null)
                         {
-                            var json = Encoding.UTF8.GetString(args.Body.ToArray());
-                            var content = json.ToObj<MqMsgModel>();
-                            if (content == null)
-                                return;
-
-                            if (!MqExtension.MqHandlersDic.TryGetValue(content.MsgType, out var handler))
-                                return;
-
-                            if (handler == null)
-                            {
-                                await consumerChannel.BasicAckAsync(args.DeliveryTag, false);
-                                return;
-                            }
-
-                            _logger.LogInformation($"消费ing: {json}");
-                            var res = await handler.Handle(content);
-
-                            if (res.Item1)
-                                await consumerChannel.BasicAckAsync(args.DeliveryTag, false);
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.LogError($"{ex.Message},{ex.StackTrace},{ex.InnerException}");
                             await consumerChannel.BasicAckAsync(args.DeliveryTag, false);
+                            return;
                         }
-                    };
 
-                    await consumerChannel.BasicConsumeAsync(queueName, false, _simpleConsumer);
-                }
+                        _logger.LogInformation($"消费ing: {json}");
+                        var res = await handler.Handle(content);
+
+                        if (res.Item1)
+                            await consumerChannel.BasicAckAsync(args.DeliveryTag, false);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError($"{ex.Message},{ex.StackTrace},{ex.InnerException}");
+                        await consumerChannel.BasicAckAsync(args.DeliveryTag, false);
+                    }
+                };
+
+                await consumerChannel.BasicConsumeAsync(queueName, false, _consumer);
+
+                _consumers.Add(_consumer);
             }
         }
 
@@ -101,6 +114,182 @@ namespace Prtcl.Rabbitmq
             // throw new NotImplementedException();
             return Task.CompletedTask;
         }
+        #endregion
+
+        #region 订阅模式|发布订阅
+
+        /// <summary>
+        /// 生产发布
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data"></param>
+        /// <param name="exchgName"></param>
+        public async Task<bool> PublishSubscribe<T>(T data, string exchg)
+        {
+
+             var _channel = await _pool.AcquireChannelAsync();
+
+            await _channel.ExchangeDeclareAsync(exchange: exchg, ExchangeType.Fanout);  // 创建fanout类型的交换机，此类型交换机即广播模式, 发布到交换机的每个消息都会被发送到所有绑定的队列中
+
+            var msg = data.ToJson();
+
+            var bts = Encoding.UTF8.GetBytes(msg);
+
+            await _channel.BasicPublishAsync(exchg, "", bts);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 消费订阅
+        /// </summary>
+        /// <param name="queueName"></param>
+        /// <param name="exchangeName"></param>
+        private AsyncEventingBasicConsumer? _consumer = null;
+        public async Task ConsumerSubscribe(string exchg, string queueName = "subscribe_dft_queue")
+        {
+            if (_consumer != null && _consumer.IsRunning)
+                return;
+
+            var chl = await _pool.AcquireChannelAsync();
+
+            await chl.ExchangeDeclareAsync(exchange: exchg, ExchangeType.Fanout); // 创建fanout类型的交换机，此类型交换机即广播模式, 订阅模式
+
+            if (string.IsNullOrWhiteSpace(queueName))
+                queueName = (await chl.QueueDeclareAsync()).QueueName; // 创建一个匿名队列
+            else
+                await chl.QueueDeclareAsync(queueName, true, false, false, null);
+
+            await chl.QueueBindAsync(queueName, exchg, ""); // 绑定队列和交换机
+
+            _consumer = new AsyncEventingBasicConsumer(chl);
+            _consumer.ReceivedAsync += async (sender, args) =>
+            {
+                var json = Encoding.UTF8.GetString(args.Body.ToArray());
+                var content = json.ToObj<MqMsgModel>();
+                if (content == null) return;
+
+                if (!MqExtension.MqHandlersDic.TryGetValue(content.MsgType, out var handler))
+                    return;
+
+                var res = await handler.Handle(content);
+
+                if (res.Item1) await chl.BasicAckAsync(args.DeliveryTag, false);
+            };
+
+            await chl.BasicConsumeAsync(queueName, false, _consumer);
+        }
+
+        #endregion
+
+        #region 路由
+
+        public async Task<bool> PublishRouter(string exchg, string routeKey, object data)
+        {
+            var chl = await _pool.AcquireChannelAsync();
+
+            await chl.ExchangeDeclareAsync(exchg, ExchangeType.Direct); // 创建direct类型的交换机,即路由模式或路由匹配，此类型交换机根据路由键将消息推送到与之对应的队列上
+
+            var msg = data.ToJson();
+
+            var bts = Encoding.UTF8.GetBytes(msg);
+
+            await chl.BasicPublishAsync(exchg, routeKey, bts);
+
+            return true;
+        }
+
+        private AsyncEventingBasicConsumer? _routeConsumer = null;
+        public async Task ConsumerRouter(string exchg, string routeKey, string queueName = "route_dft_queue")
+        {
+            if (_routeConsumer != null && _routeConsumer.IsRunning)
+                return;
+
+            var chl = await _pool.AcquireChannelAsync(); // 检查通道是否可用，如果不可用，则重新获取一个可用的通道
+
+            await chl.ExchangeDeclareAsync(exchg, ExchangeType.Direct);
+
+            if (string.IsNullOrWhiteSpace(queueName))
+                queueName = (await chl.QueueDeclareAsync()).QueueName;
+            else
+                await chl.QueueDeclareAsync(queueName, true, false, false, null);
+
+            await chl.QueueBindAsync(queueName, exchg, routeKey, null);
+            await chl.BasicQosAsync(0, 1, false);
+
+            _routeConsumer = new AsyncEventingBasicConsumer(chl);
+            _routeConsumer.ReceivedAsync += async (sender, args) =>
+            {
+                var json = Encoding.UTF8.GetString(args.Body.ToArray());
+                var content = json.ToObj<MqMsgModel>();
+                if (content == null)
+                    return;
+
+                if (!MqExtension.MqHandlersDic.TryGetValue(content.MsgType, out var handler))
+                    return;
+
+                var res = await handler.Handle(content);
+
+                if (res.Item1)
+                    await chl.BasicAckAsync(args.DeliveryTag, false);
+            };
+
+            await chl.BasicConsumeAsync(queueName, false, _routeConsumer);
+        }
+
+        #endregion
+
+        #region 主题
+
+        public async Task<bool> PublishTopic(string exchg, string topic, object data)
+        {
+            var chl = await _pool.AcquireChannelAsync();
+
+            await chl.ExchangeDeclareAsync(exchg, ExchangeType.Topic);
+
+            var msg = data.ToJson();
+
+            var bts = Encoding.UTF8.GetBytes(msg);
+
+            await chl.BasicPublishAsync(exchg, topic, bts);
+
+            return true;
+        }
+
+        private AsyncEventingBasicConsumer? _tpcConsumer = null;
+        public async Task ConsumerTopic(string exchg, string topic, string queueName = "topic_dft_queue")
+        {
+            var chl = await _pool.AcquireChannelAsync();
+
+            await chl.ExchangeDeclareAsync(exchg, ExchangeType.Topic);
+
+            if (string.IsNullOrEmpty(queueName)) // await _topicConsumerChannel.QueueDeclareAsync(queueName, true, false, false, null);
+                queueName = (await chl.QueueDeclareAsync()).QueueName;
+            else
+                await chl.QueueDeclareAsync(queueName, true, false, false);
+
+            await chl.QueueBindAsync(queueName, exchg, topic, null); // await _topicConsumerChannel.QueueBindAsync(queueName, exchangeName, topic_patter, null);
+
+            _tpcConsumer = new AsyncEventingBasicConsumer(chl);
+            _tpcConsumer.ReceivedAsync += async (sender, args) =>
+            {
+                var json = Encoding.UTF8.GetString(args.Body.ToArray());
+                var content = json.ToObj<MqMsgModel>();
+
+                if (content == null)
+                    return;
+
+                if (!MqExtension.MqHandlersDic.TryGetValue(content.MsgType, out var handler)) return;
+
+                var res = await handler.Handle(content);
+
+                if (res.Item1) await chl.BasicAckAsync(args.DeliveryTag, false);
+            };
+
+            await chl.BasicConsumeAsync(queueName, false, _tpcConsumer);
+        }
+
+        #endregion
 
     }
 
@@ -150,7 +339,9 @@ namespace Prtcl.Rabbitmq
                 return channel;
             }
 
-            return await _connection!.CreateChannelAsync(cancellationToken: ct);
+            var chl = await _connection!.CreateChannelAsync(cancellationToken: ct);
+
+            return chl;
         }
 
         public void ReleaseChannel(IChannel channel)
@@ -227,7 +418,7 @@ namespace Prtcl.Rabbitmq
                     UserName = _mqOpt.Usr,
                     Password = _mqOpt.Pwd,
                     AutomaticRecoveryEnabled = true, // 自动恢复连接
-                    NetworkRecoveryInterval = TimeSpan.FromSeconds(6), // 网络恢复间隔
+                    NetworkRecoveryInterval = TimeSpan.FromSeconds(6), // 重连恢复间隔
                 };
 
                 _connection = await connFactory.CreateConnectionAsync(clt);
