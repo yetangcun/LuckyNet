@@ -1,19 +1,17 @@
 ﻿using Lucky.BaseModel.Enum;
 using System.Collections;
 
-namespace Common.CoreLib.Model.Common
+namespace Lucky.BaseModel.Model
 {
     /// <summary>
     /// 消息基类
     /// </summary>
     public class MqMsgModel
     {
-        #region 消息发布模型
-
         /// <summary>
         /// 消息类型
         /// </summary>
-        public MsgType MsgType { get; set; } = MsgType.Unknown;
+        public MsgType MsgType { get; set; }
 
         /// <summary>
         /// 唯一会话Id
@@ -24,7 +22,7 @@ namespace Common.CoreLib.Model.Common
         /// 消息
         /// Json 字符串
         /// </summary>
-        public string? JsonMsg { get; set; }
+        public string? Msg { get; set; }
 
         /// <summary>
         /// 其他参数补充
@@ -47,17 +45,6 @@ namespace Common.CoreLib.Model.Common
         /// </summary>
         public int? Pid { get; set; }
     }
-
-    /// <summary>
-    /// RabbitMq消息发布模型
-    /// </summary>
-    public class RabbitMsgModel : MqMsgModel
-    {
-    }
-
-    #endregion
-
-    #region 消息消费处理结果模型
 
     /// <summary>
     /// MQ消息消费(处理)的结果模型
@@ -85,16 +72,15 @@ namespace Common.CoreLib.Model.Common
         public string? Msg { get; set; }
     }
 
-    #endregion
-
     /// <summary>
     /// 消费者逻辑处理接口
     /// </summary>
-    public interface IMqHdl
+    public interface IMqConsumerHdl
     {
         /// <summary>
         /// 消费者处理接口
         /// </summary>
         Task<MqMsgRes> hdl(KfkMsgModel data);
     }
+
 }

@@ -8,6 +8,7 @@ using Lucky.PrtclService;
 using Lucky.SysService;
 using Prtcl.Grpc;
 using Prtcl.Grpc.extension;
+using Prtcl.Kfk;
 using Prtcl.Rabbitmq;
 
 namespace lucky.admin.Extensions
@@ -30,6 +31,7 @@ namespace lucky.admin.Extensions
             services.AddSingleton<InitHandler>();
 
             services.AddSingleton<ChannelPool>();
+            services.AddSingleton<IKfkService, KfkService>();
             services.AddSingleton<IRabbitmqService, RabbitmqService>();
 
             services.BaseInitLoad(cfg);

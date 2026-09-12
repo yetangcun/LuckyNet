@@ -1,5 +1,5 @@
-﻿using Common.CoreLib.Model.Common;
-using Lucky.BaseModel.Enum;
+﻿using Lucky.BaseModel.Enum;
+using Lucky.BaseModel.Model;
 using System.Collections.Concurrent;
 
 namespace Common.CoreLib.Extension.Common

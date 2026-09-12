@@ -1,12 +1,12 @@
 ﻿using System.Text;
-using Common.CoreLib.Extension.Common;
-using Common.CoreLib.Model.Common;
+using RabbitMQ.Client;
+using Lucky.BaseModel.Model;
+using RabbitMQ.Client.Events;
 using Common.CoreLib.Model.Option;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
 using System.Collections.Concurrent;
+using Common.CoreLib.Extension.Common;
 
 namespace Prtcl.Rabbitmq
 {
