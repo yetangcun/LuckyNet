@@ -9,6 +9,7 @@
 	<ItemGroup>
     <PackageReference Include="ClickHouse.Ado" Version="2.0.5" />
     <PackageReference Include="ClickHouse.Driver" Version="1.4.0" />
+    <PackageReference Include="Dapper" Version="2.1.86" />
   </ItemGroup>
 
   <ItemGroup>

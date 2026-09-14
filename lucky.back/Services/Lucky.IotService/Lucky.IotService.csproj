@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Data\Data.ClkHouse\Data.ClkHouse.csproj" />
     <ProjectReference Include="..\..\Common\Protocol\Prtcl.Mqtt\Prtcl.Mqtt.csproj" />
     <ProjectReference Include="..\..\Models\Lucky.IotModel\Lucky.IotModel.csproj" />
     <ProjectReference Include="..\Lucky.BaseService\Lucky.BaseService.csproj" />

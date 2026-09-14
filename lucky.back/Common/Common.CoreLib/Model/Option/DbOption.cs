@@ -74,7 +74,7 @@ namespace Common.CoreLib.Model.Option
         /// <summary>
         /// 端口
         /// </summary>
-        public int Port { get; set; }
+        public ushort Port { get; set; }
 
         /// <summary>
         /// 用户名

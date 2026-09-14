@@ -36,6 +36,7 @@ bld.Services.AddControllers(c =>
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 // builder.Services.AddOpenApi();
+bld.Services.AddHttpClient(); // 添加httpclient
 bld.Services.GeneralLoad(bld.Configuration);   // 加载通用模块
 bld.Services.AddSwaggerExt(bld.Configuration); // 添加swagger配置
 bld.Services.SysModuleLoad(bld.Configuration);  // 系统管理模块

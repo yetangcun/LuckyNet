@@ -1,6 +1,7 @@
 ﻿using Alot2.Admin.Common.Cache;
 using Common.CoreLib.Extension.Common;
 using Common.CoreLib.Model.Option;
+using Data.ClkHouse.clk;
 using GrpcTransCore.Services;
 using lucky.admin.Extensions.Handler;
 using Lucky.BaseService;
@@ -31,6 +32,7 @@ namespace lucky.admin.Extensions
             services.AddSingleton<InitHandler>();
 
             services.AddSingleton<ChannelPool>();
+            services.AddSingleton<IClkService, ClkService>();
             services.AddSingleton<IKfkService, KfkService>();
             services.AddSingleton<IRabbitmqService, RabbitmqService>();
 
