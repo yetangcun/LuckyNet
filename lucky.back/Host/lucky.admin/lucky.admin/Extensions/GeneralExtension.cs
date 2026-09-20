@@ -27,7 +27,9 @@ namespace lucky.admin.Extensions
             services.Configure<GrpcConfig>(cfg.GetSection("GrpcCfg"));
             services.AddSingleton<IGrpcCommonHandler, GrpcDefaultHandler>();
 
+            services.Configure<KfkOption>(cfg.GetSection("KfkOption"));
             services.Configure<ChannelOption>(cfg.GetSection("ChannelOption"));
+            services.Configure<ClkhouseOption>(cfg.GetSection("ClkhouseOption"));
             services.AddSingleton<ChannelExtension>();
             services.AddSingleton<InitHandler>();
 

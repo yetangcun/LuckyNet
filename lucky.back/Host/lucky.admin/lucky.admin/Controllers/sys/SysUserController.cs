@@ -11,6 +11,9 @@ using Lucky.SysModel.Model.Output;
 // using Tsk.Quartz.Jobs.Example;
 using Lucky.SysService.Service.IService;
 using Common.CoreLib.Extension.Common;
+using Data.ClkHouse.clk;
+using Prtcl.Kfk;
+using Lucky.BaseModel.Enum;
 
 namespace lucky.admin.Controllers.sys
 {
@@ -35,6 +38,22 @@ namespace lucky.admin.Controllers.sys
             _sysUserService = sysUserService;
         }
 
+        /// <summary>
+        /// 登录
+        /// </summary>
+        public class tst
+        {
+            /// <summary>
+            /// id
+            /// </summary>
+            public ulong id { get; set; }
+
+            /// <summary>
+            /// name
+            /// </summary>
+            public string? name { get; set; }
+        }
+
         #region  用户管理
         /// <summary>
         /// 登录
@@ -44,8 +63,22 @@ namespace lucky.admin.Controllers.sys
             [FromBody] SysUserLoginInput req,
             [FromServices] JobExtension jobExt,
             [FromServices] GrpcClientHdl grpcClt,
-            [FromServices] JwtAuthExtension jwt)
+            [FromServices] JwtAuthExtension jwt,
+            [FromServices] IClkService clkService,
+            [FromServices] IKfkService kfkService)
         {
+            //var reslt = await clkService.GetAsync<tst>("select mt.id, mt.name  from luckysdb.mi_table mt where id = 1");
+            //await clkService.ExecuteAsync("insert into luckysdb.mi_table (id, name, age, intime) values (2, 'test', 27, '2026-09-18 12:32:37')");
+
+            await kfkService.PublishAsync(new KfkMsgModel()
+            {
+                Msg = "---测试消息---",
+                Tpc = "win_kfk_tpc",
+                Pid = 0,
+                MsgType = MsgType.Unknown,
+                Sid = IdGreator.GetNxtId().ToString()
+            });
+
             #region job 测试 "0/5 * * * * ?"  秒 分 时 【日(Day of month)】 月 【星期几(Day of week)】 【年(可选，可以忽略)】
 
             // await jobExt.AddOnceJob<OnceTestJob>(null);  // 一次性 立即执行

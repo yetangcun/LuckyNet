@@ -77,7 +77,7 @@ namespace Prtcl.Kfk
             }
         }
 
-        public async Task Init()
+        public void Init()
         {
             switch (_kfkOpt.Rtype)
             {

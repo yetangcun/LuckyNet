@@ -1,14 +1,14 @@
-﻿using System.Data;
+﻿using Dapper;
+using System.Data;
 using ClickHouse.Driver.ADO;
 using ClickHouse.Driver.Copy;
 using ClickHouse.Driver.Utility;
 using Common.CoreLib.Model.Option;
-using Dapper;
 using Microsoft.Extensions.Options;
 
 namespace Data.ClkHouse.clk
 {
-    public class ClkAdoService : IClkService
+    public class ClkAdoService
     {
         private ClkhouseOption _clkOption;
         private readonly IHttpClientFactory _httpFactory;
@@ -113,7 +113,7 @@ namespace Data.ClkHouse.clk
     /// <summary>
     /// clickhouse + dapper 结合使用
     /// </summary>
-    public class ClkDapperService : IClkService
+    public class ClkDapperService
     {
         private ClkhouseOption _clkOption;
         private readonly IHttpClientFactory _httpFactory;

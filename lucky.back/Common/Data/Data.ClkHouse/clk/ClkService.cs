@@ -25,13 +25,18 @@ namespace Data.ClkHouse.clk
             {
                 Host = _clkOption.Host,
                 Port = _clkOption.Port,
-                Protocol = string.Empty,
+                //Protocol = string.Empty,
                 Username = _clkOption.User,
                 Password = _clkOption.Password,
-                Database = _clkOption.Database,
+                //Database = _clkOption.DbName,
             };
 
             clkClient = new ClickHouseClient(secureSettings);
+        }
+
+        public void RegisterAsync<T>() where T : class 
+        {
+            clkClient.RegisterPocoType<T>();
         }
 
         /// <summary>
@@ -118,6 +123,24 @@ namespace Data.ClkHouse.clk
                 }
             }
             var res = await clkClient.QueryAsync<T>(sql, prms).FirstOrDefaultAsync();
+            return res;
+        }
+
+        /// <summary>
+        /// 获取单条数据
+        /// </summary>
+        public async Task<object?> GetAsync(string sql, Dictionary<string, object>? param = null)
+        {
+            ClickHouseParameterCollection? prms = null;
+            if (param != null)
+            {
+                foreach (var item in param)
+                {
+                    prms.AddParameter(item.Key, item.Value);
+                }
+            }
+
+            var res = await clkClient.ExecuteScalarAsync(sql, prms);
             return res;
         }
 
