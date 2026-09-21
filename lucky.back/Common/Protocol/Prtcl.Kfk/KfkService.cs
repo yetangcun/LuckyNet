@@ -164,10 +164,13 @@ namespace Prtcl.Kfk
         }
 
         #region 生产者
-        public async Task PubAsync(KfkMsgModel msg, string? host = null, int? port = 0, string? tpic = null)
+        public async Task PubAsync(KfkMsgModel msg, string? host = null, int? port = 0, string? tpc = null)
         {
-            if (string.IsNullOrWhiteSpace(tpic))
-                tpic = _kfkOpt.Tpc;
+            if (!string.IsNullOrEmpty(msg.Tpc))
+                tpc = msg.Tpc;
+
+            if (string.IsNullOrWhiteSpace(tpc))
+                tpc = _kfkOpt.Tpc;
 
             if (string.IsNullOrWhiteSpace(host))
             {
@@ -183,16 +186,17 @@ namespace Prtcl.Kfk
                 BootstrapServers = $"{host}:{port}"
             };
 
+            var sid = msg.Sid; msg.Sid = null; msg.Tpc = null;
             using var prd = new ProducerBuilder<string, string>(cfg).Build();
             var data = new Message<string, string>()
             {
-                Key = msg.Sid!,
+                Key = sid,
                 Value = msg.ToJson()
             };
 
             try
             {
-                await prd.ProduceAsync(tpic, data); // 生产者生产消息finally
+                await prd.ProduceAsync(tpc, data); // 生产者生产消息finally
             }
             finally
             {
@@ -247,13 +251,14 @@ namespace Prtcl.Kfk
                 msg.Pid = _kfkOpt.DftPid;
 
             var sid = msg.Sid; msg.Sid = null;
+            var tpc = msg.Tpc; msg.Tpc = null;
             var data = new Message<string, string>()
             {
                 Key = sid!,
                 Value = msg.ToJson()
             };
 
-            await _prd.ProduceAsync(msg.Tpc, data); // 生产者生产消息
+            await _prd.ProduceAsync(tpc, data); // 生产者生产消息
         }
 
 
@@ -279,8 +284,6 @@ namespace Prtcl.Kfk
                 Key = sid,
                 Value = msg.ToJson()
             };
-
-            
 
             await _prd.ProduceAsync(tpc, message); // 生产者生产消息
         }
@@ -348,12 +351,12 @@ namespace Prtcl.Kfk
                             continue;
                         }
 
-                        var offsets = cnsRes.Offset.Value; // 每条消息的偏移量
-                        KfkMsgModel? msgObj = cnsRes.Message.Value.ToObj<KfkMsgModel>(); // 消息反序列化
-                        msgObj!.Sid = cnsRes.Message.Key.ToString(); // 设置消息唯一会话Id
-                        // Console.WriteLine($"consume--{cnsRes.Topic}--{cnsRes.Partition.Value}--{cnsRes.Message.Value}");
+                        // var offsets = cnsRes.Offset.Value; // 每条消息的偏移量
+                        KfkMsgModel? msgObj = cnsRes.Message.Value.ToObj<KfkMsgModel>(); // 消息反序列化 // Console.WriteLine($"consume--{cnsRes.Topic}--{cnsRes.Partition.Value}--{cnsRes.Message.Value}");
                         if (msgObj != null)
                         {
+                            msgObj.Tpc = cnsRes.Topic;
+                            msgObj.Sid = cnsRes.Message.Key.ToString(); // 设置消息唯一会话Id
                             var res = await hdl.hdl(msgObj);  // 取得消息开始业务消费
                             if (res.Status) cns.Commit(cnsRes);  // 消息消费完成确认
                         }
@@ -393,10 +396,11 @@ namespace Prtcl.Kfk
                             continue;
                         }
 
-                        var offsets = cnsRes.Offset.Value; // 每条消息的偏移量
+                        // var offsets = cnsRes.Offset.Value; // 每条消息的偏移量
                         var msgObj = cnsRes.Message.Value.ToObj<KfkMsgModel>(); // 消息反序列化
                         if (msgObj != null)
                         {
+                            msgObj.Tpc = cnsRes.Topic;
                             msgObj.Sid = cnsRes.Message.Key.ToString(); // 设置消息唯一会话Id Console.WriteLine($"{cnsRes.Topic}--{cnsRes.Partition.Value}--{cnsRes.Message.Value}");
                             var res = await hdl.hdl(msgObj);  // 取得消息开始业务消费
                             if (res.Status) _cns.Commit(cnsRes);  // 消息消费完成确认
@@ -443,10 +447,11 @@ namespace Prtcl.Kfk
                             continue;
                         }
 
-                        var offsets = cnsRes.Offset.Value; // 每条消息的偏移量
+                        // var offsets = cnsRes.Offset.Value; // 每条消息的偏移量
                         var msgObj = cnsRes.Message.Value.ToObj<KfkMsgModel>(); // 消息反序列化
                         if (msgObj != null)
                         {
+                            msgObj.Tpc = cnsRes.Topic;
                             msgObj.Sid = cnsRes.Message.Key.ToString(); // 设置消息唯一会话Id Console.WriteLine($"{cnsRes.Topic}--{cnsRes.Partition.Value}--{cnsRes.Message.Value}");
                             var res = await hdl.hdl(msgObj);  // 取得消息开始业务消费
                             if (res.Status) _cns.Commit(cnsRes);  // 消息消费完成确认

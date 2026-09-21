@@ -72,7 +72,7 @@ namespace lucky.admin.Controllers.sys
 
             await kfkService.PublishAsync(new KfkMsgModel()
             {
-                Msg = "---测试消息---",
+                Msg = "---kfk tst msg---",
                 Tpc = "win_kfk_tpc",
                 Pid = 0,
                 MsgType = MsgType.Unknown,
