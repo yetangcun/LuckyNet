@@ -54,6 +54,16 @@ namespace lucky.admin.Controllers.sys
             public string? name { get; set; }
         }
 
+        public class tstHdl : IMqConsumerHdl
+        {
+            public async Task<MqMsgRes> hdl(KfkMsgModel data)
+            {
+                Console.WriteLine($"---kfk tst msg---:{data.Msg}");
+
+                return new MqMsgRes();
+            }
+        }
+
         #region  用户管理
         /// <summary>
         /// 登录
@@ -70,14 +80,18 @@ namespace lucky.admin.Controllers.sys
             //var reslt = await clkService.GetAsync<tst>("select mt.id, mt.name  from luckysdb.mi_table mt where id = 1");
             //await clkService.ExecuteAsync("insert into luckysdb.mi_table (id, name, age, intime) values (2, 'test', 27, '2026-09-18 12:32:37')");
 
+            var sid = IdGreator.GetNxtId().ToString();
+            var random = new Random();
             await kfkService.PublishAsync(new KfkMsgModel()
             {
-                Msg = "---kfk tst msg---",
+                Msg = $"---kfk tst msg---:{random.Next(1, 1000)}",
+                MsgType = MsgType.Unknown,
                 Tpc = "win_kfk_tpc",
                 Pid = 0,
-                MsgType = MsgType.Unknown,
-                Sid = IdGreator.GetNxtId().ToString()
+                Sid = sid
             });
+                
+            await kfkService.ConsumerAsync( new List<string>() { "win_kfk_tpc" },new tstHdl());
 
             #region job 测试 "0/5 * * * * ?"  秒 分 时 【日(Day of month)】 月 【星期几(Day of week)】 【年(可选，可以忽略)】
 

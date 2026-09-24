@@ -377,7 +377,7 @@ namespace Prtcl.Kfk
 
         public async Task ConsumerAsync(IEnumerable<string> tpcs, IMqConsumerHdl hdl, CancellationToken cancelToken = default)
         {
-            if (tpcs == null || tpcs.Count() == 0 || _cns == null)
+            if (_cns == null || tpcs == null || tpcs.Count() == 0)
                 return;
 
             _cns.Subscribe(tpcs);
@@ -389,6 +389,7 @@ namespace Prtcl.Kfk
                     try
                     {
                         var cnsRes = _cns.Consume(cancelToken); // 读取消息
+
                         if (cnsRes.IsPartitionEOF)
                         {
                             // 没有消费可消费
@@ -401,9 +402,13 @@ namespace Prtcl.Kfk
                         if (msgObj != null)
                         {
                             msgObj.Tpc = cnsRes.Topic;
-                            msgObj.Sid = cnsRes.Message.Key.ToString(); // 设置消息唯一会话Id Console.WriteLine($"{cnsRes.Topic}--{cnsRes.Partition.Value}--{cnsRes.Message.Value}");
+                            msgObj.Sid = cnsRes.Message.Key?.ToString(); // 设置消息唯一会话Id Console.WriteLine($"{cnsRes.Topic}--{cnsRes.Partition.Value}--{cnsRes.Message.Value}");
                             var res = await hdl.hdl(msgObj);  // 取得消息开始业务消费
                             if (res.Status) _cns.Commit(cnsRes);  // 消息消费完成确认
+                        }
+                        else
+                        {
+                            _logger.LogError($"消费1异常:key:{cnsRes.Message.Key?.ToString()}, value:{cnsRes.Message.Value}");
                         }
                     }
                     catch (Exception ex)

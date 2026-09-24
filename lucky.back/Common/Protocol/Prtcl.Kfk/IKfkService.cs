@@ -7,5 +7,7 @@ namespace Prtcl.Kfk
         void Init();
 
         Task PublishAsync(KfkMsgModel msg);
+
+        Task ConsumerAsync(IEnumerable<string> tpcs, IMqConsumerHdl hdl, CancellationToken cancelToken = default);
     }
 }
